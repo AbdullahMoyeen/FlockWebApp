@@ -1,0 +1,38 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan base-package="com.viiup.web.flock"/>
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/pages/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!--<bean id="customerDAO" class="CustomerDAOImpl" />-->
+    <!--<bean id="customerService" class="CustomerServiceImpl" />-->
+
+    <!--localhost database-->
+    <bean id="dataSource"
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://localhost:3306/gfdev" />
+        <property name="username" value="root" />
+        <property name="password" value="" />
+    </bean>
+
+    <bean id="AuthenticationSuccessHandlerImpl" class="com.viiup.web.flock.services.AuthenticationSuccessHandlerImpl"></bean>
+
+    <!--AWS database-->
+    <!--<bean id="dataSource"-->
+          <!--class="org.springframework.jdbc.datasource.DriverManagerDataSource">-->
+        <!--<property name="driverClassName" value="com.mysql.jdbc.Driver" />-->
+        <!--<property name="url" value="jdbc:mysql://greenflowers.cmmphu5lagot.us-west-2.rds.amazonaws.com:3306/gfdev" />-->
+        <!--<property name="username" value="gfadmin" />-->
+        <!--<property name="password" value="Emse6360" />-->
+    <!--</bean>-->
+
+</beans>
