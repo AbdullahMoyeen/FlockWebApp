@@ -22,10 +22,10 @@ import java.io.IOException;
 public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHandler {
 
     @Autowired
-    CustomerService customerService;
+    IUserService userService;
 
     @Autowired
-    OrderService orderService;
+    IEventService eventService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest,
@@ -36,10 +36,10 @@ public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHa
         HttpSession httpSession = httpServletRequest.getSession();
 
         AuthenticatedUser authenticatedUser = (AuthenticatedUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Customer customer = customerService.getCustomerByCustomerID(authenticatedUser.getUserId());
+        Customer customer = userService.getCustomerByCustomerID(authenticatedUser.getUserId());
         httpSession.setAttribute("customer", customer);
 
-        Order pendingOrder = orderService.getPendingOrder(customer.getCustomerID());
+        Order pendingOrder = eventService.getPendingOrder(customer.getCustomerID());
         Order sessionOrder = (Order) httpSession.getAttribute("order");
 
         if (sessionOrder == null){
@@ -49,17 +49,18 @@ public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHa
         }
         else{
             if (pendingOrder != null){
-                orderService.mergeOrder(sessionOrder, pendingOrder);
-                sessionOrder = orderService.getOrderByOrderID(sessionOrder.getOrderID());
+                eventService.mergeOrder(sessionOrder, pendingOrder);
+                sessionOrder = eventService.getOrderByOrderID(sessionOrder.getOrderID());
                 httpSession.setAttribute("order", sessionOrder);
             }
             else{
                 sessionOrder.setCustomerID(customer.getCustomerID());
-                orderService.updateOrder(sessionOrder);
+                eventService.updateOrder(sessionOrder);
                 httpSession.setAttribute("order", sessionOrder);
             }
         }
 
-        httpServletResponse.sendRedirect((String) httpSession.getAttribute("urlPriorLogin"));
+//        httpServletResponse.sendRedirect((String) httpSession.getAttribute("urlPriorLogin"));
+        httpServletResponse.sendRedirect("/groups");
     }
 }

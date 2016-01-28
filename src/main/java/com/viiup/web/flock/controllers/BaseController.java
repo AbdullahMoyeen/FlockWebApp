@@ -1,9 +1,9 @@
 package com.viiup.web.flock.controllers;
 
 import com.viiup.web.flock.models.Customer;
-import com.viiup.web.flock.services.BaseService;
-import com.viiup.web.flock.services.CustomerService;
-import com.viiup.web.flock.services.OrderService;
+import com.viiup.web.flock.services.IBaseService;
+import com.viiup.web.flock.services.IUserService;
+import com.viiup.web.flock.services.IEventService;
 import com.viiup.web.flock.models.PasswordSecurity;
 import com.viiup.web.flock.models.PasswordSecurityQuestion;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,17 +28,22 @@ public class BaseController {
     HttpSession httpSession;
 
     @Autowired
-    BaseService baseService;
+    IBaseService baseService;
 
     @Autowired
-    CustomerService customerService;
+    IUserService userService;
 
     @Autowired
-    OrderService orderService;
+    IEventService eventService;
 
     @RequestMapping("/")
     public String home(){
-        return ("home");
+        return ("adminSignIn");
+    }
+
+    @RequestMapping("/groups")
+    public String groups(){
+        return ("adminGroupList");
     }
 
     @RequestMapping("/aboutUs")
@@ -130,7 +135,7 @@ public class BaseController {
 
         if(baseService.validatePasswordSecurity(passwordSecurity)){
 
-            Customer customer = customerService.getCustomerByCustomerID(passwordSecurity.getCustomerID());
+            Customer customer = userService.getCustomerByCustomerID(passwordSecurity.getCustomerID());
             customer.setPassword(null);
 
             ModelAndView modelAndView = new ModelAndView("signInResetPassword");
@@ -153,7 +158,7 @@ public class BaseController {
     @RequestMapping("/signIn/resetPassword/submit")
     public String signInResetPasswordSubmit(@ModelAttribute Customer customer){
 
-        customerService.updateCustomerPassword(customer);
+        userService.updateCustomerPassword(customer);
 
         return "redirect:/signIn?passwordReset=true";
     }

@@ -32,7 +32,7 @@
         <!--<beans:constructor-arg name="strength" value="256"/>-->
     <!--</beans:bean>-->
 
-    <!--<beans:bean id="saltSource" class="org.springframework.security.authentication.dao.ReflectionSaltSource">-->
+    <!--<beans:bean id="saltSource" class="org.springframework.security.authentication.providers.ReflectionSaltSource">-->
         <!--<beans:property name="userPropertyToUse" value="salt"/>-->
     <!--</beans:bean>-->
 

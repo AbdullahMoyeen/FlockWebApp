@@ -1,6 +1,6 @@
 package com.viiup.web.flock.services;
 
-import com.viiup.web.flock.dao.CustomerDAO;
+import com.viiup.web.flock.providers.IUserProvider;
 import com.viiup.web.flock.models.AuthenticatedUser;
 import com.viiup.web.flock.models.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +20,11 @@ import java.util.List;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private CustomerDAO customerDAO;
+    private IUserProvider userProvider;
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        Customer customer = customerDAO.getCustomerByEmailAddress(username);
+        Customer customer = userProvider.getCustomerByEmailAddress(username);
         if(customer == null) {
             throw new UsernameNotFoundException("User not found");
         }

@@ -1,4 +1,4 @@
-package com.viiup.web.flock.dao;
+package com.viiup.web.flock.providers;
 
 import com.viiup.web.flock.jdbc.ProductRowMapper;
 import com.viiup.web.flock.models.Product;
@@ -13,7 +13,7 @@ import java.util.List;
  * Created by amoyeen on 3/1/15.
  */
 @Service
-public class ProductDAOImpl implements ProductDAO {
+public class SqlGroupProvider implements IGroupProvider {
 
     @Autowired
     DataSource dataSource;

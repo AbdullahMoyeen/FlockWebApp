@@ -15,25 +15,25 @@ import java.util.List;
  * Created by amoyeen on 3/1/15.
  */
 @Controller
-public class OrderController {
+public class EventController {
 
     @Autowired
     HttpSession httpSession;
 
     @Autowired
-    BaseService baseService;
+    IBaseService baseService;
 
     @Autowired
-    CustomerService customerService;
+    IUserService userService;
 
     @Autowired
-    ProductService productService;
+    IGroupService groupService;
 
     @Autowired
-    OrderService orderService;
+    IEventService eventService;
 
     @Autowired
-    OrderItemService orderItemService;
+    IOrderItemService orderItemService;
 
     @RequestMapping("/shoppingCart/addItem")
     public String shoppingCartAddItem(@RequestParam int productID, int addToCartQuantity){
@@ -50,12 +50,12 @@ public class OrderController {
             }
             order.setOrderStatusCode("P");
 
-            int orderID = orderService.insertOrder(order);
+            int orderID = eventService.insertOrder(order);
 
             order.setOrderID(orderID);
         }
 
-        Product product = productService.getProductByProductID(productID);
+        Product product = groupService.getProductByProductID(productID);
 
         OrderItem orderItem = new OrderItem();
 
@@ -67,7 +67,7 @@ public class OrderController {
 
         orderItemService.insertOrderItem(orderItem);
 
-        order = orderService.getOrderByOrderID(order.getOrderID());
+        order = eventService.getOrderByOrderID(order.getOrderID());
         httpSession.setAttribute("order", order);
 
         if(addToCartQuantity > product.getQuantityOnHand()){
@@ -82,7 +82,7 @@ public class OrderController {
     public ModelAndView shoppingCartViewCart(@RequestParam int orderID){
 
         List<ShoppingCart> shoppingCartList = orderItemService.getShoppingCartList(orderID);
-        Order order = orderService.getOrderByOrderID(orderID);
+        Order order = eventService.getOrderByOrderID(orderID);
 
         ModelAndView modelAndView = new ModelAndView("shoppingCart");
 
@@ -97,7 +97,7 @@ public class OrderController {
 
         orderItemService.deleteOrderItem(orderItemID);
 
-        Order order = orderService.getOrderByOrderID(orderID);
+        Order order = eventService.getOrderByOrderID(orderID);
         httpSession.setAttribute("order", order);
 
         return "redirect:/shoppingCart/viewCart?orderID=" + orderID;
@@ -107,14 +107,14 @@ public class OrderController {
     public String shoppingCartUpdateItem(@RequestParam int orderID, int orderItemID, int quantity) {
 
         OrderItem orderItem = orderItemService.getOrderItem(orderItemID);
-        Product product = productService.getProductByProductID(orderItem.getProductID());
+        Product product = groupService.getProductByProductID(orderItem.getProductID());
 
         orderItem.setQuantity(quantity);
         orderItem.setOrderItemSubTotal(orderItem.getPricePaid() * quantity);
 
         orderItemService.updateOrderItem(orderItem);
 
-        Order order = orderService.getOrderByOrderID(orderID);
+        Order order = eventService.getOrderByOrderID(orderID);
         httpSession.setAttribute("order", order);
 
         if(quantity > product.getQuantityOnHand()){
@@ -128,10 +128,10 @@ public class OrderController {
     @RequestMapping("/order/enterShipping")
     public ModelAndView orderEnterShipping(@RequestParam int orderID){
 
-        Order order = orderService.getOrderByOrderID(orderID);
-        List<CustomerAddress> customerAddressList = customerService.getCustomerAddressList(order.getCustomerID());
+        Order order = eventService.getOrderByOrderID(orderID);
+        List<CustomerAddress> customerAddressList = userService.getCustomerAddressList(order.getCustomerID());
         List<AddressState> addressStateList = baseService.getAddressStateList();
-        List<ShippingSpeed> shippingSpeedList = orderService.getShippingSpeedList();
+        List<ShippingSpeed> shippingSpeedList = eventService.getShippingSpeedList();
 
         ModelAndView modelAndView = new ModelAndView("orderEnterShipping");
 
@@ -146,12 +146,12 @@ public class OrderController {
     @RequestMapping("/order/enterShipping/bindAddress")
     public String orderEnterShippingBindAddress(@RequestParam int orderID, int addressID){
 
-        Order order = orderService.getOrderByOrderID(orderID);
-        CustomerAddress customerAddress = customerService.getCustomerAddressByAddressID(addressID);
+        Order order = eventService.getOrderByOrderID(orderID);
+        CustomerAddress customerAddress = userService.getCustomerAddressByAddressID(addressID);
 
-        if(orderService.shippingAllowed(customerAddress.getStateCode())) {
+        if(eventService.shippingAllowed(customerAddress.getStateCode())) {
             if (order.getShippingToName() == null) {
-                Customer customer = customerService.getCustomerByCustomerID(order.getCustomerID());
+                Customer customer = userService.getCustomerByCustomerID(order.getCustomerID());
                 order.setShippingToName(customer.getFirstName() + " " + customer.getLastName());
             }
             order.setShippingAddressLine1(customerAddress.getAddressLine1());
@@ -160,7 +160,7 @@ public class OrderController {
             order.setShippingStateCode(customerAddress.getStateCode());
             order.setShippingPostalCode(customerAddress.getPostalCode());
 
-            orderService.updateOrder(order);
+            eventService.updateOrder(order);
 
             return "redirect:/order/enterShipping?orderID=" + orderID;
         }
@@ -172,7 +172,7 @@ public class OrderController {
     @RequestMapping("/order/enterShipping/submit")
     public String orderEnterShippingSubmit(@ModelAttribute Order maOrder){
 
-        Order order = orderService.getOrderByOrderID(maOrder.getOrderID());
+        Order order = eventService.getOrderByOrderID(maOrder.getOrderID());
 
         if (maOrder.getSaveShippingAddress()) {
 
@@ -185,12 +185,12 @@ public class OrderController {
             customerAddress.setStateCode(maOrder.getShippingStateCode());
             customerAddress.setPostalCode(maOrder.getShippingPostalCode());
 
-            customerService.insertCustomerAddress(customerAddress);
+            userService.insertCustomerAddress(customerAddress);
         }
 
-        if(orderService.shippingAllowed(maOrder.getShippingStateCode())) {
+        if(eventService.shippingAllowed(maOrder.getShippingStateCode())) {
             if (maOrder.getShippingToName().isEmpty() || order.getShippingToName() == null) {
-                Customer customer = customerService.getCustomerByCustomerID(order.getCustomerID());
+                Customer customer = userService.getCustomerByCustomerID(order.getCustomerID());
                 order.setShippingToName(customer.getFirstName() + " " + customer.getLastName());
             } else {
                 order.setShippingToName(maOrder.getShippingToName());
@@ -202,13 +202,13 @@ public class OrderController {
             order.setShippingStateCode(maOrder.getShippingStateCode());
             order.setShippingPostalCode(maOrder.getShippingPostalCode());
             order.setShippingSpeedCode(maOrder.getShippingSpeedCode());
-            order.setStateTaxRateID(orderService.getStateTaxRateID(order.getShippingStateCode()));
-            order.setTaxTotal(order.getOrderSubTotal() * orderService.getStateTaxRate(order.getStateTaxRateID()));
+            order.setStateTaxRateID(eventService.getStateTaxRateID(order.getShippingStateCode()));
+            order.setTaxTotal(order.getOrderSubTotal() * eventService.getStateTaxRate(order.getStateTaxRateID()));
             order.setShipperID(maOrder.getShipperID());
             order.setShippingSpeedCode(maOrder.getShippingSpeedCode());
-            order.setShippingTotal(orderService.getShippingRate(order.getShipperID(), order.getShippingSpeedCode()));
+            order.setShippingTotal(eventService.getShippingRate(order.getShipperID(), order.getShippingSpeedCode()));
 
-            orderService.updateOrder(order);
+            eventService.updateOrder(order);
 
             return "redirect:/order/enterPayment?orderID=" + order.getOrderID();
         }
@@ -220,8 +220,8 @@ public class OrderController {
     @RequestMapping("/order/enterPayment")
     public ModelAndView orderEnterPayment(@RequestParam int orderID){
 
-        Order order = orderService.getOrderByOrderID(orderID);
-        List<CustomerPaymentCard> customerPaymentCardList = customerService.getCustomerPaymentCardList(order.getCustomerID());
+        Order order = eventService.getOrderByOrderID(orderID);
+        List<CustomerPaymentCard> customerPaymentCardList = userService.getCustomerPaymentCardList(order.getCustomerID());
         List<PaymentCardType> paymentCardTypeList = baseService.getPaymentCardTypeList();
         List<AddressState> addressStateList = baseService.getAddressStateList();
 
@@ -238,11 +238,11 @@ public class OrderController {
     @RequestMapping("/order/enterPayment/bindPaymentCard")
     public String orderEnterPaymentBindPaymentCard(@RequestParam int orderID, int paymentCardID){
 
-        Order order = orderService.getOrderByOrderID(orderID);
+        Order order = eventService.getOrderByOrderID(orderID);
 
         order.setPaymentCardID(paymentCardID);
 
-        orderService.updateOrder(order);
+        eventService.updateOrder(order);
 
         return "redirect:/order/enterPayment?orderID=" + orderID;
     }
@@ -250,12 +250,12 @@ public class OrderController {
     @RequestMapping("/order/enterPayment/submit")
     public String orderEnterPaymentSubmit(@ModelAttribute Order maOrder){
 
-        Order order = orderService.getOrderByOrderID(maOrder.getOrderID());
+        Order order = eventService.getOrderByOrderID(maOrder.getOrderID());
         CustomerPaymentCard customerPaymentCard;
 
         if((maOrder.getPaymentCardNumber().contains("*"))){
 
-            customerPaymentCard = customerService.getCustomerPaymentCardByPaymentCardID(maOrder.getPaymentCardID());
+            customerPaymentCard = userService.getCustomerPaymentCardByPaymentCardID(maOrder.getPaymentCardID());
 
             customerPaymentCard.setPaymentCardTypeID(maOrder.getPaymentCardTypeID());
             customerPaymentCard.setPaymentCardCVV(maOrder.getPaymentCardCVV());
@@ -270,11 +270,11 @@ public class OrderController {
                 customerPaymentCard.setDisplayInd("Y");
             }
 
-            customerService.updateCustomerPaymentCard(customerPaymentCard);
+            userService.updateCustomerPaymentCard(customerPaymentCard);
         }
         else{
 
-            customerPaymentCard = customerService.getCustomerPaymentCardByPaymentCardNumber(maOrder.getPaymentCardNumber(), order.getCustomerID());
+            customerPaymentCard = userService.getCustomerPaymentCardByPaymentCardNumber(maOrder.getPaymentCardNumber(), order.getCustomerID());
 
             if(customerPaymentCard == null){
 
@@ -297,7 +297,7 @@ public class OrderController {
                     customerPaymentCard.setDisplayInd("N");
                 }
 
-                customerPaymentCard.setPaymentCardID(customerService.insertCustomerPaymentCard(customerPaymentCard));
+                customerPaymentCard.setPaymentCardID(userService.insertCustomerPaymentCard(customerPaymentCard));
             }
             else {
 
@@ -314,13 +314,13 @@ public class OrderController {
                     customerPaymentCard.setDisplayInd("Y");
                 }
 
-                customerService.updateCustomerPaymentCard(customerPaymentCard);
+                userService.updateCustomerPaymentCard(customerPaymentCard);
             }
 
         }
 
         order.setPaymentCardID(customerPaymentCard.getPaymentCardID());
-        orderService.updateOrder(order);
+        eventService.updateOrder(order);
 
         return "redirect:/order/placeOrder?orderID=" + order.getOrderID();
     }
@@ -329,7 +329,7 @@ public class OrderController {
     public ModelAndView orderPlaceOrder(@RequestParam int orderID){
 
         List<ShoppingCart> shoppingCartList = orderItemService.getShoppingCartList(orderID);
-        Order order = orderService.getOrderByOrderID(orderID);
+        Order order = eventService.getOrderByOrderID(orderID);
 
         ModelAndView modelAndView = new ModelAndView("orderPlaceOrder");
 
@@ -342,7 +342,7 @@ public class OrderController {
     @RequestMapping("/order/placeOrder/submit")
     public String orderPlaceOrderSubmit(@ModelAttribute Order maOrder) {
 
-        Order order = orderService.getOrderByOrderID(maOrder.getOrderID());
+        Order order = eventService.getOrderByOrderID(maOrder.getOrderID());
 
         List<ShoppingCart> shoppingCartList = orderItemService.getShoppingCartList(order.getOrderID());
 
@@ -350,7 +350,7 @@ public class OrderController {
 
         for (ShoppingCart orderItem : shoppingCartList){
 
-            boolean inventoryUpdated = productService.updateInventory(orderItem.getProductID(), orderItem.getQuantity());
+            boolean inventoryUpdated = groupService.updateInventory(orderItem.getProductID(), orderItem.getQuantity());
 
             if (!inventoryUpdated){
                 backOrderedItem = true;
@@ -361,7 +361,7 @@ public class OrderController {
         order.setOrderPlaced(new java.sql.Timestamp(System.currentTimeMillis()));
         order.setOrderStatusCode("C");
 
-        orderService.updateOrder(order);
+        eventService.updateOrder(order);
 
         httpSession.removeAttribute("order");
 
@@ -381,9 +381,9 @@ public class OrderController {
     @RequestMapping("/order/cancelOrder")
     public String cancelOrder(@RequestParam int orderID) {
 
-        Order order = orderService.getOrderByOrderID(orderID);
+        Order order = eventService.getOrderByOrderID(orderID);
         order.setOrderStatusCode("X");
-        orderService.updateOrder(order);
+        eventService.updateOrder(order);
 
         return "redirect:/customer/viewOpenOrders?customerID=" + order.getCustomerID();
     }

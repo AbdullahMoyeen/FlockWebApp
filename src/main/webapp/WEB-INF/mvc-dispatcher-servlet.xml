@@ -12,27 +12,24 @@
         <property name="suffix" value=".jsp"/>
     </bean>
 
-    <!--<bean id="customerDAO" class="CustomerDAOImpl" />-->
-    <!--<bean id="customerService" class="CustomerServiceImpl" />-->
-
     <!--localhost database-->
-    <bean id="dataSource"
-          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://localhost:3306/gfdev" />
-        <property name="username" value="root" />
-        <property name="password" value="" />
-    </bean>
+    <!--<bean id="dataSource"-->
+          <!--class="org.springframework.jdbc.datasource.DriverManagerDataSource">-->
+        <!--<property name="driverClassName" value="com.mysql.jdbc.Driver" />-->
+        <!--<property name="url" value="jdbc:mysql://localhost:3306/gfdev" />-->
+        <!--<property name="username" value="root" />-->
+        <!--<property name="password" value="" />-->
+    <!--</bean>-->
 
     <bean id="AuthenticationSuccessHandlerImpl" class="com.viiup.web.flock.services.AuthenticationSuccessHandlerImpl"></bean>
 
     <!--AWS database-->
-    <!--<bean id="dataSource"-->
-          <!--class="org.springframework.jdbc.datasource.DriverManagerDataSource">-->
-        <!--<property name="driverClassName" value="com.mysql.jdbc.Driver" />-->
-        <!--<property name="url" value="jdbc:mysql://greenflowers.cmmphu5lagot.us-west-2.rds.amazonaws.com:3306/gfdev" />-->
-        <!--<property name="username" value="gfadmin" />-->
-        <!--<property name="password" value="Emse6360" />-->
-    <!--</bean>-->
+    <bean id="dataSource"
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://greenflowers.cmmphu5lagot.us-west-2.rds.amazonaws.com:3306/gfdev" />
+        <property name="username" value="gfadmin" />
+        <property name="password" value="Emse6360" />
+    </bean>
 
 </beans>

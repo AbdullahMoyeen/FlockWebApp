@@ -1,10 +1,10 @@
 package com.viiup.web.flock.controllers;
 
 import com.viiup.web.flock.models.*;
-import com.viiup.web.flock.services.BaseService;
-import com.viiup.web.flock.services.CustomerService;
-import com.viiup.web.flock.services.OrderItemService;
-import com.viiup.web.flock.services.OrderService;
+import com.viiup.web.flock.services.IBaseService;
+import com.viiup.web.flock.services.IUserService;
+import com.viiup.web.flock.services.IOrderItemService;
+import com.viiup.web.flock.services.IEventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,30 +18,30 @@ import java.util.List;
  * Created by amoyeen on 2/24/15.
  */
 @Controller
-public class CustomerController {
+public class UserController {
 
     @Autowired
     HttpSession httpSession;
 
     @Autowired
-    BaseService baseService;
+    IBaseService baseService;
 
     @Autowired
-    CustomerService customerService;
+    IUserService userService;
 
     @Autowired
-    OrderService orderService;
+    IEventService eventService;
 
     @Autowired
-    OrderItemService orderItemService;
+    IOrderItemService orderItemService;
 
     @RequestMapping("/customer/viewProfile")
     public ModelAndView customerViewProfile(@RequestParam int customerID) {
 
-        Customer customer = customerService.getCustomerByCustomerID(customerID);
-        List<CustomerAddress> customerAddressList = customerService.getCustomerAddressList(customerID);
-        List<CustomerPhone> customerPhoneList = customerService.getCustomerPhoneList(customerID);
-        List<CustomerPaymentCard> customerPaymentCardList = customerService.getCustomerPaymentCardList(customerID);
+        Customer customer = userService.getCustomerByCustomerID(customerID);
+        List<CustomerAddress> customerAddressList = userService.getCustomerAddressList(customerID);
+        List<CustomerPhone> customerPhoneList = userService.getCustomerPhoneList(customerID);
+        List<CustomerPaymentCard> customerPaymentCardList = userService.getCustomerPaymentCardList(customerID);
 
         ModelAndView modelAndView = new ModelAndView("customerProfile");
 
@@ -56,7 +56,7 @@ public class CustomerController {
     @RequestMapping("/customer/viewOpenOrders")
     public ModelAndView customerViewOpenOrders(@RequestParam int customerID){
 
-        List<Order> orderList = orderService.getOpenOrderListByCustomerID(customerID);
+        List<Order> orderList = eventService.getOpenOrderListByCustomerID(customerID);
 
         ModelAndView modelAndView = new ModelAndView("customerOrderList");
 
@@ -68,7 +68,7 @@ public class CustomerController {
     @RequestMapping("/customer/viewOrderHistory")
     public ModelAndView customerViewOrderHistory(@RequestParam int customerID, int daysBefore){
 
-        List<Order> orderList = orderService.getOrderHistoryByCustomerID(customerID, daysBefore);
+        List<Order> orderList = eventService.getOrderHistoryByCustomerID(customerID, daysBefore);
 
         ModelAndView modelAndView = new ModelAndView("customerOrderHistory");
 
@@ -82,7 +82,7 @@ public class CustomerController {
     public ModelAndView customerViewOrderDetails(@RequestParam int orderID){
 
         List<ShoppingCart> shoppingCartList = orderItemService.getShoppingCartList(orderID);
-        Order order = orderService.getOrderByOrderID(orderID);
+        Order order = eventService.getOrderByOrderID(orderID);
 
         ModelAndView modelAndView = new ModelAndView("customerOrderDetails");
 
@@ -110,7 +110,7 @@ public class CustomerController {
     @RequestMapping("/customer/addAddress/submit")
     public String customerAddAddressSubmit(@ModelAttribute CustomerAddress customerAddress){
 
-        customerService.insertCustomerAddress(customerAddress);
+        userService.insertCustomerAddress(customerAddress);
 
         return "redirect:/customer/viewProfile?customerID=" + customerAddress.getCustomerID();
     }
@@ -133,7 +133,7 @@ public class CustomerController {
     @RequestMapping("/customer/addPhone/submit")
     public String customerAddPhoneSubmit(@ModelAttribute CustomerPhone customerPhone){
 
-        customerService.insertCustomerPhone(customerPhone);
+        userService.insertCustomerPhone(customerPhone);
 
         return "redirect:/customer/viewProfile?customerID=" + customerPhone.getCustomerID();
     }
@@ -145,7 +145,7 @@ public class CustomerController {
 
         customerPaymentCard.setCustomerID(customerID);
         List<PaymentCardType> paymentCardTypeList = baseService.getPaymentCardTypeList();
-        List<CustomerAddress> customerAddressList = customerService.getCustomerAddressList(customerID);
+        List<CustomerAddress> customerAddressList = userService.getCustomerAddressList(customerID);
         List<AddressState> addressStateList = baseService.getAddressStateList();
 
         ModelAndView modelAndView = new ModelAndView("customerAddPaymentCard");
@@ -161,17 +161,17 @@ public class CustomerController {
     @RequestMapping("/customer/addPaymentCard/submit")
     public String customerAddPaymentCardSubmit(@ModelAttribute CustomerPaymentCard maCustomerPaymentCard){
 
-        CustomerPaymentCard customerPaymentCard = customerService.getCustomerPaymentCardByPaymentCardNumber(maCustomerPaymentCard.getPaymentCardNumber(), maCustomerPaymentCard.getCustomerID());
+        CustomerPaymentCard customerPaymentCard = userService.getCustomerPaymentCardByPaymentCardNumber(maCustomerPaymentCard.getPaymentCardNumber(), maCustomerPaymentCard.getCustomerID());
 
         if(customerPaymentCard == null) {
 
-            int paymentCardID = customerService.insertCustomerPaymentCard(maCustomerPaymentCard);
+            int paymentCardID = userService.insertCustomerPaymentCard(maCustomerPaymentCard);
         }
         else{
 
             maCustomerPaymentCard.setPaymentCardID(customerPaymentCard.getPaymentCardID());
 
-            customerService.updateCustomerPaymentCard(maCustomerPaymentCard);
+            userService.updateCustomerPaymentCard(maCustomerPaymentCard);
         }
 
         return "redirect:/customer/viewProfile?customerID=" + maCustomerPaymentCard.getCustomerID();
@@ -180,8 +180,8 @@ public class CustomerController {
     @RequestMapping("/customer/updateProfile")
     public String customerUpdateProfile(@ModelAttribute Customer customer){
 
-        customerService.updateCustomerProfile(customer);
-        customer = customerService.getCustomerByCustomerID(customer.getCustomerID());
+        userService.updateCustomerProfile(customer);
+        customer = userService.getCustomerByCustomerID(customer.getCustomerID());
 
         httpSession.setAttribute("customer", customer);
 
@@ -192,7 +192,7 @@ public class CustomerController {
     @RequestMapping("/customer/updatePassword")
     public ModelAndView customerUpdatePassword(@RequestParam int customerID){
 
-        Customer customer = customerService.getCustomerByCustomerID(customerID);
+        Customer customer = userService.getCustomerByCustomerID(customerID);
         customer.setPassword(null);
 
         ModelAndView modelAndView = new ModelAndView("customerUpdatePassword");
@@ -206,7 +206,7 @@ public class CustomerController {
     public String customerUpdatePasswordSubmit(@ModelAttribute Customer customer){
 
         if (customer != null) {
-            customerService.updateCustomerPassword(customer);
+            userService.updateCustomerPassword(customer);
         }
 
         return "redirect:/customer/viewProfile?customerID=" + customer.getCustomerID();
@@ -215,7 +215,7 @@ public class CustomerController {
     @RequestMapping("/customer/updateAddress")
     public ModelAndView customerUpdateAddress(@RequestParam int addressID){
 
-        CustomerAddress customerAddress = customerService.getCustomerAddressByAddressID(addressID);
+        CustomerAddress customerAddress = userService.getCustomerAddressByAddressID(addressID);
         List<AddressState> addressStateList = baseService.getAddressStateList();
 
         ModelAndView modelAndView = new ModelAndView("customerUpdateAddress");
@@ -230,7 +230,7 @@ public class CustomerController {
     public String customerUpdateAddressSubmit(@ModelAttribute CustomerAddress customerAddress){
 
         if (customerAddress != null) {
-            customerService.updateCustomerAddress(customerAddress);
+            userService.updateCustomerAddress(customerAddress);
         }
 
         return "redirect:/customer/viewProfile?customerID=" + customerAddress.getCustomerID();
@@ -239,7 +239,7 @@ public class CustomerController {
     @RequestMapping("/customer/updatePhone")
     public ModelAndView customerUpdatePhone(@RequestParam int phoneID){
 
-        CustomerPhone customerPhone = customerService.getCustomerPhoneByPhoneID(phoneID);
+        CustomerPhone customerPhone = userService.getCustomerPhoneByPhoneID(phoneID);
         List<PhoneType> phoneTypeList = baseService.getPhoneTypeList();
 
         ModelAndView modelAndView = new ModelAndView("customerUpdatePhone");
@@ -253,7 +253,7 @@ public class CustomerController {
     @RequestMapping("/customer/updatePhone/submit")
     public String customerUpdatePhoneSubmit(@ModelAttribute CustomerPhone customerPhone){
 
-        customerService.updateCustomerPhone(customerPhone);
+        userService.updateCustomerPhone(customerPhone);
 
         return "redirect:/customer/viewProfile?customerID=" + customerPhone.getCustomerID();
     }
@@ -261,7 +261,7 @@ public class CustomerController {
     @RequestMapping("/customer/updatePaymentCard")
     public ModelAndView customerUpdatePaymentCard(@RequestParam int paymentCardID){
 
-        CustomerPaymentCard customerPaymentCard = customerService.getCustomerPaymentCardByPaymentCardID(paymentCardID);
+        CustomerPaymentCard customerPaymentCard = userService.getCustomerPaymentCardByPaymentCardID(paymentCardID);
         customerPaymentCard.setPaymentCardNumber(null);
         customerPaymentCard.setPaymentCardCVV(null);
         List<PaymentCardType> paymentCardTypeList = baseService.getPaymentCardTypeList();
@@ -279,17 +279,17 @@ public class CustomerController {
     @RequestMapping("/customer/updatePaymentCard/submit")
     public String customerUpdatePaymentCardSubmit(@ModelAttribute CustomerPaymentCard maCustomerPaymentCard){
 
-        CustomerPaymentCard customerPaymentCard = customerService.getCustomerPaymentCardByPaymentCardNumber(maCustomerPaymentCard.getPaymentCardNumber(), maCustomerPaymentCard.getCustomerID());
+        CustomerPaymentCard customerPaymentCard = userService.getCustomerPaymentCardByPaymentCardNumber(maCustomerPaymentCard.getPaymentCardNumber(), maCustomerPaymentCard.getCustomerID());
 
         if (customerPaymentCard == null) {
 
-            customerService.updateCustomerPaymentCard(maCustomerPaymentCard);
+            userService.updateCustomerPaymentCard(maCustomerPaymentCard);
         }
         else {
 
             if (customerPaymentCard.getPaymentCardID() == maCustomerPaymentCard.getPaymentCardID()) {
 
-                customerService.updateCustomerPaymentCard(maCustomerPaymentCard);
+                userService.updateCustomerPaymentCard(maCustomerPaymentCard);
 
             } else {
 
@@ -304,12 +304,12 @@ public class CustomerController {
                 customerPaymentCard.setPaymentCardPostalCode(maCustomerPaymentCard.getPaymentCardPostalCode());
                 customerPaymentCard.setDisplayInd("Y");
 
-                customerService.updateCustomerPaymentCard(customerPaymentCard);
+                userService.updateCustomerPaymentCard(customerPaymentCard);
 
-                maCustomerPaymentCard = customerService.getCustomerPaymentCardByPaymentCardID(maCustomerPaymentCard.getPaymentCardID());
+                maCustomerPaymentCard = userService.getCustomerPaymentCardByPaymentCardID(maCustomerPaymentCard.getPaymentCardID());
                 maCustomerPaymentCard.setDisplayInd("N");
 
-                customerService.updateCustomerPaymentCard(maCustomerPaymentCard);
+                userService.updateCustomerPaymentCard(maCustomerPaymentCard);
 
             }
         }
@@ -320,7 +320,7 @@ public class CustomerController {
     @RequestMapping("/customer/deleteAddress")
     public String customerDeleteAddress(@RequestParam int addressID, int customerID){
 
-        customerService.deleteCustomerAddress(addressID);
+        userService.deleteCustomerAddress(addressID);
 
         return "redirect:/customer/viewProfile?customerID=" + customerID;
     }
@@ -328,7 +328,7 @@ public class CustomerController {
     @RequestMapping("/customer/deletePhone")
     public String customerDeletePhone(@RequestParam int phoneID, int customerID){
 
-        customerService.deleteCustomerPhone(phoneID);
+        userService.deleteCustomerPhone(phoneID);
 
         return "redirect:/customer/viewProfile?customerID=" + customerID;
     }
@@ -336,11 +336,11 @@ public class CustomerController {
     @RequestMapping("/customer/deletePaymentCard")
     public String customerDeletePaymentCard(@RequestParam int paymentCardID, int customerID){
 
-        CustomerPaymentCard customerPaymentCard = customerService.getCustomerPaymentCardByPaymentCardID(paymentCardID);
+        CustomerPaymentCard customerPaymentCard = userService.getCustomerPaymentCardByPaymentCardID(paymentCardID);
 
         customerPaymentCard.setDisplayInd("N");
 
-        customerService.updateCustomerPaymentCard(customerPaymentCard);
+        userService.updateCustomerPaymentCard(customerPaymentCard);
 
         return "redirect:/customer/viewProfile?customerID=" + customerID;
     }
