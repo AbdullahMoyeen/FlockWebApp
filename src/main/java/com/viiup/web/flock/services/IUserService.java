@@ -1,9 +1,6 @@
 package com.viiup.web.flock.services;
 
-import com.viiup.web.flock.models.Customer;
-import com.viiup.web.flock.models.CustomerAddress;
-import com.viiup.web.flock.models.CustomerPaymentCard;
-import com.viiup.web.flock.models.CustomerPhone;
+import com.viiup.web.flock.models.*;
 
 import java.util.List;
 
@@ -11,6 +8,10 @@ import java.util.List;
  * Created by amoyeen on 2/20/2015.
  */
 public interface IUserService {
+
+    UserModel getUserByEmailAddress(String emailAddress);
+    List<UserRoleModel> getUserRolesByUserId(int userId);
+    UserModel getUserByUserId(int userId);
 
     void insertCustomer(Customer customer);
     void insertCustomerAddress(CustomerAddress customerAddress);

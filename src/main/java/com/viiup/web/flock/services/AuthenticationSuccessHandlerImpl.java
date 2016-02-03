@@ -3,6 +3,7 @@ package com.viiup.web.flock.services;
 import com.viiup.web.flock.models.AuthenticatedUser;
 import com.viiup.web.flock.models.Customer;
 import com.viiup.web.flock.models.Order;
+import com.viiup.web.flock.models.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,31 +37,38 @@ public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHa
         HttpSession httpSession = httpServletRequest.getSession();
 
         AuthenticatedUser authenticatedUser = (AuthenticatedUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Customer customer = userService.getCustomerByCustomerID(authenticatedUser.getUserId());
-        httpSession.setAttribute("customer", customer);
 
-        Order pendingOrder = eventService.getPendingOrder(customer.getCustomerID());
-        Order sessionOrder = (Order) httpSession.getAttribute("order");
+        UserModel user = userService.getUserByUserId(authenticatedUser.getUserId());
+        httpSession.setAttribute("userId", user.getUserId());
+        httpSession.setAttribute("userFirstName", user.getFirstName());
+        httpSession.setAttribute("userLastName", user.getLastName());
 
-        if (sessionOrder == null){
-            if (pendingOrder != null){
-                httpSession.setAttribute("order", pendingOrder);
-            }
-        }
-        else{
-            if (pendingOrder != null){
-                eventService.mergeOrder(sessionOrder, pendingOrder);
-                sessionOrder = eventService.getOrderByOrderID(sessionOrder.getOrderID());
-                httpSession.setAttribute("order", sessionOrder);
-            }
-            else{
-                sessionOrder.setCustomerID(customer.getCustomerID());
-                eventService.updateOrder(sessionOrder);
-                httpSession.setAttribute("order", sessionOrder);
-            }
-        }
+
+//        Customer customer = userService.getCustomerByCustomerID(authenticatedUser.getUserId());
+//        httpSession.setAttribute("customer", customer);
+//
+//        Order pendingOrder = eventService.getPendingOrder(customer.getCustomerID());
+//        Order sessionOrder = (Order) httpSession.getAttribute("order");
+//
+//        if (sessionOrder == null){
+//            if (pendingOrder != null){
+//                httpSession.setAttribute("order", pendingOrder);
+//            }
+//        }
+//        else{
+//            if (pendingOrder != null){
+//                eventService.mergeOrder(sessionOrder, pendingOrder);
+//                sessionOrder = eventService.getOrderByOrderID(sessionOrder.getOrderID());
+//                httpSession.setAttribute("order", sessionOrder);
+//            }
+//            else{
+//                sessionOrder.setCustomerID(customer.getCustomerID());
+//                eventService.updateOrder(sessionOrder);
+//                httpSession.setAttribute("order", sessionOrder);
+//            }
+//        }
 
 //        httpServletResponse.sendRedirect((String) httpSession.getAttribute("urlPriorLogin"));
-        httpServletResponse.sendRedirect("/groups");
+        httpServletResponse.sendRedirect("/admin/groups?userId=" + user.getUserId());
     }
 }

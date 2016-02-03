@@ -1,5 +1,8 @@
 package com.viiup.web.flock.services;
 
+import com.viiup.web.flock.models.GroupModel;
+import com.viiup.web.flock.models.GroupUserModel;
+import com.viiup.web.flock.models.UserModel;
 import com.viiup.web.flock.providers.IGroupProvider;
 import com.viiup.web.flock.models.Product;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,42 @@ public class GroupService implements IGroupService {
     IGroupProvider groupProvider;
 
     @Override
+    public List<GroupModel> getAdminGroupsByUserId(int userId) {
+        return groupProvider.getAdminGroupsByUserId(userId);
+    }
+
+    @Override
+    public boolean IsUserAdminOfGroup(int groupId, int userId) {
+        return groupProvider.IsUserAdminOfGroup(groupId, userId);
+    }
+
+    @Override
+    public GroupModel getGroupByGroupId(int groupId) {
+        return groupProvider.getGroupByGroupId(groupId);
+    }
+
+    @Override
+    public GroupModel updateGroup(GroupModel group) {
+        return groupProvider.updateGroup(group);
+    }
+
+    @Override
+    public List<GroupUserModel> getGroupUsersByGroupId(int groupId) {
+        return groupProvider.getGroupUsersByGroupId(groupId);
+    }
+
+    @Override
+    public void approveGroupMembership(int groupId, int userId) {
+        groupProvider.approveGroupMembership(groupId, userId);
+    }
+
+    @Override
+    public void denyGroupMembership(int groupId, int userId) {
+        groupProvider.denyGroupMembership(groupId, userId);
+    }
+
+
+    @Override
     public List<Product> searchProducts(String searchString) {
         return groupProvider.searchProducts(searchString);
     }
@@ -27,7 +66,7 @@ public class GroupService implements IGroupService {
     }
 
     @Override
-    public boolean updateInventory(int productID, int quantity){
+    public boolean updateInventory(int productID, int quantity) {
         return groupProvider.updateInventory(productID, quantity);
     }
 }
