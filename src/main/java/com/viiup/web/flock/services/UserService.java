@@ -1,11 +1,8 @@
 package com.viiup.web.flock.services;
 
-import com.viiup.web.flock.models.CustomerAddress;
-import com.viiup.web.flock.models.CustomerPaymentCard;
-import com.viiup.web.flock.models.CustomerPhone;
+import com.viiup.web.flock.models.*;
 import com.viiup.web.flock.providers.IUserProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.viiup.web.flock.models.Customer;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +15,22 @@ public class UserService implements IUserService {
 
     @Autowired
     IUserProvider userProvider;
+
+    @Override
+    public UserModel getUserByEmailAddress(String emailAddress) {
+        return userProvider.getUserByEmailAddress(emailAddress);
+    }
+
+    @Override
+    public List<UserRoleModel> getUserRolesByUserId(int userId) {
+        return userProvider.getUserRolesByUserId(userId);
+    }
+
+    @Override
+    public UserModel getUserByUserId(int userId) {
+        return userProvider.getUserByUserId(userId);
+    }
+
 
     @Override
     public void insertCustomer(Customer customer) {

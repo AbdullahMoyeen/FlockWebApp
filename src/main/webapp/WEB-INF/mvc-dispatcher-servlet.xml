@@ -23,13 +23,22 @@
 
     <bean id="AuthenticationSuccessHandlerImpl" class="com.viiup.web.flock.services.AuthenticationSuccessHandlerImpl"></bean>
 
-    <!--AWS database-->
+    <!--&lt;!&ndash;AWS GreenFlower database&ndash;&gt;-->
+    <!--<bean id="dataSource"-->
+          <!--class="org.springframework.jdbc.datasource.DriverManagerDataSource">-->
+        <!--<property name="driverClassName" value="com.mysql.jdbc.Driver" />-->
+        <!--<property name="url" value="jdbc:mysql://greenflowers.cmmphu5lagot.us-west-2.rds.amazonaws.com:3306/gfdev" />-->
+        <!--<property name="username" value="gfadmin" />-->
+        <!--<property name="password" value="Emse6360" />-->
+    <!--</bean>-->
+
+    <!--AWS Flock database-->
     <bean id="dataSource"
           class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://greenflowers.cmmphu5lagot.us-west-2.rds.amazonaws.com:3306/gfdev" />
-        <property name="username" value="gfadmin" />
-        <property name="password" value="Emse6360" />
+        <property name="url" value="jdbc:mysql://flock.cp3wblvohzdm.us-west-2.rds.amazonaws.com:3306/flock_dev" />
+        <property name="username" value="flock_dev_user" />
+        <property name="password" value="7UpRocks" />
     </bean>
 
 </beans>

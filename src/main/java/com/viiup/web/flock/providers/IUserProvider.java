@@ -9,6 +9,10 @@ import java.util.List;
  */
 public interface IUserProvider {
 
+    UserModel getUserByEmailAddress(String emailAddress);
+    List<UserRoleModel> getUserRolesByUserId(int userId);
+    UserModel getUserByUserId(int userId);
+
     Customer insertCustomer(Customer customer);
     void insertCustomerSecurity(PasswordSecurity passwordSecurity);
     void insertCustomerAddress(CustomerAddress customerAddress);

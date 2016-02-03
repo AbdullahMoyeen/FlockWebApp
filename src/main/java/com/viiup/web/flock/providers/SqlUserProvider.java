@@ -4,10 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
-import com.viiup.web.flock.jdbc.CustomerAddressRowMapper;
-import com.viiup.web.flock.jdbc.CustomerPaymentCardRowMapper;
-import com.viiup.web.flock.jdbc.CustomerPhoneRowMapper;
-import com.viiup.web.flock.jdbc.CustomerRowMapper;
+
+import com.viiup.web.flock.jdbc.*;
 import com.viiup.web.flock.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -26,6 +24,96 @@ public class SqlUserProvider implements IUserProvider {
 
     @Autowired
     DataSource dataSource;
+
+    @Override
+    public UserModel getUserByEmailAddress(String emailAddress){
+
+        try {
+            JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+            StringBuilder sql =  new StringBuilder();
+
+            sql.append("SELECT user_id\n");
+            sql.append("      ,create_user\n");
+            sql.append("      ,create_date\n");
+            sql.append("      ,update_user\n");
+            sql.append("      ,update_date\n");
+            sql.append("      ,first_name\n");
+            sql.append("      ,last_name\n");
+            sql.append("      ,email_address\n");
+            sql.append("      ,password\n");
+            sql.append("      ,salt\n");
+            sql.append("      ,failed_login_count\n");
+            sql.append("      ,account_status\n");
+            sql.append("      ,password_expired_ind\n");
+            sql.append("  FROM t_user\n");
+            sql.append(" WHERE email_address = LOWER(?)");
+
+            UserModel user = jdbcTemplate.queryForObject(sql.toString(), new String[]{emailAddress}, new UserRowMapper());
+
+            return user;
+
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public List<UserRoleModel> getUserRolesByUserId(int userId){
+
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+        StringBuilder sql =  new StringBuilder();
+
+        sql.append("SELECT user_role_id\n");
+        sql.append("      ,create_user\n");
+        sql.append("      ,create_date\n");
+        sql.append("      ,update_user\n");
+        sql.append("      ,update_date\n");
+        sql.append("      ,user_id\n");
+        sql.append("      ,role_name\n");
+        sql.append("  FROM t_user_role\n");
+        sql.append(" WHERE user_id = ?");
+
+        List userRoles = jdbcTemplate.query(sql.toString(), new Object[]{userId}, new UserRoleRowMapper());
+
+        return userRoles;
+    }
+
+    @Override
+    public UserModel getUserByUserId(int userId){
+
+        try {
+            JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+            StringBuilder sql =  new StringBuilder();
+
+            sql.append("SELECT user_id\n");
+            sql.append("      ,create_user\n");
+            sql.append("      ,create_date\n");
+            sql.append("      ,update_user\n");
+            sql.append("      ,update_date\n");
+            sql.append("      ,first_name\n");
+            sql.append("      ,last_name\n");
+            sql.append("      ,email_address\n");
+            sql.append("      ,password\n");
+            sql.append("      ,salt\n");
+            sql.append("      ,failed_login_count\n");
+            sql.append("      ,account_status\n");
+            sql.append("      ,password_expired_ind\n");
+            sql.append("  FROM t_user\n");
+            sql.append(" WHERE user_id = ?");
+
+            UserModel user = jdbcTemplate.queryForObject(sql.toString(), new Object[]{userId}, new UserRowMapper());
+
+            return user;
+
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+
 
     @Override
     public Customer insertCustomer(Customer customer){
@@ -148,7 +236,6 @@ public class SqlUserProvider implements IUserProvider {
             return null;
         }
     }
-
 
     @Override
     public Customer getCustomerByEmailAddress(String emailAddress){

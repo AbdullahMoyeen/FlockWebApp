@@ -1,8 +1,8 @@
 <component name="ArtifactManager">
-  <artifact type="war" build-on-make="true" name="flockwebapp:war">
+  <artifact type="war" name="FlockWebApp:war">
     <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="flockwebapp.war">
-      <element id="artifact" artifact-name="flockwebapp:war exploded" />
+    <root id="archive" name="FlockWebApp.war">
+      <element id="artifact" artifact-name="FlockWebApp:war exploded" />
     </root>
   </artifact>
 </component>
