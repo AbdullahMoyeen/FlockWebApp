@@ -41,10 +41,7 @@ public class BaseController {
         return ("adminSignIn");
     }
 
-    @RequestMapping("/groups")
-    public String groups(){
-        return ("adminGroupList");
-    }
+
 
     @RequestMapping("/aboutUs")
     public String aboutUs(){
@@ -109,7 +106,9 @@ public class BaseController {
     @RequestMapping("/signIn/success")
     public String signInSuccess(){
 
-        return "redirect:" + httpSession.getAttribute("urlPriorLogin");
+//        return "redirect:" + httpSession.getAttribute("urlPriorLogin");
+
+        return "redirect:/admin/groups";
     }
 
     @RequestMapping("/signIn/retrieveSecurity")

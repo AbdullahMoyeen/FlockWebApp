@@ -13,7 +13,7 @@
 
     <head>
 
-        <title>Flock Customer Sign In</title>
+        <title>Flock Sign In</title>
 
         <style>
             .header {
@@ -82,36 +82,6 @@
 
         <div class="nav">
 
-            <%--<table width="100%" style="margin: auto;">--%>
-                <%--<tr>--%>
-                    <%--<th><a href="/">Home</a></th>--%>
-                    <%--<th><a href="/product/list?searchString=">Products</a></th>--%>
-                    <%--<th>--%>
-                        <%--<security:authorize access="! isAuthenticated()">--%>
-                            <%--<a href="<c:url value="/signUp" />">Sign Up</a>--%>
-                        <%--</security:authorize>--%>
-                    <%--</th>--%>
-                    <%--<th><a href="/">About Us</a></th>--%>
-                    <%--<th><a href="/">Contact Us</a></th>--%>
-                    <%--<th>--%>
-                        <%--<security:authorize access="isAuthenticated()">--%>
-                            <%--Hello ${sessionScope.customer.firstName}!--%>
-                            <%--<c:set var="userID">--%>
-                                <%--<security:authentication property="principal.userId" />--%>
-                            <%--</c:set>--%>
-                            <%--<a href="<c:url value="/customer/viewProfile?customerID=${userID}" />"><br>View Account</a>--%>
-                        <%--</security:authorize>--%>
-                    <%--</th>--%>
-                    <%--<th>--%>
-                        <%--<security:authorize access="isAuthenticated()">--%>
-                            <%--Not ${sessionScope.customer.firstName}?--%>
-                            <%--<a href="<c:url value="/signOut" />"><br>Sign Out</a>--%>
-                        <%--</security:authorize>--%>
-                    <%--</th>--%>
-                    <%--<c:if test="${sessionScope.order.orderLineCount>0}"><th><a href="/shoppingCart/viewCart?orderID=${sessionScope.order.orderID}">View Cart(${sessionScope.order.orderLineCount})</a></th></c:if>--%>
-                <%--</tr>--%>
-            <%--</table>--%>
-
         </div>
 
         <div class="section">
@@ -146,9 +116,9 @@
                         <td></td>
                     </tr>
                     <tr>
-                        <td><input type="button" value="Cancel" onclick="location.href='/'" title="Cancel and go back to home"/></td>
+                        <td><input type="reset" value="Clear" title="clear form"/></td>
                         <td></td>
-                        <td><input type="submit" value="Log In" title="Log in to your account"/></td>
+                        <td><input type="submit" value="Sign In" title="sign in to your account"/></td>
                     </tr>
                 </table>
             </form>

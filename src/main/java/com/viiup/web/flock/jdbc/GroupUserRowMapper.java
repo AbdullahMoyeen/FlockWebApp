@@ -1,0 +1,18 @@
+package com.viiup.web.flock.jdbc;
+
+import com.viiup.web.flock.models.GroupUserModel;
+import org.springframework.jdbc.core.RowMapper;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+/**
+ * Created by amoyeen on 2/20/2015.
+ */
+public class GroupUserRowMapper implements RowMapper<GroupUserModel> {
+    @Override
+    public GroupUserModel mapRow(ResultSet resultSet, int line) throws SQLException {
+        GroupUserExtractor groupUserExtractor = new GroupUserExtractor();
+        return groupUserExtractor.extractData(resultSet);
+    }
+}
