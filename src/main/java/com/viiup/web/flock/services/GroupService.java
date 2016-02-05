@@ -7,13 +7,16 @@ import com.viiup.web.flock.providers.IGroupProvider;
 import com.viiup.web.flock.models.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 /**
  * Created by amoyeen on 3/1/15.
  */
-@Service
+
+@Service("groupService")
+@Transactional
 public class GroupService implements IGroupService {
 
     @Autowired
