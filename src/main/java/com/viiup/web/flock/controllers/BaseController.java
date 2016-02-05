@@ -41,13 +41,6 @@ public class BaseController {
         return ("adminSignIn");
     }
 
-/*Maryam*/
-    @RequestMapping("/groups")
-    public String groups(){
-        return ("adminGroupList");
-    }
-/*Maryam*/
-
 
     @RequestMapping("/aboutUs")
     public String aboutUs(){
