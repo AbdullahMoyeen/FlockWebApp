@@ -2,6 +2,7 @@ package com.viiup.web.flock.controllers;
 
 import com.viiup.web.flock.models.Customer;
 import com.viiup.web.flock.services.IBaseService;
+import com.viiup.web.flock.services.IEmailService;
 import com.viiup.web.flock.services.IUserService;
 import com.viiup.web.flock.services.IEventService;
 import com.viiup.web.flock.models.PasswordSecurity;
@@ -36,9 +37,37 @@ public class BaseController {
     @Autowired
     IEventService eventService;
 
+    @Autowired
+    IEmailService emailService;
+
     @RequestMapping("/")
     public String home(){
         return ("adminSignIn");
+    }
+
+    @RequestMapping("/forgotPassword")
+    public String adminForgotPassword(){
+
+        return "adminForgotPassword";
+    }
+
+    @RequestMapping("/tempPassword")
+    public String adminTempPassword(@RequestParam String emailAddress){
+
+        if(baseService.emailAddressExists(emailAddress)){
+            emailService.sendEmail();
+            return "adminDisplayMessage";
+        }
+        else
+            return "redirect:/forgotPassword?emailAddressExists=false";
+
+
+    }
+
+    @RequestMapping("/displayMessage")
+    public String adminDisplayMessage(){
+
+        return "adminDisplayMessage";
     }
 
 

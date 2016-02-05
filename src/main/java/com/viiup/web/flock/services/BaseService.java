@@ -16,6 +16,14 @@ public class BaseService implements IBaseService {
     IBaseProvider baseProvider;
 
     @Override
+    public boolean emailAddressExists(String emailAddress){
+
+        return baseProvider.emailAddressExists(emailAddress);
+    }
+
+
+
+    @Override
     public List<PasswordSecurityQuestion> getPasswordSecurityQuestionList(){
 
         return baseProvider.getPasswordSecurityQuestionList();

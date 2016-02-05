@@ -9,6 +9,8 @@ import java.util.List;
  */
 public interface IBaseProvider {
 
+    boolean emailAddressExists(String emailAddress);
+
     List<PasswordSecurityQuestion> getPasswordSecurityQuestionList();
     boolean accountExistsForEmail(String emailAddress);
     void signUpCustomer(Customer customer);

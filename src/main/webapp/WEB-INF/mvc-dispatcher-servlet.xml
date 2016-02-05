@@ -21,7 +21,7 @@
         <!--<property name="password" value="" />-->
     <!--</bean>-->
 
-    <bean id="AuthenticationSuccessHandlerImpl" class="com.viiup.web.flock.services.AuthenticationSuccessHandlerImpl"></bean>
+    <!--<bean id="AuthenticationSuccessHandlerImpl" class="com.viiup.web.flock.services.AuthenticationSuccessHandlerImpl"></bean>-->
 
     <!--AWS Flock database-->
     <bean id="dataSource"

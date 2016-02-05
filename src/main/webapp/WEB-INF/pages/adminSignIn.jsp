@@ -124,10 +124,10 @@
             </form>
             <table class="linkTable" style="margin: auto;">
                 <tr>
-                    <th style="text-align: center" title="Click to reset your password"><a href="<c:url value="/signIn/retrieveSecurity"/>">Forgot Password</a></th>
+                    <th style="text-align: center" title="Click to reset your password"><a href="<c:url value="/forgotPassword"/>">Forgot Password</a></th>
                 </tr>
                 <tr>
-                    <th style="text-align: center" title="Click to create an account">New to Flock? First <a href="/signUp">Create an Account</a>.</th>
+                    <th style="text-align: center" title="Click to create an account">New to Flock? <a href="/signUp">Create an Account</a>.</th>
                 </tr>
             </table>
 
