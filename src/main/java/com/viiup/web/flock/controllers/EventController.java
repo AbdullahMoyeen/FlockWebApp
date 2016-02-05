@@ -11,6 +11,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+import java.util.Date;
+
 /**
  * Created by amoyeen on 3/1/15.
  */
@@ -34,6 +36,43 @@ public class EventController {
 
     @Autowired
     IOrderItemService orderItemService;
+
+    @RequestMapping("/groupEvents/eventDetail")
+    public ModelAndView groupEventsCallEvent(@RequestParam int eventID, int groupID){
+
+        EventModel event = eventID == 0 ? new EventModel(): eventService.getEventByEventID(eventID);
+        event.setGroupID(groupID);
+        ModelAndView modelAndView = new ModelAndView("adminGroupEventDetails");
+        modelAndView.addObject("event", event);
+
+        return modelAndView;
+    }
+
+    @RequestMapping("/groupEventDetail/submit")
+    public String eventSubmit(@ModelAttribute EventModel event){
+        if (event.getEventID() == 0) {
+            String str = "Flock_DEV";
+            event.setCreateDate(new Date());
+            event.setCreateUser(str);
+            event.setUpdateDate(new Date());
+            event.setUpdateUser(str);
+            event.setEventStartDatetime(new Date());
+            event.seteventEndDatetime(new Date());
+            event.setEventStateCode("TX");
+            eventService.insertEvent(event);
+        }else {
+            event.setCreateDate(new Date());
+            event.setCreateUser("Flock_DEV");
+            event.setUpdateDate(new Date());
+            event.setUpdateUser("Flock_DEV");
+            event.setEventStartDatetime(new Date());
+            event.seteventEndDatetime(new Date());
+
+            eventService.updateEvent(event);
+        }
+
+        return "redirect:/customer/viewProfile?customerID=" + event.getGroupID();
+    }
 
     @RequestMapping("/shoppingCart/addItem")
     public String shoppingCartAddItem(@RequestParam int productID, int addToCartQuantity){
