@@ -71,7 +71,6 @@ public class BaseController {
     }
 
 
-
     @RequestMapping("/aboutUs")
     public String aboutUs(){
         return ("aboutUs");
@@ -135,9 +134,9 @@ public class BaseController {
     @RequestMapping("/signIn/success")
     public String signInSuccess(){
 
-//        return "redirect:" + httpSession.getAttribute("urlPriorLogin");
+        return "redirect:" + httpSession.getAttribute("urlPriorLogin");
 
-        return "redirect:/admin/groups";
+//Maryam        return "redirect:/admin/groups";
     }
 
     @RequestMapping("/signIn/retrieveSecurity")
