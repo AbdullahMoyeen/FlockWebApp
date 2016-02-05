@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * Created by HP on 2/23/2015.
  */
-public class Event {
+public class EventModel {
     private int eventID;
     private int groupID;
     private String eventName;

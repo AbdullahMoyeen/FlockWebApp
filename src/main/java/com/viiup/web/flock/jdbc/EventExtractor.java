@@ -1,22 +1,20 @@
 package com.viiup.web.flock.jdbc;
 
-import com.viiup.web.flock.models.Event;
-import com.viiup.web.flock.models.Order;
+import com.viiup.web.flock.models.EventModel;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 
-import java.security.Timestamp;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
  * Created by HP on 2/25/2015.
  */
-public class EventExtractor implements ResultSetExtractor<Event> {
+public class EventExtractor implements ResultSetExtractor<EventModel> {
 
-    public Event extractData(ResultSet resultSet) throws SQLException, DataAccessException {
+    public EventModel extractData(ResultSet resultSet) throws SQLException, DataAccessException {
 
-        Event event = new Event();
+        EventModel event = new EventModel();
 
         event.setEventID(resultSet.getInt(1));
         event.setGroupID(resultSet.getInt(2));

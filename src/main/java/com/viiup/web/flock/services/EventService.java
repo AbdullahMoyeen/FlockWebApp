@@ -1,5 +1,6 @@
 package com.viiup.web.flock.services;
 
+import com.viiup.web.flock.models.EventModel;
 import com.viiup.web.flock.providers.IEventProvider;
 import com.viiup.web.flock.models.Order;
 import com.viiup.web.flock.models.ShippingSpeed;
@@ -16,6 +17,21 @@ public class EventService implements IEventService {
 
     @Autowired
     IEventProvider eventProvider;
+
+    @Override
+    public EventModel getEventByEventID(int eventID) {
+        return eventProvider.getEventByEventID(eventID);
+    }
+
+    @Override
+    public void insertEvent(EventModel event){
+        eventProvider.insertEvent(event);
+    }
+
+    @Override
+    public void updateEvent(EventModel event) {
+        eventProvider.updateEvent(event);
+    }
 
     @Override
     public int insertOrder(Order order){

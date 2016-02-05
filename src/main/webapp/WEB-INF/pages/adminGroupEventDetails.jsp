@@ -201,12 +201,12 @@
 
 <%--
                     <tr>
-                        <td>Event Start</td>
+                        <td>EventModel Start</td>
                         <td>:</td>
                         <td><form:input path="eventStartDatetime" value="${event.eventStartDatetime}"  autocomplete="off"/></td> &lt;%&ndash;required="true"&ndash;%&gt;
                     </tr>
                     <tr>
-                        <td>Event End</td>
+                        <td>EventModel End</td>
                         <td>:</td>
                         <td><form:input path="eventEndDatetime" value="${event.eventEndDatetime}"  autocomplete="off"/></td>
                     </tr>
@@ -214,7 +214,7 @@
 --%>
 <%--
                     <tr>
-                        <td class="labelTextarea"><label >Event Keywords:</label></td>
+                        <td class="labelTextarea"><label >EventModel Keywords:</label></td>
                         <td><textarea rows="4" cols="50" id="id" type="text" path="eventKeywords"></textarea></td>
                     </tr>
 --%>
@@ -262,7 +262,7 @@
                     <tr>
                         <td></td>
                         <td></td>
-                        <td><form:checkbox cssStyle="width: 50px;" path="privateEventInd" value="N"/>Private Event</td>
+                        <td><form:checkbox cssStyle="width: 50px;" path="privateEventInd" value="N"/>Private EventModel</td>
                     </tr>
 --%>
                     <tr>

@@ -1,5 +1,6 @@
 package com.viiup.web.flock.providers;
 
+import com.viiup.web.flock.models.EventModel;
 import com.viiup.web.flock.models.Order;
 import com.viiup.web.flock.models.ShippingSpeed;
 
@@ -9,6 +10,9 @@ import java.util.List;
  * Created by HP on 2/23/2015.
  */
 public interface IEventProvider {
+    void insertEvent(EventModel event);
+    void updateEvent(EventModel event);
+    EventModel getEventByEventID(int eventID);
 
     int insertOrder(Order order);
     List<ShippingSpeed> getShippingSpeedList();
