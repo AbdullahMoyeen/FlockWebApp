@@ -1,19 +1,19 @@
 package com.viiup.web.flock.services;
 
-import com.viiup.web.flock.models.GroupModel;
-import com.viiup.web.flock.models.GroupUserModel;
-import com.viiup.web.flock.models.UserModel;
+import com.viiup.web.flock.models.*;
 import com.viiup.web.flock.providers.IGroupProvider;
-import com.viiup.web.flock.models.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 /**
  * Created by amoyeen on 3/1/15.
  */
-@Service
+
+@Service("groupService")
+@Transactional
 public class GroupService implements IGroupService {
 
     @Autowired
@@ -42,6 +42,11 @@ public class GroupService implements IGroupService {
     @Override
     public List<GroupUserModel> getGroupUsersByGroupId(int groupId) {
         return groupProvider.getGroupUsersByGroupId(groupId);
+    }
+
+    @Override
+    public List<EventModel> getGroupEventsByGroupID(int groupId) {
+        return groupProvider.getGroupEventsByGroupID(groupId);
     }
 
     @Override

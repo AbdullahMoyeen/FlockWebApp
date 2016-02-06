@@ -1,9 +1,7 @@
 package com.viiup.web.flock.services;
 
-import com.viiup.web.flock.models.EventModel;
+import com.viiup.web.flock.models.*;
 import com.viiup.web.flock.providers.IEventProvider;
-import com.viiup.web.flock.models.Order;
-import com.viiup.web.flock.models.ShippingSpeed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +30,14 @@ public class EventService implements IEventService {
     public void updateEvent(EventModel event) {
         eventProvider.updateEvent(event);
     }
+
+    @Override
+    public List<RefState> getRefStateList(){
+
+        return eventProvider.getRefStateList();
+    }
+
+
 
     @Override
     public int insertOrder(Order order){

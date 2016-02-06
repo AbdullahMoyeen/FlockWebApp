@@ -1,9 +1,7 @@
 package com.viiup.web.flock.providers;
 
-import com.viiup.web.flock.jdbc.GroupRowMapper;
-import com.viiup.web.flock.jdbc.GroupUserRowMapper;
-import com.viiup.web.flock.jdbc.ProductRowMapper;
-import com.viiup.web.flock.jdbc.UserRowMapper;
+import com.viiup.web.flock.jdbc.*;
+import com.viiup.web.flock.models.EventModel;
 import com.viiup.web.flock.models.GroupModel;
 import com.viiup.web.flock.models.GroupUserModel;
 import com.viiup.web.flock.models.Product;
@@ -187,6 +185,41 @@ public class SqlGroupProvider implements IGroupProvider {
         List groupUserList = jdbcTemplate.query(sql.toString(), new Object[]{groupId}, new GroupUserRowMapper());
 
         return groupUserList;
+    }
+
+    @Override
+    public List<EventModel> getGroupEventsByGroupID(int groupId){
+
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+        StringBuilder sql =  new StringBuilder();
+        sql.append("SELECT event_id\n");
+        sql.append("      ,group_id\n");
+        sql.append("      ,event_name\n");
+        sql.append("      ,event_description\n");
+        sql.append("      ,event_start_datetime\n");
+        sql.append("      ,event_end_datetime\n");
+        sql.append("      ,event_address_line1\n");
+        sql.append("      ,event_address_line2\n");
+        sql.append("      ,event_city\n");
+        sql.append("      ,event_state_code\n");
+        sql.append("      ,event_postal_code\n");
+        sql.append("      ,event_keywords\n");
+        sql.append("      ,event_latitude\n");
+        sql.append("      ,event_longitude\n");
+        sql.append("      ,private_event_ind\n");
+        sql.append("      ,create_user\n");
+        sql.append("      ,create_date\n");
+        sql.append("      ,update_user\n");
+        sql.append("      ,update_date\n");
+        sql.append("  FROM t_event\n");
+        sql.append(" WHERE group_id = ?\n");
+        sql.append("   AND event_start_datetime > current_timestamp\n");
+        sql.append(" ORDER BY event_start_datetime, event_name");
+
+        List groupEventList = jdbcTemplate.query(sql.toString(), new Object[]{groupId}, new EventRowMapper());
+
+        return groupEventList;
     }
 
     @Override

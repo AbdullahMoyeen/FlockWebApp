@@ -1,9 +1,6 @@
 package com.viiup.web.flock.services;
 
-import com.viiup.web.flock.models.GroupModel;
-import com.viiup.web.flock.models.GroupUserModel;
-import com.viiup.web.flock.models.Product;
-import com.viiup.web.flock.models.UserModel;
+import com.viiup.web.flock.models.*;
 
 import java.util.List;
 
@@ -19,6 +16,7 @@ public interface IGroupService {
     List<GroupUserModel> getGroupUsersByGroupId(int groupId);
     void approveGroupMembership(int groupId, int userId);
     void denyGroupMembership(int groupId, int userId);
+    List<EventModel> getGroupEventsByGroupID(int groupId);
 
 
     List<Product> searchProducts(String searchString);
