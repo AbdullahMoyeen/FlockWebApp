@@ -37,41 +37,32 @@ public class EventController {
     @Autowired
     IOrderItemService orderItemService;
 
-    @RequestMapping("/groupEvents/eventDetail")
+    @RequestMapping("/admin/group/event/details")
     public ModelAndView groupEventsCallEvent(@RequestParam int eventID, int groupID){
-
-        EventModel event = eventID == 0 ? new EventModel(): eventService.getEventByEventID(eventID);
-        event.setGroupID(groupID);
+        EventModel event = new EventModel();
+        if (eventID ==0) {
+            event.setGroupID(groupID);
+        }else {
+            event= eventService.getEventByEventID(eventID);
+        }
         ModelAndView modelAndView = new ModelAndView("adminGroupEventDetails");
+        List<RefState> refStateList = eventService.getRefStateList();
         modelAndView.addObject("event", event);
+        modelAndView.addObject("refStateList", refStateList);
+
 
         return modelAndView;
     }
 
-    @RequestMapping("/groupEventDetail/submit")
+    @RequestMapping("/admin/group/event/Details/submit")
     public String eventSubmit(@ModelAttribute EventModel event){
         if (event.getEventID() == 0) {
-            String str = "Flock_DEV";
-            event.setCreateDate(new Date());
-            event.setCreateUser(str);
-            event.setUpdateDate(new Date());
-            event.setUpdateUser(str);
-            event.setEventStartDatetime(new Date());
-            event.seteventEndDatetime(new Date());
-            event.setEventStateCode("TX");
             eventService.insertEvent(event);
         }else {
-            event.setCreateDate(new Date());
-            event.setCreateUser("Flock_DEV");
-            event.setUpdateDate(new Date());
-            event.setUpdateUser("Flock_DEV");
-            event.setEventStartDatetime(new Date());
-            event.seteventEndDatetime(new Date());
-
             eventService.updateEvent(event);
         }
 
-        return "redirect:/customer/viewProfile?customerID=" + event.getGroupID();
+        return "redirect:/admin/group/details?groupId=" + event.getGroupID();
     }
 
     @RequestMapping("/shoppingCart/addItem")

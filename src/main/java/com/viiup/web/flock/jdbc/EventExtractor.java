@@ -21,15 +21,15 @@ public class EventExtractor implements ResultSetExtractor<EventModel> {
         event.setEventName(resultSet.getString(3));
         event.setEventDescription(resultSet.getString(4));
         event.setEventStartDatetime(resultSet.getTimestamp(5));
-        event.seteventEndDatetime(resultSet.getTimestamp(6));
+        event.setEventEndDatetime(resultSet.getTimestamp(6));
         event.setEventAddressLine1(resultSet.getString(7));
         event.setEventAddressLine2(resultSet.getString(8));
         event.setEventCity(resultSet.getString(9));
         event.setEventStateCode(resultSet.getString(10));
         event.setEventPostalCode(resultSet.getString(11));
         event.setEventKeywords(resultSet.getString(12));
-        event.setEventLatitude(resultSet.getInt(13));
-        event.setEventLongitude(resultSet.getInt(14));
+        event.setEventLatitude(resultSet.getFloat(13));
+        event.setEventLongitude(resultSet.getFloat(14));
         event.setPrivateEventInd(resultSet.getString(15));
         event.setCreateUser(resultSet.getString(16));
         event.setCreateDate(resultSet.getTimestamp(17));

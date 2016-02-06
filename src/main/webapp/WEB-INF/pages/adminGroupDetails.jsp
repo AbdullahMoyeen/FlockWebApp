@@ -14,7 +14,7 @@
     <head>
 
         <title>Flock Group Details</title>
-
+        <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
         <style>
             .header {
                 background-color:darkorange;
@@ -149,6 +149,35 @@
                 <tr>
                     <td></td>
                 </tr>
+            </table>
+            <table style=" margin: auto;">
+                    <tr>
+                        <td><input type="button" align="center " value="Add Event Details" style=" width: 1000px; height: 40px; font-size: medium" onClick="location.href='<c:url value="/admin/group/event/details?eventID=0&groupID=${adminGroupDetails.groupId}"/>'" title="go to event details"></td>
+                    </tr>
+                </table>
+
+            <table class="childTable" border="1" style="width: 100%;margin: auto;border-spacing: 10px;empty-cells: show;">
+                <caption style="font-size: large;font-weight: bold;text-decoration: underline;padding: 20px;background-color: lightcyan;">Group Events</caption>
+                <tr>
+                    <th>Private</th>
+                    <th>Event Name</th>
+                    <th>Event Description</th>
+                    <th>Event Address</th>
+                    <th>Event Start Date</th>
+                    <th>Event End Date</th>
+                    <th></th>
+                </tr>
+                <c:forEach var="adminGroupEvent" items="${adminGroupEvents}">
+                <tr>
+                    <td><a style="text-decoration: none" href="<c:url value="/admin/group/event/details?eventID=${adminGroupEvent.eventID}&groupID=${adminGroupEvent.groupID}"/>"><c:if test="${adminGroupEvent.privateEventInd =='Y'}">Private</c:if></a></td>
+                    <%--<td><a style="text-decoration: none" href="<c:url value="/admin/group/event/details?eventID=${adminGroupEvent.eventID}&groupID=${adminGroupEvent.groupID}"/>">${adminGroupEvent.privateEventInd}</a></td>--%>
+                    <td><a style="text-decoration: none" href="<c:url value="/admin/group/event/details?eventID=${adminGroupEvent.eventID}&groupID=${adminGroupEvent.groupID}"/>">${adminGroupEvent.eventName}</a></td>
+                    <td><a style="text-decoration: none" href="<c:url value="/admin/group/event/details?eventID=${adminGroupEvent.eventID}&groupID=${adminGroupEvent.groupID}"/>">${adminGroupEvent.eventDescription}</a></td>
+                    <td><a style="text-decoration: none" href="<c:url value="/admin/group/event/details?eventID=${adminGroupEvent.eventID}&groupID=${adminGroupEvent.groupID}"/>">${adminGroupEvent.eventAddressLine1} ${adminGroupEvent.eventAddressLine2}, ${adminGroupEvent.eventCity}, ${adminGroupEvent.eventStateCode}, ${adminGroupEvent.eventPostalCode}</a></td>
+                    <td><a style="text-decoration: none" href="<c:url value="/admin/group/event/details?eventID=${adminGroupEvent.eventID}&groupID=${adminGroupEvent.groupID}"/>"><fmt:formatDate type="date" pattern="MM/dd/yyyy hh:mm a" value="${adminGroupEvent.eventStartDatetime}"/></a></td>
+                    <td><a style="text-decoration: none" href="<c:url value="/admin/group/event/details?eventID=${adminGroupEvent.eventID}&groupID=${adminGroupEvent.groupID}"/>"><fmt:formatDate type="date" pattern="MM/dd/yyyy hh:mm a" value="${adminGroupEvent.eventEndDatetime}"/></a></td>
+                    <td style="text-align: center"><input type="button" value="Event Details" style="width: 150px; height: 40px; font-size: large" onClick="location.href='<c:url value="/admin/group/event/details?eventID=${adminGroupEvent.eventID}&groupID=${adminGroupEvent.groupID}"/>'" title="go to event details"></td>
+                   </c:forEach>
             </table>
 
             <table class="childTable" border="1" style="width: 100%;margin: auto;border-spacing: 10px;empty-cells: show;">

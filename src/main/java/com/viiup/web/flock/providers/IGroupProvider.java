@@ -1,5 +1,6 @@
 package com.viiup.web.flock.providers;
 
+import com.viiup.web.flock.models.EventModel;
 import com.viiup.web.flock.models.GroupModel;
 import com.viiup.web.flock.models.GroupUserModel;
 import com.viiup.web.flock.models.Product;
@@ -16,6 +17,7 @@ public interface IGroupProvider {
     GroupModel getGroupByGroupId(int groupId);
     GroupModel updateGroup(GroupModel group);
     List<GroupUserModel> getGroupUsersByGroupId(int groupId);
+    List<EventModel> getGroupEventsByGroupID(int groupId);
     void approveGroupMembership(int groupId, int userId);
     void denyGroupMembership(int groupId, int userId);
 

@@ -1,9 +1,6 @@
 package com.viiup.web.flock.controllers;
 
-import com.viiup.web.flock.models.GroupModel;
-import com.viiup.web.flock.models.GroupUserModel;
-import com.viiup.web.flock.models.Product;
-import com.viiup.web.flock.models.UserModel;
+import com.viiup.web.flock.models.*;
 import com.viiup.web.flock.services.IGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,11 +36,13 @@ public class GroupController {
 
         GroupModel adminGroupDetails = groupService.getGroupByGroupId(groupId);
         List<GroupUserModel> adminGroupUsers = groupService.getGroupUsersByGroupId(groupId);
+        List<EventModel> adminGroupEvents = groupService.getGroupEventsByGroupID(groupId);
 
         ModelAndView modelAndView = new ModelAndView("adminGroupDetails");
 
         modelAndView.addObject("adminGroupDetails", adminGroupDetails);
         modelAndView.addObject("adminGroupUsers", adminGroupUsers);
+        modelAndView.addObject("adminGroupEvents", adminGroupEvents);
 
         return modelAndView;
     }
