@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.ServletException;
@@ -21,6 +22,8 @@ import java.io.IOException;
  */
 @Service
 public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHandler {
+
+    private SavedRequestAwareAuthenticationSuccessHandler target = new SavedRequestAwareAuthenticationSuccessHandler();
 
     @Autowired
     IUserService userService;
@@ -43,32 +46,7 @@ public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHa
         httpSession.setAttribute("userFirstName", user.getFirstName());
         httpSession.setAttribute("userLastName", user.getLastName());
 
-
-//        Customer customer = userService.getCustomerByCustomerID(authenticatedUser.getUserId());
-//        httpSession.setAttribute("customer", customer);
-//
-//        Order pendingOrder = eventService.getPendingOrder(customer.getCustomerID());
-//        Order sessionOrder = (Order) httpSession.getAttribute("order");
-//
-//        if (sessionOrder == null){
-//            if (pendingOrder != null){
-//                httpSession.setAttribute("order", pendingOrder);
-//            }
-//        }
-//        else{
-//            if (pendingOrder != null){
-//                eventService.mergeOrder(sessionOrder, pendingOrder);
-//                sessionOrder = eventService.getOrderByOrderID(sessionOrder.getOrderID());
-//                httpSession.setAttribute("order", sessionOrder);
-//            }
-//            else{
-//                sessionOrder.setCustomerID(customer.getCustomerID());
-//                eventService.updateOrder(sessionOrder);
-//                httpSession.setAttribute("order", sessionOrder);
-//            }
-//        }
-
-//        httpServletResponse.sendRedirect((String) httpSession.getAttribute("urlPriorLogin"));
-        httpServletResponse.sendRedirect("/admin/groups?userId=" + user.getUserId());
+        target.setDefaultTargetUrl("/admin/groups?userId=" + user.getUserId());
+        target.onAuthenticationSuccess(httpServletRequest, httpServletResponse, authentication);
     }
 }

@@ -1,5 +1,6 @@
 package com.viiup.web.flock.services;
 
+import com.viiup.web.flock.businessLayer.IUserBusinessLayer;
 import com.viiup.web.flock.models.*;
 import com.viiup.web.flock.providers.IUserProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,19 +17,12 @@ public class UserService implements IUserService {
     @Autowired
     IUserProvider userProvider;
 
-    @Override
-    public UserModel getUserByEmailAddress(String emailAddress) {
-        return userProvider.getUserByEmailAddress(emailAddress);
-    }
-
-    @Override
-    public List<UserRoleModel> getUserRolesByUserId(int userId) {
-        return userProvider.getUserRolesByUserId(userId);
-    }
+    @Autowired
+    IUserBusinessLayer userBusinessLayer;
 
     @Override
     public UserModel getUserByUserId(int userId) {
-        return userProvider.getUserByUserId(userId);
+        return userBusinessLayer.getUserByUserId(userId);
     }
 
 

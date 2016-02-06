@@ -96,11 +96,11 @@
                     <th><a href="/">Contact Us</a></th>
                     <th>
                         <security:authorize access="isAuthenticated()">
-                            Hello<br>${sessionScope.userFirstName}!
-                            <%--<c:set var="userID">--%>
-                            <%--<security:authentication property="principal.userId" />--%>
-                            <%--</c:set>--%>
-                            <%--<a href="<c:url value="/customer/viewProfile?customerID=${userID}" />"><br>View Account</a>--%>
+                            Hello ${sessionScope.userFirstName}!
+                            <c:set var="userId">
+                                <security:authentication property="principal.userId" />
+                            </c:set>
+                            <a href="<c:url value="/admin/user/viewProfile?userId=${userId}" />"><br>View Account</a>
                         </security:authorize>
                     </th>
                     <th>

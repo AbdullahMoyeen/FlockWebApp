@@ -35,6 +35,48 @@ public class UserController {
     @Autowired
     IOrderItemService orderItemService;
 
+    @RequestMapping("/admin/user/viewProfile")
+    public ModelAndView adminUserViewProfile(@RequestParam int userId) {
+
+        UserModel user = userService.getUserByUserId(userId);
+
+        ModelAndView modelAndView = new ModelAndView("adminUserProfile");
+
+        modelAndView.addObject("user", user);
+
+        return modelAndView;
+    }
+
+    @RequestMapping("/admin/user/updateProfile")
+    public String adminUserUpdateProfile(@ModelAttribute UserModel user){
+
+//        userService.updateCustomerProfile(customer);
+//        customer = userService.getCustomerByCustomerID(customer.getCustomerID());
+//
+//        httpSession.setAttribute("customer", customer);
+
+        return "redirect:/admin/user/viewProfile?userId=" + user.getUserId();
+
+    }
+
+    @RequestMapping("/admin/user/changePassword")
+    public String adminUserChangePassword(@RequestParam int userId){
+
+//        Customer customer = userService.getCustomerByCustomerID(customerID);
+//        customer.setPassword(null);
+
+//        ModelAndView modelAndView = new ModelAndView("customerUpdatePassword");
+//
+//        modelAndView.addObject("customer", customer);
+//
+//        return modelAndView;
+
+        return "adminPasswordChange";
+    }
+
+
+
+
     @RequestMapping("/customer/viewProfile")
     public ModelAndView customerViewProfile(@RequestParam int customerID) {
 

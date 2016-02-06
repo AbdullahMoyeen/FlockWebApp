@@ -13,7 +13,7 @@
 
     <head>
 
-        <title>Flock Sign In</title>
+        <title>Flock Password Retrieval</title>
 
         <style>
             .header {
@@ -45,7 +45,7 @@
             table.mainTable th, td {
                 font-size: 25px;
                 color: black;
-                text-align: left;
+                text-align: center;
                 height: 40px;
                 padding:5px;
             }
@@ -62,12 +62,6 @@
                 color: red;
                 text-align: center;
             }
-            .info {
-                font-weight: bold;
-                font-size: x-large;
-                color: green;
-                text-align: center;
-            }
         </style>
 
     </head>
@@ -82,52 +76,43 @@
 
         <div class="nav">
 
+            <table width="100%" style="margin: auto;">
+
+            </table>
+
         </div>
 
         <div class="section">
 
-            <c:if test="${param.loginError == 'true'}">
+            <c:if test="${param.emailAddressExists == 'false'}">
                 <div class="error" style="text-align: center">
-                    <br>Login Failed<br>Please Try Again<br>or<br>Click "Forgot Password" to Restore Access
+                    <br>Account not Found<br>Please Try Again
                 </div>
             </c:if>
 
-            <c:if test="${param.passwordReset == 'true'}">
-                <div class="info" style="text-align: center">
-                    <br>Password Reset Successful<br>Please Sign In
-                </div>
-            </c:if>
-
-            <form class="mainForm" method="POST" action="<c:url value='/j_spring_security_check' />">
+            <form class="mainForm" method="get" action="/requestTempPassword">
                 <table class="mainTable" style="margin: auto;">
-                    <caption style="font-size: x-large;font-weight: bold;text-decoration: underline;padding: 20px">Sign In</caption>
                     <tr>
-                        <th><label for="username">Email Address</label></th>
-                        <td>:</td>
-                        <td><input type="text" name="j_username" id="username"></td>
+                        <td></td>
                     </tr>
-
                     <tr>
-                        <th><label for="password">Password</label></th>
-                        <td>:</td>
-                        <td><input type="password" name="j_password" id="password"></td>
+                        <th>Enter Email Address to Continue</th>
+                    </tr>
+                    <tr>
+                        <td><input type="email" name="emailAddress" required="true" title="enter your account email address" /></td>
                     </tr>
                     <tr>
                         <td></td>
                     </tr>
                     <tr>
-                        <td><input type="reset" value="Clear" title="clear form"/></td>
-                        <td></td>
-                        <td><input type="submit" value="Sign In" title="sign in to your account"/></td>
+                        <td><input type="submit" value="Continue" title="continue to receive a temporary password" /></td>
                     </tr>
                 </table>
             </form>
+
             <table class="linkTable" style="margin: auto;">
                 <tr>
-                    <th style="text-align: center" title="Click to reset your password"><a href="<c:url value="/resetPassword"/>">Forgot My Password</a></th>
-                </tr>
-                <tr>
-                    <th style="text-align: center" title="Click to create an account">New to Flock? <a href="/signUp">Create an Account</a>.</th>
+                    <th><a href="#" onclick="history.go(-1)" title="go back to previous page">Go Back</a></th>
                 </tr>
             </table>
 

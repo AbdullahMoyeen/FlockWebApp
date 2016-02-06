@@ -41,27 +41,31 @@ public class BaseController {
     IEmailService emailService;
 
     @RequestMapping("/")
-    public String home(){
-        return ("adminSignIn");
+    public String adminSignIn(){
+        return "adminSignIn";
     }
 
-    @RequestMapping("/forgotPassword")
+    @RequestMapping("/signIn/success")
+    public String adminSignInSuccess(){
+
+        return "redirect:/admin/groups?userId=" + httpSession.getAttribute("userId");
+    }
+
+    @RequestMapping("/resetPassword")
     public String adminForgotPassword(){
 
-        return "adminForgotPassword";
+        return "adminPasswordReset";
     }
 
-    @RequestMapping("/tempPassword")
+    @RequestMapping("/requestTempPassword")
     public String adminTempPassword(@RequestParam String emailAddress){
 
         if(baseService.emailAddressExists(emailAddress)){
-            emailService.sendEmail();
-            return "adminDisplayMessage";
+//            emailService.sendEmail();
+            return "redirect:/displayMessage?messageCode=tempPasswordSent";
         }
         else
-            return "redirect:/forgotPassword?emailAddressExists=false";
-
-
+            return "redirect:/resetPassword?emailAddressExists=false";
     }
 
     @RequestMapping("/displayMessage")
@@ -69,6 +73,9 @@ public class BaseController {
 
         return "adminDisplayMessage";
     }
+
+
+
 
 
     @RequestMapping("/aboutUs")
@@ -129,14 +136,6 @@ public class BaseController {
         }
 
         return ("signIn");
-    }
-
-    @RequestMapping("/signIn/success")
-    public String signInSuccess(){
-
-        return "redirect:" + httpSession.getAttribute("urlPriorLogin");
-
-//Maryam        return "redirect:/admin/groups";
     }
 
     @RequestMapping("/signIn/retrieveSecurity")

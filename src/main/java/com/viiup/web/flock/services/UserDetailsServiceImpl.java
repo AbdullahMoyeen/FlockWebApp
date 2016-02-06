@@ -1,5 +1,6 @@
 package com.viiup.web.flock.services;
 
+import com.viiup.web.flock.businessLayer.IUserBusinessLayer;
 import com.viiup.web.flock.models.AuthenticatedUser;
 import com.viiup.web.flock.models.UserModel;
 import com.viiup.web.flock.models.UserRoleModel;
@@ -22,16 +23,16 @@ import java.util.List;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private IUserProvider userProvider;
+    private IUserBusinessLayer userBusinessLayer;
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        UserModel user = userProvider.getUserByEmailAddress(username);
+        UserModel user = userBusinessLayer.getUserByEmailAddress(username);
         if(user == null) {
             throw new UsernameNotFoundException("User not found");
         }
         
-        List<UserRoleModel> userRoles = userProvider.getUserRolesByUserId(user.getUserId());
+        List<UserRoleModel> userRoles = userBusinessLayer.getUserRolesByUserId(user.getUserId());
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 
         for (UserRoleModel userRole : userRoles) {

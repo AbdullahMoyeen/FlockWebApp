@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: amoyeen
-  Date: 3/1/15
-  Time: 12:47 PM
+  Date: 2/17/2015
+  Time: 5:35 PM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -13,7 +13,7 @@
 
     <head>
 
-        <title>Flock Groups</title>
+        <title>Flock Customer Profile</title>
 
         <style>
             .header {
@@ -52,14 +52,14 @@
             table.linkTable th, td {
                 font-size: 20px;
                 color: black;
-                text-align: left;
+                text-align: center;
                 height: 40px;
                 padding:5px;
             }
             table.childTable th {
                 font-size: 20px;
                 color: black;
-                text-align: center;
+                text-align: left;
                 height: 40px;
                 padding:5px;
             }
@@ -94,7 +94,7 @@
                             <c:set var="userId">
                                 <security:authentication property="principal.userId" />
                             </c:set>
-                            <a href="<c:url value="/admin/user/viewProfile?userId=${userId}" />"><br>View Account</a>
+                            <br>View Account
                         </security:authorize>
                     </th>
                     <th>
@@ -110,26 +110,46 @@
 
         <div class="section">
 
-            <table class="childTable" border="1" style="width: 100%;margin: auto;border-spacing:10px;empty-cells: show;">
-                <caption style="font-size: large;font-weight: bold;text-decoration: underline;padding: 20px;background-color: lightcyan;">Your Groups</caption>
-                <tr>
-                    <th>Group Name</th>
-                    <th>Description</th>
-                    <th>Active Members</th>
-                    <th>Pending Members</th>
-                    <th>Upcoming Events</th>
-                    <th></th>
-                </tr>
-                <c:forEach var="adminGroup" items="${adminGroups}">
+            <c:url value="/admin/user/updateProfile" var="formUrl"/>
+            <form:form class="mainForm" method="post" action="${formUrl}" modelAttribute="user">
+                <form:hidden path="userId" value="${user.userId}" />
+                <table class="mainTable" style="margin: auto;">
+                    <caption style="font-size: x-large;font-weight: bold;text-decoration: underline;padding: 20px;background-color: lightcyan;">${user.firstName}'s Profile</caption>
                     <tr>
-                        <td><a style="text-decoration: none" href="<c:url value="/admin/group/details?groupId=${adminGroup.groupId}"/>">${adminGroup.groupName}</a></td>
-                        <td><a style="text-decoration: none" href="<c:url value="/admin/group/details?groupId=${adminGroup.groupId}"/>">${adminGroup.groupDescription}</a></td>
-                        <td style="text-align: center"><a style="text-decoration: none" href="<c:url value="/admin/group/details?groupId=${adminGroup.groupId}"/>">${adminGroup.activeMemberCount}</a></td>
-                        <td style="text-align: center"><a style="text-decoration: none" href="<c:url value="/admin/group/details?groupId=${adminGroup.groupId}"/>">${adminGroup.pendingMemberCount}</a></td>
-                        <td style="text-align: center"><a style="text-decoration: none" href="<c:url value="/admin/group/details?groupId=${adminGroup.groupId}"/>">${adminGroup.upcomingEventCount}</a></td>
-                        <td style="text-align: center"><input type="button" value="Manage Group" style="width: 150px; height: 40px; font-size: large" onClick="location.href='<c:url value="/admin/group/details?groupId=${adminGroup.groupId}"/>'" title="go to group details"></td>
+                        <th>First Name</th>
+                        <td>:</td>
+                        <td><form:input path="firstName" value="${user.firstName}"/></td>
                     </tr>
-                </c:forEach>
+                    <tr>
+                        <th>Last Name</th>
+                        <td>:</td>
+                        <td><form:input path="lastName" value="${user.lastName}"/></td>
+                    </tr>
+                    <tr>
+                        <th>Email Address</th>
+                        <td>:</td>
+                        <td style="text-align: left;">${user.emailAddress}</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><input type="reset" value="Cancel Changes" title="Cancel changes to your profile"/></td>
+                        <td></td>
+                        <td><input type="submit" value="Save Changes" title="Save changes to your profile"/></td>
+                    </tr>
+                </table>
+            </form:form>
+            <table class="linkTable" style="margin: auto;">
+                <tr>
+                    <th><a href="<c:url value="/admin/user/changePassword?userId=${user.userId}"/>">Change Password</a></th>
+                </tr>
+                <tr>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th><a href="#" onclick="history.go(-1)" title="go back to previous page">Go Back</a></th>
+                </tr>
             </table>
 
         </div>
