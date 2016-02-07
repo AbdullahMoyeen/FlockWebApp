@@ -9,5 +9,5 @@ import java.util.List;
  */
 public interface IEmailProvider {
 
-    void sendEmail();
+    void sendEmail(String[] toAddresses, String subject, String messageText);
 }

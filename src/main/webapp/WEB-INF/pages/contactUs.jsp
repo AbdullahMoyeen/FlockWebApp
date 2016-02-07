@@ -9,11 +9,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
+<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
 <html>
 
     <head>
 
-        <title>Flock Contact Us</title>
+        <title>Flock Contacts</title>
 
         <style>
             .header {
@@ -52,35 +53,28 @@
 
             <table width="100%" style="margin: auto;">
                 <tr>
-                    <th><a href="<c:url value="/"/>">Home</a></th>
-                    <th><a href="<c:url value="/product/list?searchString="/>">Products</a></th>
-                    <security:authorize access="! isAuthenticated()">
-                        <th>
-                            <a href="<c:url value="/signUp"/>">Sign Up</a>
-                        </th>
-                    </security:authorize>
-                    <security:authorize access="! isAuthenticated()">
-                        <th>
-                            <a href="<c:url value="/signIn"/>">Sign In</a>
-                        </th>
-                    </security:authorize>
-                    <th><a href="<c:url value="/aboutUs"/>">About Us</a></th>
+                    <th><security:authorize access="isAuthenticated()"><a href="/aboutUs">About Us</a></security:authorize></th>
+                    <th><security:authorize access="isAuthenticated()">Contact Us</security:authorize></th>
                     <th>
                         <security:authorize access="isAuthenticated()">
-                            Hello ${sessionScope.customer.firstName}!
-                            <c:set var="userID">
+                            Hello ${sessionScope.userFirstName}!
+                            <c:set var="userId">
                                 <security:authentication property="principal.userId" />
                             </c:set>
-                            <a href="<c:url value="/customer/viewProfile?customerID=${userID}" />"><br>View Account</a>
+                            <a href="<c:url value="/admin/user/viewProfile?userId=${userId}" />"><br>View Account</a>
                         </security:authorize>
                     </th>
                     <th>
                         <security:authorize access="isAuthenticated()">
-                            Not ${sessionScope.customer.firstName}?
-                            <a href="<c:url value="/signOut"/>"><br>Sign Out</a>
+                            <a href="<c:url value="/admin/groups?userId=${sessionScope.userId}" />">View Groups</a>
                         </security:authorize>
                     </th>
-                    <c:if test="${sessionScope.order.orderLineCount>0}"><th><a href="<c:url value = "/shoppingCart/viewCart?orderID=${sessionScope.order.orderID}"/>">View Cart(${sessionScope.order.orderLineCount})</a></th></c:if>
+                    <th>
+                        <security:authorize access="isAuthenticated()">
+                            Not ${sessionScope.userFirstName}?
+                            <a href="<c:url value="/signOut" />"><br>Sign Out</a>
+                        </security:authorize>
+                    </th>
                 </tr>
             </table>
 

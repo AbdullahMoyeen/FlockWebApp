@@ -1,5 +1,6 @@
 package com.viiup.web.flock.services;
 
+import com.viiup.web.flock.businessLayer.IBaseBusinessLayer;
 import com.viiup.web.flock.providers.IBaseProvider;
 import com.viiup.web.flock.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,61 +14,19 @@ import java.util.List;
 public class BaseService implements IBaseService {
 
     @Autowired
+    IBaseBusinessLayer baseBusinessLayer;
+
+    @Autowired
     IBaseProvider baseProvider;
 
     @Override
-    public boolean emailAddressExists(String emailAddress){
-
-        return baseProvider.emailAddressExists(emailAddress);
-    }
-
-
-
-    @Override
-    public List<PasswordSecurityQuestion> getPasswordSecurityQuestionList(){
-
-        return baseProvider.getPasswordSecurityQuestionList();
+    public void signUp(UserModel user) throws Exception{
+        baseBusinessLayer.signUp(user);
     }
 
     @Override
-    public boolean accountExistsForEmail(String emailAddress){
+    public void resetPassword(String emailAddress) throws Exception{
 
-        return baseProvider.accountExistsForEmail(emailAddress);
-    }
-
-    @Override
-    public void signUpCustomer(Customer customer) {
-
-        baseProvider.signUpCustomer(customer);
-    }
-
-    @Override
-    public List<AddressState> getAddressStateList(){
-
-        return baseProvider.getAddressStateList();
-    }
-
-    @Override
-    public List<PhoneType> getPhoneTypeList(){
-
-        return baseProvider.getPhoneTypeList();
-    }
-
-    @Override
-    public List<PaymentCardType> getPaymentCardTypeList(){
-
-        return baseProvider.getPaymentCardTypeList();
-    }
-
-    @Override
-    public PasswordSecurity getPasswordSecurity(String emailAddress){
-
-        return baseProvider.getPasswordSecurity(emailAddress);
-    }
-
-    @Override
-    public boolean validatePasswordSecurity(PasswordSecurity passwordSecurity){
-
-        return baseProvider.validatePasswordSecurity(passwordSecurity);
+        baseBusinessLayer.resetPassword(emailAddress);
     }
 }

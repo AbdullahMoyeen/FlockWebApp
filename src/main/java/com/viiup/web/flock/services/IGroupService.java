@@ -13,14 +13,8 @@ public interface IGroupService {
     boolean IsUserAdminOfGroup(int groupId, int userId);
     GroupModel getGroupByGroupId(int groupId);
     GroupModel updateGroup(GroupModel group);
+    List<EventModel> getGroupEventsByGroupId(int groupId);
     List<GroupUserModel> getGroupUsersByGroupId(int groupId);
     void approveGroupMembership(int groupId, int userId);
     void denyGroupMembership(int groupId, int userId);
-    List<EventModel> getGroupEventsByGroupID(int groupId);
-
-
-    List<Product> searchProducts(String searchString);
-    Product getProductByProductID(int productID);
-    boolean updateInventory(int productID, int quantity);
-
 }

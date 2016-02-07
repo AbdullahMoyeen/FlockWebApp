@@ -9,11 +9,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
+<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
 <html>
 
     <head>
 
-        <title>Flock Customer Sign In</title>
+        <title>Flock Sign Up</title>
 
         <style>
             .header {
@@ -60,13 +61,6 @@
                 font-weight: bold;
                 font-size: x-large;
                 color: red;
-                text-align: center;
-            }
-            .info {
-                font-weight: bold;
-                font-size: x-large;
-                color: green;
-                text-align: center;
             }
         </style>
 
@@ -84,31 +78,28 @@
 
             <table width="100%" style="margin: auto;">
                 <tr>
-                    <th><a href="/">Home</a></th>
-                    <th><a href="/product/list?searchString=">Products</a></th>
-                    <th>
-                        <security:authorize access="! isAuthenticated()">
-                            <a href="<c:url value="/signUp" />">Sign Up</a>
-                        </security:authorize>
-                    </th>
-                    <th><a href="/">About Us</a></th>
-                    <th><a href="/">Contact Us</a></th>
+                    <th><security:authorize access="isAuthenticated()"><a href="/aboutUs">About Us</a></security:authorize></th>
+                    <th><security:authorize access="isAuthenticated()"><a href="/contactUs">Contact Us</a></security:authorize></th>
                     <th>
                         <security:authorize access="isAuthenticated()">
-                            Hello ${sessionScope.customer.firstName}!
-                            <c:set var="userID">
+                            Hello ${sessionScope.userFirstName}!
+                            <c:set var="userId">
                                 <security:authentication property="principal.userId" />
                             </c:set>
-                            <a href="<c:url value="/customer/viewProfile?customerID=${userID}" />"><br>View Account</a>
+                            <a href="<c:url value="/admin/user/viewProfile?userId=${userId}" />"><br>View Account</a>
                         </security:authorize>
                     </th>
                     <th>
                         <security:authorize access="isAuthenticated()">
-                            Not ${sessionScope.customer.firstName}?
+                            <a href="<c:url value="/admin/groups?userId=${sessionScope.userId}" />">View Groups</a>
+                        </security:authorize>
+                    </th>
+                    <th>
+                        <security:authorize access="isAuthenticated()">
+                            Not ${sessionScope.userFirstName}?
                             <a href="<c:url value="/signOut" />"><br>Sign Out</a>
                         </security:authorize>
                     </th>
-                    <c:if test="${sessionScope.order.orderLineCount>0}"><th><a href="/shoppingCart/viewCart?orderID=${sessionScope.order.orderID}">View Cart(${sessionScope.order.orderLineCount})</a></th></c:if>
                 </tr>
             </table>
 
@@ -116,52 +107,58 @@
 
         <div class="section">
 
-            <c:if test="${param.loginError == 'true'}">
+            <c:if test="${param.userAlreadyExists == 'true'}">
                 <div class="error" style="text-align: center">
-                    <br>Login Failed<br>Please Try Again<br>or<br>Click "Forgot Password" to Restore Access
+                    <br>Account already exists for this email<br><br>Please sign up with a different email or Sign In
                 </div>
             </c:if>
 
-            <c:if test="${param.passwordReset == 'true'}">
-                <div class="info" style="text-align: center">
-                    <br>Password Reset Successful<br>Please Sign In
+            <c:if test="${param.unknownError == 'true'}">
+                <div class="error" style="text-align: center">
+                    <br>Account could not be created<br><br>Please try again
                 </div>
             </c:if>
 
-            <form class="mainForm" method="POST" action="<c:url value='/j_spring_security_check' />">
+            <form:form class="mainForm" method="post" action="/signUp/submit" modelAttribute="user">
                 <table class="mainTable" style="margin: auto;">
-                    <caption style="font-size: x-large;font-weight: bold;text-decoration: underline;padding: 20px">Sign In</caption>
+                    <caption style="font-size: x-large;font-weight: bold;text-decoration: underline;padding: 20px">User Sign Up</caption>
                     <tr>
-                        <th><label for="username">Email Address</label></th>
+                        <th>First Name</th>
                         <td>:</td>
-                        <td><input type="text" name="j_username" id="username"></td>
+                        <td><form:input path="firstName" required="true" maxlength="50" title="Maximum 50 characters"/></td>
                     </tr>
-
                     <tr>
-                        <th><label for="password">Password</label></th>
+                        <th>Last Name</th>
                         <td>:</td>
-                        <td><input type="password" name="j_password" id="password"></td>
+                        <td><form:input path="lastName" required="true" maxlength="50" title="Maximum 50 characters"/></td>
+                    </tr>
+                    <tr>
+                        <th>Email Address</th>
+                        <td>:</td>
+                        <td><form:input type="email" path="emailAddress" required="true"
+                                        title="Enter a valid email address"/></td>
                     </tr>
                     <tr>
                         <td></td>
                     </tr>
                     <tr>
-                        <td><input type="button" value="Cancel" onclick="location.href='/'" title="Cancel and go back to home"/></td>
+                        <td><input type="reset" value="Clear" title="clear all fields"></td>
                         <td></td>
-                        <td><input type="submit" value="Log In" title="Log in to your account"/></td>
+                        <td><input type="submit" value="Submit" title="create your account"/></td>
+                    </tr>
+                    <tr>
+                        <td></td>
                     </tr>
                 </table>
-            </form>
+            </form:form>
             <table class="linkTable" style="margin: auto;">
                 <tr>
-                    <th style="text-align: center" title="Click to reset your password"><a href="<c:url value="/signIn/retrieveSecurity"/>">Forgot Password</a></th>
-                </tr>
-                <tr>
-                    <th style="text-align: center" title="Click to create an account">New to Flock? First <a href="/signUp">Create an Account</a>.</th>
+                    <th><a href="#" onclick="history.go(-1)" title="go back to previous page">Go Back</a></th>
                 </tr>
             </table>
 
         </div>
 
     </body>
+
 </html>

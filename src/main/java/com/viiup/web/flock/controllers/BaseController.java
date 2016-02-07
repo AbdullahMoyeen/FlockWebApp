@@ -1,14 +1,14 @@
 package com.viiup.web.flock.controllers;
 
-import com.viiup.web.flock.models.Customer;
+import com.viiup.web.flock.models.*;
 import com.viiup.web.flock.services.IBaseService;
 import com.viiup.web.flock.services.IEmailService;
 import com.viiup.web.flock.services.IUserService;
 import com.viiup.web.flock.services.IEventService;
-import com.viiup.web.flock.models.PasswordSecurity;
-import com.viiup.web.flock.models.PasswordSecurityQuestion;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,158 +34,101 @@ public class BaseController {
     @Autowired
     IUserService userService;
 
-    @Autowired
-    IEventService eventService;
-
-    @Autowired
-    IEmailService emailService;
-
     @RequestMapping("/")
-    public String adminSignIn(){
+    public String adminSignIn() {
         return "adminSignIn";
     }
 
-    @RequestMapping("/signIn/success")
-    public String adminSignInSuccess(){
-
-        return "redirect:/admin/groups?userId=" + httpSession.getAttribute("userId");
-    }
-
-    @RequestMapping("/resetPassword")
-    public String adminForgotPassword(){
-
-        return "adminPasswordReset";
-    }
-
-    @RequestMapping("/requestTempPassword")
-    public String adminTempPassword(@RequestParam String emailAddress){
-
-        if(baseService.emailAddressExists(emailAddress)){
-//            emailService.sendEmail();
-            return "redirect:/displayMessage?messageCode=tempPasswordSent";
-        }
-        else
-            return "redirect:/resetPassword?emailAddressExists=false";
-    }
-
-    @RequestMapping("/displayMessage")
-    public String adminDisplayMessage(){
-
-        return "adminDisplayMessage";
-    }
-
-
-
-
-
-    @RequestMapping("/aboutUs")
-    public String aboutUs(){
-        return ("aboutUs");
-    }
-
-    @RequestMapping("/contactUs")
-    public String contactUs(){
-        return ("contactUs");
-    }
-
     @RequestMapping("/signUp")
-    public ModelAndView signUp(HttpServletRequest httpServletRequest){
+    public ModelAndView adminSignup() {
 
-        Customer customer = new Customer();
-        List<PasswordSecurityQuestion> passwordSecurityQuestionList = baseService.getPasswordSecurityQuestionList();
+        UserModel user = new UserModel();
 
-        ModelAndView modelAndView = new ModelAndView("signUp");
+        ModelAndView modelAndView = new ModelAndView("adminSignUp");
 
-        modelAndView.addObject("customer", customer);
-        modelAndView.addObject("passwordSecurityQuestionList", passwordSecurityQuestionList);
-
-        if(httpSession.getAttribute("urlPriorLogin") == null) {
-
-            String referrer = httpServletRequest.getHeader("Referer");
-
-            if (referrer != null) {
-                httpSession.setAttribute("urlPriorLogin", referrer);
-            }
-        }
+        modelAndView.addObject("user", user);
 
         return modelAndView;
     }
 
     @RequestMapping("/signUp/submit")
-    public String signUpSubmit(@ModelAttribute Customer customer) {
+    public String signUpSubmit(@ModelAttribute UserModel user) {
 
-        if(baseService.accountExistsForEmail(customer.getEmailAddress())) {
-            return "redirect:/signUp?accountExistsForEmail=true";
-        }
-        else {
-            baseService.signUpCustomer(customer);
-            return "redirect:/signIn";
+        try {
+            baseService.signUp(user);
+            return "redirect:/displayMessage?messageCode=tempPasswordSent";
+        } catch (Exception e) {
+            if (e.getMessage().equals("UserAlreadyExists"))
+                return "redirect:/signUp?userAlreadyExists=true";
+            else
+                return "redirect:/signUp?unknownError=true";
         }
     }
 
-    @RequestMapping("/signIn")
-    public String signIn(HttpServletRequest httpServletRequest){
+    @RequestMapping("/signIn/success")
+    public String adminSignInSuccess() {
 
-        if(httpSession.getAttribute("urlPriorLogin") == null) {
+        return "redirect:/admin/groups?userId=" + httpSession.getAttribute("userId");
+    }
 
-            String referrer = httpServletRequest.getHeader("Referer");
+    @RequestMapping("/passwordReset")
+    public String adminPasswordReset() {
 
-            if (referrer != null) {
-                httpSession.setAttribute("urlPriorLogin", referrer);
-            }
+        return "adminPasswordReset";
+    }
+
+    @RequestMapping("/resetPassword")
+    public String adminTempPassword(@RequestParam String emailAddress) {
+
+        try {
+            baseService.resetPassword(emailAddress);
+            return "redirect:/displayMessage?messageCode=tempPasswordSent";
+        } catch (Exception e) {
+            if (e.getMessage().equals("UserNotFound"))
+                return "redirect:/passwordReset?userNotFound=true";
+            else
+                return "redirect:/passwordReset?unknownError=true";
         }
-
-        return ("signIn");
     }
 
-    @RequestMapping("/signIn/retrieveSecurity")
-    public String signInRetrieveSecurity(){
+    @RequestMapping("/tempPasswordChange")
+    public ModelAndView adminUserPasswordChange() {
 
-        return "signInRetrieveSecurity";
-    }
+        UserPasswordChangeModel userPassword = new UserPasswordChangeModel();
 
-    @RequestMapping("/signIn/answerSecurity")
-    public ModelAndView signInAnswerSecurity(@RequestParam String emailAddress){
-
-        PasswordSecurity passwordSecurity = baseService.getPasswordSecurity(emailAddress);
-
-        ModelAndView modelAndView = new ModelAndView("signInAnswerSecurity");
-
-        modelAndView.addObject("passwordSecurity", passwordSecurity);
+        ModelAndView modelAndView = new ModelAndView("adminTempPasswordChange");
+        modelAndView.addObject("userPassword", userPassword);
 
         return modelAndView;
     }
 
-    @RequestMapping("/signIn/resetPassword")
-    public ModelAndView signInResetPassword(@ModelAttribute PasswordSecurity passwordSecurity){
+    @RequestMapping("/changeTempPassword")
+    public String adminUserChangePassword(@ModelAttribute UserPasswordChangeModel userPassword) {
 
-        if(baseService.validatePasswordSecurity(passwordSecurity)){
-
-            Customer customer = userService.getCustomerByCustomerID(passwordSecurity.getCustomerID());
-            customer.setPassword(null);
-
-            ModelAndView modelAndView = new ModelAndView("signInResetPassword");
-
-            modelAndView.addObject("customer", customer);
-
-            return modelAndView;
-        }
-        else{
-
-            ModelAndView modelAndView = new ModelAndView(new RedirectView ("/signIn/answerSecurity"));
-
-            modelAndView.addObject("emailAddress", passwordSecurity.getEmailAddress());
-            modelAndView.addObject("invalidAnswer", true);
-
-            return modelAndView;
+        try {
+            userService.changeUserPassword(userPassword);
+            return "redirect:/displayMessage?messageCode=tempChangeSuccess";
+        } catch (Exception e) {
+            if (e.getMessage().equals("CurrentPasswordInvalid"))
+                return "redirect:/tempPasswordChange?currentPasswordInvalid=true";
+            else
+                return "redirect:/tempPasswordChange?unknownError=true";
         }
     }
 
-    @RequestMapping("/signIn/resetPassword/submit")
-    public String signInResetPasswordSubmit(@ModelAttribute Customer customer){
+    @RequestMapping("/displayMessage")
+    public String adminDisplayMessage() {
 
-        userService.updateCustomerPassword(customer);
+        return "adminDisplayMessage";
+    }
 
-        return "redirect:/signIn?passwordReset=true";
+    @RequestMapping("/aboutUs")
+    public String aboutUs() {
+        return ("aboutUs");
+    }
+
+    @RequestMapping("/contactUs")
+    public String contactUs() {
+        return ("contactUs");
     }
 }

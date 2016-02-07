@@ -9,6 +9,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
+<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
 <html>
 
     <head>
@@ -86,8 +87,8 @@
 
             <table width="100%" style="margin: auto;">
                 <tr>
-                    <th><a href="/">About Us</a></th>
-                    <th><a href="/">Contact Us</a></th>
+                    <th><security:authorize access="isAuthenticated()"><a href="/aboutUs">About Us</a></security:authorize></th>
+                    <th><security:authorize access="isAuthenticated()"><a href="/contactUs">Contact Us</a></security:authorize></th>
                     <th>
                         <security:authorize access="isAuthenticated()">
                             Hello ${sessionScope.userFirstName}!
@@ -95,6 +96,11 @@
                                 <security:authentication property="principal.userId" />
                             </c:set>
                             <br>View Account
+                        </security:authorize>
+                    </th>
+                    <th>
+                        <security:authorize access="isAuthenticated()">
+                            <a href="<c:url value="/admin/groups?userId=${sessionScope.userId}" />">View Groups</a>
                         </security:authorize>
                     </th>
                     <th>
@@ -142,10 +148,7 @@
             </form:form>
             <table class="linkTable" style="margin: auto;">
                 <tr>
-                    <th><a href="<c:url value="/admin/user/changePassword?userId=${user.userId}"/>">Change Password</a></th>
-                </tr>
-                <tr>
-                    <td></td>
+                    <th><a href="<c:url value="/admin/user/passwordChange"/>">Change Password</a></th>
                 </tr>
                 <tr>
                     <th><a href="#" onclick="history.go(-1)" title="go back to previous page">Go Back</a></th>

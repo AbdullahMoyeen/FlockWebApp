@@ -46,9 +46,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         authenticatedUser.setPassword(user.getPassword());
         authenticatedUser.setSalt(user.getSalt());
         authenticatedUser.setCredentialsNonExpired(!user.isPasswordExpired());
-        authenticatedUser.setAccountNonLocked(true);
-        authenticatedUser.setAccountNonExpired(true);
-        authenticatedUser.setEnabled(true);
+        authenticatedUser.setAccountNonLocked(user.getAccountStatus().equals("A"));
+        authenticatedUser.setAccountNonExpired(user.getAccountStatus().equals("A"));
+        authenticatedUser.setEnabled(user.getAccountStatus().equals("A"));
         authenticatedUser.setAuthorities(authorities);
 
         return authenticatedUser;

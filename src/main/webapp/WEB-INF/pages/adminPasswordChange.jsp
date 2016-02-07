@@ -9,6 +9,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
+<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
 <html>
 
     <head>
@@ -49,6 +50,13 @@
                 height: 40px;
                 padding:5px;
             }
+            table.linkTable th, td {
+                font-size: 20px;
+                color: black;
+                text-align: center;
+                height: 40px;
+                padding:5px;
+            }
             .error {
                 font-weight: bold;
                 font-size: x-large;
@@ -70,8 +78,8 @@
 
             <table width="100%" style="margin: auto;">
                 <tr>
-                    <th><a href="/">About Us</a></th>
-                    <th><a href="/">Contact Us</a></th>
+                    <th><security:authorize access="isAuthenticated()"><a href="/aboutUs">About Us</a></security:authorize></th>
+                    <th><security:authorize access="isAuthenticated()"><a href="/contactUs">Contact Us</a></security:authorize></th>
                     <th>
                         <security:authorize access="isAuthenticated()">
                             Hello ${sessionScope.userFirstName}!
@@ -79,6 +87,11 @@
                                 <security:authentication property="principal.userId" />
                             </c:set>
                             <a href="<c:url value="/admin/user/viewProfile?userId=${userId}" />"><br>View Account</a>
+                        </security:authorize>
+                    </th>
+                    <th>
+                        <security:authorize access="isAuthenticated()">
+                            <a href="<c:url value="/admin/groups?userId=${sessionScope.userId}" />">View Groups</a>
                         </security:authorize>
                     </th>
                     <th>
@@ -94,57 +107,73 @@
 
         <div class="section">
 
-            <%--<c:url value="/signIn/resetPassword/submit" var="formUrl"/>--%>
-            <%--<form:form class="mainForm" method="post" action="${formUrl}" modelAttribute="customer">--%>
-                <%--<form:hidden path="customerID" value="${passwordSecurity.customerID}"/>--%>
-                <%--<table class="mainTable" style="margin: auto;">--%>
-                    <%--<caption style="font-size: x-large;font-weight: bold;text-decoration: underline;padding: 20px">Change Password</caption>--%>
-                    <%--<tr>--%>
-                        <%--<th>Current Password</th>--%>
-                        <%--<td>:</td>--%>
-                        <%--<td><form:input type="password" path="password" required="true" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}" title="Must be between 8 and 16 characters and contain at least one number, one uppercase and one lowercase letters"/></td>--%>
-                    <%--</tr>--%>
-                    <%--<tr>--%>
-                        <%--<th>New Password</th>--%>
-                        <%--<td>:</td>--%>
-                        <%--<td><form:input type="password" path="" required="true" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}" title="Must be between 8 and 16 characters and contain at least one number, one uppercase and one lowercase letters"/></td>--%>
-                    <%--</tr>--%>
-                    <%--<tr>--%>
-                        <%--<th>Re-enter New Password</th>--%>
-                        <%--<td>:</td>--%>
-                        <%--<td><form:input type="password" path="reEnteredPassword" required="true" title="Must match the entered password"/></td>--%>
-                    <%--</tr>--%>
-                    <%--<tr>--%>
-                        <%--<td></td>--%>
-                    <%--</tr>--%>
-                    <%--<tr>--%>
-                        <%--<td><input type="button" value="Cancel" onclick="location.href='<c:url value="/"/>'" title="Cancel and go back to home"></td>--%>
-                        <%--<td></td>--%>
-                        <%--<td><input type="submit" value="Save" title="Reset your password"/></td>--%>
-                    <%--</tr>--%>
-                    <%--<tr>--%>
-                        <%--<td></td>--%>
-                    <%--</tr>--%>
-                <%--</table>--%>
-            <%--</form:form>--%>
+            <c:if test="${param.currentPasswordInvalid == 'true'}">
+                <div class="error" style="text-align: center">
+                    <br>Current password invalid<br><br>Please try again
+                </div>
+            </c:if>
+
+            <c:if test="${param.unknownError == 'true'}">
+                <div class="error" style="text-align: center">
+                    <br>Password change failed<br><br>Please try again
+                </div>
+            </c:if>
+
+            <c:url value="/admin/user/changePassword" var="formUrl"/>
+            <form:form class="mainForm" method="post" action="${formUrl}" modelAttribute="userPassword">
+                <form:hidden path="userId" value="${sessionScope.userId}"/>
+                <form:hidden path="emailAddress" value="${sessionScope.userName}"/>
+                <table class="mainTable" style="margin: auto;">
+                    <caption style="font-size: x-large;font-weight: bold;text-decoration: underline;padding: 20px;">Change Password</caption>
+                    <tr>
+                        <th>Current Password</th>
+                        <td>:</td>
+                        <td><form:input id="currentPassword" type="password" path="password" required="true" title="enter current password"/></td>
+                    </tr>
+                    <tr>
+                        <th>New Password</th>
+                        <td>:</td>
+                        <td><form:input id="newPassword" type="password" path="newPassword" required="true" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}" title="Must be between 8 and 16 characters and contain at least one number, one uppercase and one lowercase letters"/></td>
+                    </tr>
+                    <tr>
+                        <th>Re-enter New Password</th>
+                        <td>:</td>
+                        <td><form:input id="reEnteredPassword" type="password" path="reEnteredPassword" required="true" title="must match the entered password"/></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><input type="reset" value="Clear" title="clear all fields"></td>
+                        <td></td>
+                        <td><input type="submit" value="Change Password" title="change your password"/></td>
+                    </tr>
+                </table>
+            </form:form>
+            <table class="linkTable" style="margin: auto;">
+                <tr>
+                    <th><a href="#" onclick="history.go(-1)" title="go back to previous page">Go Back</a></th>
+                </tr>
+            </table>
 
         </div>
 
         <script type="text/javascript">
 
-            var password = document.getElementById("password")
+            var currentPassword = document.getElementById("currentPassword")
+                    , newPassword = document.getElementById("newPassword")
                     , reEnteredPassword = document.getElementById("reEnteredPassword");
 
             function validatePassword() {
-                console.log('validating ' + password.value + "  " + reEnteredPassword.value);
-                if (password.value != reEnteredPassword.value) {
-                    reEnteredPassword.setCustomValidity("Passwords do not match");
+                console.log('validating ' + newPassword.value + "  " + reEnteredPassword.value);
+                if (newPassword.value != reEnteredPassword.value) {
+                    reEnteredPassword.setCustomValidity("passwords do not match");
                 } else {
                     reEnteredPassword.setCustomValidity('');
                 }
             }
 
-            password.onchange = validatePassword;
+            newPassword.onchange = validatePassword;
             reEnteredPassword.onkeyup = validatePassword;
 
         </script>

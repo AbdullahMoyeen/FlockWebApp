@@ -7,10 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import java.util.Date;
 
 /**
  * Created by Niranjan on 2/4/2016.
@@ -26,7 +23,7 @@ public class EventsAPIController {
     public ResponseEntity<Void> createEvent(@RequestBody EventModel eventModel, UriComponentsBuilder ucBuilder) {
 
         // If event already exists then return a conflict
-        if (eventService.getEventByEventID(eventModel.getEventID()) != null) {
+        if (eventService.getEventByEventId(eventModel.getEventId()) != null) {
             return new ResponseEntity<Void>(HttpStatus.CONFLICT);
         }
 
@@ -35,7 +32,7 @@ public class EventsAPIController {
 
         // Send response headers back
         HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/api/admin/event/{id}").buildAndExpand(eventModel.getEventID()).toUri());
+        headers.setLocation(ucBuilder.path("/api/admin/event/{id}").buildAndExpand(eventModel.getEventId()).toUri());
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
     }
 
@@ -43,7 +40,7 @@ public class EventsAPIController {
     public ResponseEntity<EventModel> getEventDetailsById(@PathVariable("eventId") int eventID){
 
         // Get event by event ID
-        EventModel event =  eventService.getEventByEventID(eventID);
+        EventModel event =  eventService.getEventByEventId(eventID);
 
         // Return NO_CONTENT if the event is not found for this event id
         if(event == null) return new ResponseEntity<EventModel>(HttpStatus.NO_CONTENT);
@@ -56,7 +53,7 @@ public class EventsAPIController {
     public ResponseEntity<EventModel> updateEvent(@RequestBody EventModel event){
 
         // Check if event exists by this ID
-        EventModel eventModel = eventService.getEventByEventID(event.getEventID());
+        EventModel eventModel = eventService.getEventByEventId(event.getEventId());
         if(eventModel == null) return new ResponseEntity<EventModel>(HttpStatus.NO_CONTENT);
 
         // We found the event so update it

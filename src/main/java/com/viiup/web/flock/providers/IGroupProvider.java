@@ -3,7 +3,6 @@ package com.viiup.web.flock.providers;
 import com.viiup.web.flock.models.EventModel;
 import com.viiup.web.flock.models.GroupModel;
 import com.viiup.web.flock.models.GroupUserModel;
-import com.viiup.web.flock.models.Product;
 
 import java.util.List;
 
@@ -17,13 +16,7 @@ public interface IGroupProvider {
     GroupModel getGroupByGroupId(int groupId);
     GroupModel updateGroup(GroupModel group);
     List<GroupUserModel> getGroupUsersByGroupId(int groupId);
-    List<EventModel> getGroupEventsByGroupID(int groupId);
+    List<EventModel> getGroupEventsByGroupId(int groupId);
     void approveGroupMembership(int groupId, int userId);
     void denyGroupMembership(int groupId, int userId);
-
-
-
-    List<Product> searchProducts(String searchString);
-    Product getProductByProductID(int productID);
-    boolean updateInventory(int productID, int quantity);
 }

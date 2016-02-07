@@ -9,11 +9,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
+<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
 <html>
 
 <head>
 
-    <title>Flock Password Retrieval</title>
+    <title>Flock </title>
 
     <style>
         .header {
@@ -84,8 +85,8 @@
 
         <table width="100%" style="margin: auto;">
             <tr>
-                <th><a href="/">About Us</a></th>
-                <th><a href="/">Contact Us</a></th>
+                <th><security:authorize access="isAuthenticated()"><a href="/aboutUs">About Us</a></security:authorize></th>
+                <th><security:authorize access="isAuthenticated()"><a href="/contactUs">Contact Us</a></security:authorize></th>
                 <th>
                     <security:authorize access="isAuthenticated()">
                         Hello ${sessionScope.userFirstName}!
@@ -93,6 +94,11 @@
                             <security:authentication property="principal.userId" />
                         </c:set>
                         <a href="<c:url value="/admin/user/viewProfile?userId=${userId}" />"><br>View Account</a>
+                    </security:authorize>
+                </th>
+                <th>
+                    <security:authorize access="isAuthenticated()">
+                        <a href="<c:url value="/admin/groups?userId=${sessionScope.userId}" />">View Groups</a>
                     </security:authorize>
                 </th>
                 <th>
@@ -110,17 +116,31 @@
 
         <c:if test="${param.messageCode == 'tempPasswordSent'}">
             <div class="info" style="text-align: center">
-                <br>Temporary Password Sent<br>Please Check Your Email
+                <br>Temporary password sent<br><br>Please check your email
+            </div>
+        </c:if>
+
+        <c:if test="${param.messageCode == 'tempChangeSuccess'}">
+            <div class="info" style="text-align: center">
+                <br>Password change successful<br><br>Please sign in
+            </div>
+        </c:if>
+
+        <c:if test="${param.messageCode == 'passwordChangeSuccess'}">
+            <div class="info" style="text-align: center">
+                <br>Password change successful
             </div>
         </c:if>
 
         <table class="linkTable" style="margin: auto;">
             <tr>
-                <th></th>
+                <td></td>
             </tr>
             <tr>
                 <c:choose>
                     <c:when test="${param.messageCode == 'tempPasswordSent'}"><th><a href="<c:url value="/"/>">Go to Sign In Page</a></th></c:when>
+                    <c:when test="${param.messageCode == 'tempChangeSuccess'}"><th><a href="<c:url value="/"/>">Go to Sign In Page</a></th></c:when>
+                    <c:when test="${param.messageCode == 'passwordChangeSuccess'}"><th><a href="<c:url value="/admin/groups?userId=${sessionScope.userId}"/>">Go to Your Groups</a></th></c:when>
                     <c:otherwise><th><a href="#" onclick="history.go(-1)" title="go back to previous page">Go Back</a></th></c:otherwise>
                 </c:choose>
             </tr>

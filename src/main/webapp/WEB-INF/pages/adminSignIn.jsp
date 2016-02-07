@@ -9,6 +9,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
+<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
 <html>
 
     <head>
@@ -82,19 +83,52 @@
 
         <div class="nav">
 
+            <table width="100%" style="margin: auto;">
+                <tr>
+                    <th><security:authorize access="isAuthenticated()"><a href="/aboutUs">About Us</a></security:authorize></th>
+                    <th><security:authorize access="isAuthenticated()"><a href="/contactUs">Contact Us</a></security:authorize></th>
+                    <th>
+                        <security:authorize access="isAuthenticated()">
+                            Hello ${sessionScope.userFirstName}!
+                            <c:set var="userId">
+                                <security:authentication property="principal.userId" />
+                            </c:set>
+                            <a href="<c:url value="/admin/user/viewProfile?userId=${userId}" />"><br>View Account</a>
+                        </security:authorize>
+                    </th>
+                    <th>
+                        <security:authorize access="isAuthenticated()">
+                            <a href="<c:url value="/admin/groups?userId=${sessionScope.userId}" />">View Groups</a>
+                        </security:authorize>
+                    </th>
+                    <th>
+                        <security:authorize access="isAuthenticated()">
+                            Not ${sessionScope.userFirstName}?
+                            <a href="<c:url value="/signOut" />"><br>Sign Out</a>
+                        </security:authorize>
+                    </th>
+                </tr>
+            </table>
+
         </div>
 
         <div class="section">
 
             <c:if test="${param.loginError == 'true'}">
                 <div class="error" style="text-align: center">
-                    <br>Login Failed<br>Please Try Again<br>or<br>Click "Forgot Password" to Restore Access
+                    <br>Login failed, please try again<br>or<br>Click "Forgot Password" to restore access
+                </div>
+            </c:if>
+
+            <c:if test="${param.accessDenied == 'true'}">
+                <div class="error" style="text-align: center">
+                    <br>Access Denied!
                 </div>
             </c:if>
 
             <c:if test="${param.passwordReset == 'true'}">
                 <div class="info" style="text-align: center">
-                    <br>Password Reset Successful<br>Please Sign In
+                    <br>Password reset successful<br><br>Please sign in
                 </div>
             </c:if>
 
@@ -124,7 +158,7 @@
             </form>
             <table class="linkTable" style="margin: auto;">
                 <tr>
-                    <th style="text-align: center" title="Click to reset your password"><a href="<c:url value="/resetPassword"/>">Forgot My Password</a></th>
+                    <th style="text-align: center" title="Click to reset your password"><a href="<c:url value="/passwordReset"/>">Forgot My Password</a></th>
                 </tr>
                 <tr>
                     <th style="text-align: center" title="Click to create an account">New to Flock? <a href="/signUp">Create an Account</a>.</th>

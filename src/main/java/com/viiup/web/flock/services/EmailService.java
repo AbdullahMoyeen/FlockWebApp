@@ -18,8 +18,8 @@ public class EmailService implements IEmailService {
     IEmailProvider emailProvider;
 
     @Override
-    public void sendEmail(){
+    public void sendEmail(String[] toAddresses, String subject, String messageText){
 
-        emailProvider.sendEmail();
+        emailProvider.sendEmail(toAddresses, subject, messageText);
     }
 }

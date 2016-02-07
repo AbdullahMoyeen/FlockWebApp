@@ -9,14 +9,6 @@ import java.util.List;
  */
 public interface IBaseService {
 
-    boolean emailAddressExists(String emailAddress);
-
-    List<PasswordSecurityQuestion> getPasswordSecurityQuestionList();
-    boolean accountExistsForEmail(String emailAddress);
-    void signUpCustomer(Customer customer);
-    List<AddressState> getAddressStateList();
-    List<PhoneType> getPhoneTypeList();
-    List<PaymentCardType> getPaymentCardTypeList();
-    PasswordSecurity getPasswordSecurity(String emailAddress);
-    boolean validatePasswordSecurity(PasswordSecurity passwordSecurity);
+    void signUp(UserModel user) throws Exception;
+    void resetPassword(String emailAddress) throws Exception;
 }

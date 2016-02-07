@@ -3,7 +3,7 @@ package com.viiup.web.flock.models;
 /**
  * Created by amoyeen on 2/27/15.
  */
-public class RefState {
+public class RefStateModel {
 
     private String stateCode;
     private String stateName;
@@ -12,6 +12,7 @@ public class RefState {
     public String getStateCode() {
         return stateCode;
     }
+
     public void setStateCode(String stateCode) {
         this.stateCode = stateCode;
     }
@@ -19,6 +20,7 @@ public class RefState {
     public String getStateName() {
         return stateName;
     }
+
     public void setStateName(String stateName) {
         this.stateName = stateName;
     }
@@ -26,6 +28,7 @@ public class RefState {
     public String getStateCodeAndName() {
         return stateCodeAndName;
     }
+
     public void setStateCodeAndName(String stateCodeAndName) {
         this.stateCodeAndName = stateCodeAndName;
     }

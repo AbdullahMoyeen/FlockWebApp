@@ -35,14 +35,14 @@ public class GroupController {
     public ModelAndView adminGroupDetails(@RequestParam int groupId){
 
         GroupModel adminGroupDetails = groupService.getGroupByGroupId(groupId);
+        List<EventModel> adminGroupEvents = groupService.getGroupEventsByGroupId(groupId);
         List<GroupUserModel> adminGroupUsers = groupService.getGroupUsersByGroupId(groupId);
-        List<EventModel> adminGroupEvents = groupService.getGroupEventsByGroupID(groupId);
 
         ModelAndView modelAndView = new ModelAndView("adminGroupDetails");
 
         modelAndView.addObject("adminGroupDetails", adminGroupDetails);
-        modelAndView.addObject("adminGroupUsers", adminGroupUsers);
         modelAndView.addObject("adminGroupEvents", adminGroupEvents);
+        modelAndView.addObject("adminGroupUsers", adminGroupUsers);
 
         return modelAndView;
     }
@@ -70,29 +70,4 @@ public class GroupController {
 
         return "redirect:/admin/group/details?groupId=" + groupId;
     }
-
-
-
-    @RequestMapping("/product/list")
-    public ModelAndView productList(@RequestParam String searchString){
-
-        List<Product> productList = groupService.searchProducts(searchString);
-
-        ModelAndView modelAndView = new ModelAndView("productList");
-        modelAndView.addObject("productList", productList);
-
-        return modelAndView;
-    }
-
-    @RequestMapping("/product/detail")
-    public ModelAndView productDetail(@RequestParam int productID){
-
-        Product product = groupService.getProductByProductID(productID);
-
-        ModelAndView modelAndView = new ModelAndView("productDetails");
-        modelAndView.addObject("product", product);
-
-        return modelAndView;
-    }
-
 }

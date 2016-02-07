@@ -1,8 +1,6 @@
 package com.viiup.web.flock.services;
 
 import com.viiup.web.flock.models.AuthenticatedUser;
-import com.viiup.web.flock.models.Customer;
-import com.viiup.web.flock.models.Order;
 import com.viiup.web.flock.models.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -43,6 +41,7 @@ public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHa
 
         UserModel user = userService.getUserByUserId(authenticatedUser.getUserId());
         httpSession.setAttribute("userId", user.getUserId());
+        httpSession.setAttribute("userName", user.getEmailAddress());
         httpSession.setAttribute("userFirstName", user.getFirstName());
         httpSession.setAttribute("userLastName", user.getLastName());
 

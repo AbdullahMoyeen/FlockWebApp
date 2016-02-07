@@ -16,6 +16,11 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
+    <error-page>
+        <error-code>403</error-code>
+        <location>/?accessDenied=true</location>
+    </error-page>
+
     <!-- Application Context -->
     <context-param>
         <param-name>contextConfigLocation</param-name>

@@ -1,15 +1,17 @@
 package com.viiup.web.flock.models;
 
-import java.security.PrivateKey;
-import java.security.Timestamp;
 import java.util.Date;
 
 /**
  * Created by HP on 2/23/2015.
  */
 public class EventModel {
-    private int eventID;
-    private int groupID;
+    private int eventId;
+    private String createUser;
+    private Date createDate;
+    private String updateUser;
+    private Date updateDate;
+    private int groupId;
     private String eventName;
     private String eventDescription;
     private Date eventStartDatetime;
@@ -22,39 +24,76 @@ public class EventModel {
     private String eventKeywords;
     private float eventLatitude;
     private float eventLongitude;
-    private String privateEventInd;
-    private String createUser;
-    private Date createDate;
-    private String updateUser;
-    private Date updateDate;
+    private boolean privateEvent;
 
-    public int getEventID() { return eventID; }
-    public void setEventID(int eventID) {
-        this.eventID = eventID;
+    public int getEventId() {
+        return eventId;
     }
 
-    public int getGroupID() {
-        return groupID;
+    public void setEventId(int eventId) {
+        this.eventId = eventId;
     }
-    public void setGroupID(int groupID) {
-        this.groupID = groupID;
+
+    public String getCreateUser() {
+        return createUser;
+    }
+
+    public void setCreateUser(String createUser) {
+        this.createUser = createUser;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public String getUpdateUser() {
+        return updateUser;
+    }
+
+    public void setUpdateUser(String updateUser) {
+        this.updateUser = updateUser;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public int getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
     }
 
     public String getEventName() {
         return eventName;
     }
+
     public void setEventName(String eventName) {
-        this.eventName = eventName; }
+        this.eventName = eventName;
+    }
 
     public String getEventDescription() {
         return eventDescription;
     }
+
     public void setEventDescription(String eventDescription) {
-        this.eventDescription = eventDescription;}
+        this.eventDescription = eventDescription;
+    }
 
     public Date getEventStartDatetime() {
         return eventStartDatetime;
     }
+
     public void setEventStartDatetime(Date eventStartDatetime) {
         this.eventStartDatetime = eventStartDatetime;
     }
@@ -62,6 +101,7 @@ public class EventModel {
     public Date getEventEndDatetime() {
         return eventEndDatetime;
     }
+
     public void setEventEndDatetime(Date eventEndDatetime) {
         this.eventEndDatetime = eventEndDatetime;
     }
@@ -69,12 +109,15 @@ public class EventModel {
     public String getEventAddressLine1() {
         return eventAddressLine1;
     }
+
     public void setEventAddressLine1(String eventAddressLine1) {
         this.eventAddressLine1 = eventAddressLine1;
     }
+
     public String getEventAddressLine2() {
         return eventAddressLine2;
     }
+
     public void setEventAddressLine2(String eventAddressLine2) {
         this.eventAddressLine2 = eventAddressLine2;
     }
@@ -82,6 +125,7 @@ public class EventModel {
     public String getEventCity() {
         return eventCity;
     }
+
     public void setEventCity(String eventCity) {
         this.eventCity = eventCity;
     }
@@ -89,6 +133,7 @@ public class EventModel {
     public String getEventStateCode() {
         return eventStateCode;
     }
+
     public void setEventStateCode(String eventStateCode) {
         this.eventStateCode = eventStateCode;
     }
@@ -96,44 +141,40 @@ public class EventModel {
     public String getEventPostalCode() {
         return eventPostalCode;
     }
+
     public void setEventPostalCode(String eventPostalCode) {
         this.eventPostalCode = eventPostalCode;
     }
 
-    public String getEventKeywords() { return eventKeywords;    }
+    public String getEventKeywords() {
+        return eventKeywords;
+    }
+
     public void setEventKeywords(String eventKeywords) {
         this.eventKeywords = eventKeywords;
     }
 
-    public float getEventLatitude() { return eventLatitude; }
-    public void setEventLatitude(float eventLatitude) { this.eventLatitude = eventLatitude ; }
-
-    public float getEventLongitude() { return eventLongitude; }
-    public void setEventLongitude(float eventLongitude) { this.eventLongitude = eventLongitude;}
-
-    public String getPrivateEventInd() { return privateEventInd; }
-    public void setPrivateEventInd(String privateEventInd) {
-        this.privateEventInd = privateEventInd;
+    public float getEventLatitude() {
+        return eventLatitude;
     }
 
-    public String getCreateUser() { return createUser; }
-    public void setCreateUser(String createUser) {
-        this.createUser = createUser;
+    public void setEventLatitude(float eventLatitude) {
+        this.eventLatitude = eventLatitude;
     }
 
-    public Date getCreateDate() { return createDate; }
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public float getEventLongitude() {
+        return eventLongitude;
     }
 
-    public String getUpdateUser() { return updateUser; }
-    public void setUpdateUser(String updateUser) {
-        this.updateUser = updateUser;
+    public void setEventLongitude(float eventLongitude) {
+        this.eventLongitude = eventLongitude;
     }
 
-    public Date getUpdateDate() { return updateDate; }
-     public void setUpdateDate(Date updateDate) {this.updateDate = updateDate;  }
+    public boolean isPrivateEvent() {
+        return privateEvent;
     }
 
-
-
+    public void setPrivateEvent(boolean privateEvent) {
+        this.privateEvent = privateEvent;
+    }
+}

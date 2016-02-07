@@ -14,7 +14,7 @@
 
     <head>
 
-        <title>Flock Password Reset</title>
+        <title>Flock Change Password</title>
 
         <style>
             .header {
@@ -46,14 +46,14 @@
             table.mainTable th, td {
                 font-size: 25px;
                 color: black;
-                text-align: center;
+                text-align: left;
                 height: 40px;
                 padding:5px;
             }
             table.linkTable th, td {
                 font-size: 20px;
                 color: black;
-                text-align: left;
+                text-align: center;
                 height: 40px;
                 padding:5px;
             }
@@ -61,6 +61,11 @@
                 font-weight: bold;
                 font-size: x-large;
                 color: red;
+            }
+            .info {
+                font-weight: bold;
+                font-size: x-large;
+                color: green;
                 text-align: center;
             }
         </style>
@@ -108,38 +113,59 @@
 
         <div class="section">
 
-            <c:if test="${param.userNotFound == 'true'}">
+            <c:if test="${param.loginAttempt == 'true'}">
+                <div class="info" style="text-align: center">
+                    <br>Password has expired<br><br>Please change now
+                </div>
+            </c:if>
+
+            <c:if test="${param.currentPasswordInvalid == 'true'}">
                 <div class="error" style="text-align: center">
-                    <br>Account not found<br><br>Please try again
+                    <br>Current password invalid<br><br>Please try again
                 </div>
             </c:if>
 
             <c:if test="${param.unknownError == 'true'}">
                 <div class="error" style="text-align: center">
-                    <br>Password could not be Reset<br><br>Please try again
+                    <br>Password change failed<br>Please try again
                 </div>
             </c:if>
 
-            <form class="mainForm" method="get" action="/resetPassword">
+            <c:url value="/changeTempPassword" var="formUrl"/>
+            <form:form class="mainForm" method="post" action="${formUrl}" modelAttribute="userPassword">
                 <table class="mainTable" style="margin: auto;">
+                    <caption style="font-size: x-large;font-weight: bold;text-decoration: underline;padding: 20px;">Change Password</caption>
+                    <tr>
+                        <th>Email Address</th>
+                        <td>:</td>
+                        <td><form:input type="email" path="emailAddress" required="true"
+                                        title="Enter a valid email address"/></td>
+                    </tr>
+                    <tr>
+                        <th>Current Password</th>
+                        <td>:</td>
+                        <td><form:input id="currentPassword" type="password" path="password" required="true" title="enter current password"/></td>
+                    </tr>
+                    <tr>
+                        <th>New Password</th>
+                        <td>:</td>
+                        <td><form:input id="newPassword" type="password" path="newPassword" required="true" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}" title="Must be between 8 and 16 characters and contain at least one number, one uppercase and one lowercase letters"/></td>
+                    </tr>
+                    <tr>
+                        <th>Re-enter New Password</th>
+                        <td>:</td>
+                        <td><form:input id="reEnteredPassword" type="password" path="reEnteredPassword" required="true" title="must match the entered password"/></td>
+                    </tr>
                     <tr>
                         <td></td>
                     </tr>
                     <tr>
-                        <th>Enter Email Address to Continue</th>
-                    </tr>
-                    <tr>
-                        <td><input type="email" name="emailAddress" required="true" title="enter your account email address" /></td>
-                    </tr>
-                    <tr>
+                        <td><input type="reset" value="Clear" title="clear all fields"></td>
                         <td></td>
-                    </tr>
-                    <tr>
-                        <td><input type="submit" value="Continue" title="continue to receive a temporary password" /></td>
+                        <td><input type="submit" value="Change Password" title="change your password"/></td>
                     </tr>
                 </table>
-            </form>
-
+            </form:form>
             <table class="linkTable" style="margin: auto;">
                 <tr>
                     <th><a href="#" onclick="history.go(-1)" title="go back to previous page">Go Back</a></th>
@@ -148,5 +174,25 @@
 
         </div>
 
+        <script type="text/javascript">
+
+            var newPassword = document.getElementById("newPassword")
+                    , reEnteredPassword = document.getElementById("reEnteredPassword");
+
+            function validatePassword() {
+                console.log('validating ' + newPassword.value + "  " + reEnteredPassword.value);
+                if (newPassword.value != reEnteredPassword.value) {
+                    reEnteredPassword.setCustomValidity("passwords do not match");
+                } else {
+                    reEnteredPassword.setCustomValidity('');
+                }
+            }
+
+            newPassword.onchange = validatePassword;
+            reEnteredPassword.onkeyup = validatePassword;
+
+        </script>
+
     </body>
+
 </html>

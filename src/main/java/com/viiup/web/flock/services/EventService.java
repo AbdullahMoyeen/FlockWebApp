@@ -17,8 +17,8 @@ public class EventService implements IEventService {
     IEventProvider eventProvider;
 
     @Override
-    public EventModel getEventByEventID(int eventID) {
-        return eventProvider.getEventByEventID(eventID);
+    public EventModel getEventByEventId(int eventId) {
+        return eventProvider.getEventByEventId(eventId);
     }
 
     @Override
@@ -32,68 +32,8 @@ public class EventService implements IEventService {
     }
 
     @Override
-    public List<RefState> getRefStateList(){
+    public List<RefStateModel> getRefStateList(){
 
         return eventProvider.getRefStateList();
-    }
-
-
-
-    @Override
-    public int insertOrder(Order order){
-        return eventProvider.insertOrder(order);
-    }
-
-    @Override
-    public List<ShippingSpeed> getShippingSpeedList() { return eventProvider.getShippingSpeedList(); }
-
-    @Override
-    public void updateOrder(Order order) {
-        eventProvider.updateOrder(order);
-    }
-
-    @Override
-    public void mergeOrder(Order survivingOrder, Order victimOrder){
-        eventProvider.mergeOrder(survivingOrder, victimOrder);
-    }
-
-    @Override
-    public boolean shippingAllowed(String stateCode){
-        return eventProvider.shippingAllowed(stateCode);
-    }
-
-    @Override
-    public int getStateTaxRateID(String stateCode) {
-        return eventProvider.getStateTaxRateID(stateCode);
-    }
-
-    @Override
-    public Float getStateTaxRate(int stateTaxRateID) {
-        return eventProvider.getStateTaxRate(stateTaxRateID);
-    }
-
-    @Override
-    public Float getShippingRate(int shipperID, String shippingSpeedCode) {
-        return eventProvider.getShippingRate(shipperID, shippingSpeedCode);
-    }
-
-    @Override
-    public Order getPendingOrder(int customerID) {
-        return eventProvider.getPendingOrder(customerID);
-    }
-
-    @Override
-    public List<Order> getOpenOrderListByCustomerID(int customerID){
-        return eventProvider.getOpenOrderListByCustomerID(customerID);
-    }
-
-    @Override
-    public List<Order> getOrderHistoryByCustomerID(int customerID, int daysBefore){
-        return eventProvider.getOrderHistoryByCustomerID(customerID, daysBefore);
-    }
-
-    @Override
-    public Order getOrderByOrderID(int orderID) {
-        return eventProvider.getOrderByOrderID(orderID);
     }
 }
