@@ -1,10 +1,7 @@
 package com.viiup.web.flock.providers;
 
-import com.viiup.web.flock.jdbc.OrderRowMapper;
-import com.viiup.web.flock.jdbc.ShippingRowMapper;
-import com.viiup.web.flock.models.EventModel;
-import com.viiup.web.flock.models.Order;
-import com.viiup.web.flock.models.ShippingSpeed;
+import com.viiup.web.flock.jdbc.*;
+import com.viiup.web.flock.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -14,8 +11,6 @@ import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
-
-import com.viiup.web.flock.jdbc.EventRowMapper;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -94,61 +89,51 @@ public class SqlEventProvider implements IEventProvider {
                 ",event_longitude) " +
                 "VALUES (?, UPPER(?), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
 
-        jdbcTemplate.update(sql, new Object[]{event.getGroupID(), event.getPrivateEventInd(), event.getEventName(),event.getEventDescription(),event.getEventKeyword(), event.getEventStartDatetime(), event.getEventEndDatetime(), event.getEventAddressLine1(), event.getEventAddressLine2(), event.getEventCity(), event.getEventStateCode(), event.getEventPostalCode(), event.getEventLatitude(), event.getEventLongitude()});
+        jdbcTemplate.update(sql, new Object[]{event.getGroupID(), event.getPrivateEventInd(), event.getEventName(),event.getEventDescription(),event.getEventKeywords(), event.getEventStartDatetime(), event.getEventEndDatetime(), event.getEventAddressLine1(), event.getEventAddressLine2(), event.getEventCity(), event.getEventStateCode(), event.getEventPostalCode(), event.getEventLatitude(), event.getEventLongitude()});
     }
 
     @Override
     public void updateEvent (final EventModel event) {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        StringBuilder sql = new StringBuilder();
 
-        boolean c;
-        String sql = "UPDATE t_event " +
-                "SET group_id = ?, " +
-                "create_user = ?,"+
-                "create_date = ?, "+
-                "update_user = ?, "+
-                "update_date = ?, "+
-                "private_event_ind = UPPER(?), " +
-                "event_name = ?, " +
-                "event_description = ?, " +
-                "event_keywords = ?, " +
-                "event_start_datetime = ?," +
-                "event_end_datetime = ?, " +
-                "event_address_line1 = ?, " +
-                "event_address_line2 = ?, " +
-                "event_city = ?, " +
-                "event_state_code = UPPER(?), " +
-                "event_postal_code = UPPER(?), " +
-                "event_latitude = ?," +
-                "event_longitude = ? " +
-                " WHERE event_id = ?";
+        sql.append( "UPDATE t_event\n ");
+        sql.append(    "SET group_id = ?\n");
+        sql.append("    ,update_user = ?\n");
+        sql.append("    ,update_date = current_timestamp\n");
+        sql.append("    ,private_event_ind = UPPER(?)\n");
+        sql.append("    ,event_name = ?\n");
+        sql.append("    ,event_description = ?\n");
+        sql.append("    ,event_keywords = ?\n");
+        sql.append("    ,event_start_datetime = ?\n");
+        sql.append("    ,event_end_datetime = ?\n");
+        sql.append("    ,event_address_line1 = ?\n");
+        sql.append("    ,event_address_line2 = ?\n");
+        sql.append("    ,event_city = ?\n");
+        sql.append("    ,event_state_code = UPPER(?)\n");
+        sql.append("    ,event_postal_code = UPPER(?)\n");
+        sql.append("    ,event_latitude = ?\n");
+        sql.append("    ,event_longitude = ?\n");
+        sql.append("    WHERE event_id = ?\n");
 
-        c = jdbcTemplate.execute(sql,new PreparedStatementCallback<Boolean>(){
-            @Override
-            public Boolean doInPreparedStatement(PreparedStatement ps)
-                    throws SQLException, DataAccessException {
-                if (event.getGroupID() > 0){ps.setInt(1, event.getGroupID());} else {ps.setNull(1, Types.INTEGER);}
-                ps.setString(2, event.getCreateUser());
-                ps.setTimestamp(3,new java.sql.Timestamp(event.getCreateDate().getTime()));
-                ps.setString(4, event.getUpdateUser());
-                ps.setTimestamp(5,new java.sql.Timestamp(event.getUpdateDate().getTime()));
-                if (event.getPrivateEventInd() == null){ps.setNull(6, Types.VARCHAR);} else {ps.setString(6, event.getPrivateEventInd()); }
-                ps.setString(7, event.getEventName());
-                if (event.getEventDescription() == null){ps.setNull(8, Types.VARCHAR);} else {ps.setString(8, event.getEventDescription()); }
-                if (event.getEventKeyword() == null){ps.setNull(9, Types.VARCHAR);} else {ps.setString(9, event.getEventKeyword()); }
-                ps.setTimestamp(10,new java.sql.Timestamp(event.getEventStartDatetime().getTime()));
-                ps.setTimestamp(11,new java.sql.Timestamp(event.getEventEndDatetime().getTime()));
-                if (event.getEventAddressLine1() == null){ps.setNull(12, Types.VARCHAR);} else {ps.setString(12, event.getEventAddressLine1()); }
-                if (event.getEventAddressLine2() == null){ps.setNull(13, Types.VARCHAR);} else {ps.setString(13, event.getEventAddressLine2()); }
-                if (event.getEventCity() == null){ps.setNull(14, Types.VARCHAR);} else {ps.setString(14, event.getEventCity()); }
-                if (event.getEventStateCode() == null){ps.setNull(15, Types.VARCHAR);} else {ps.setString(15, event.getEventStateCode()); }
-                if (event.getEventPostalCode() == null){ps.setNull(16, Types.VARCHAR);} else {ps.setString(16, event.getEventPostalCode()); }
-                if (event.getEventLatitude() > 0){ps.setInt(17, event.getEventLatitude());} else {ps.setNull(17, Types.INTEGER);}
-                if (event.getEventLongitude()> 0){ps.setInt(18, event.getEventLongitude());} else {ps.setNull(18, Types.INTEGER);}
-                if (event.getEventID() > 0){ps.setInt(19, event.getEventID());} else {ps.setNull(19, Types.INTEGER);}
-                return ps.execute();
-            }
-        });
+        jdbcTemplate.update(sql.toString(), new Object[]{event.getGroupID(),"FLOCK_DEV_USER", event.getPrivateEventInd(), event.getEventName(), event.getEventDescription(),
+        event.getEventKeywords(), event.getEventStartDatetime(), event.getEventEndDatetime(), event.getEventAddressLine1(), event.getEventAddressLine2(),
+                event.getEventCity(), event.getEventStateCode(),event.getEventPostalCode(), event.getEventLatitude(),event.getEventLongitude(), event.getEventID()});
+    }
+
+
+
+    @Override
+    public List<RefState> getRefStateList(){
+
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+        String sql = "SELECT state_code, state_name, concat(state_code, '-', state_name) AS state_code_and_name " +
+                "  FROM t_ref_state " +
+                " ORDER BY state_code";
+        List refStateList = jdbcTemplate.query(sql, new RefStateRowMapper());
+
+        return refStateList;
     }
 
     @Override

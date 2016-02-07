@@ -11,14 +11,15 @@
 <html>
 
 <head>
-    <c:choose>
-        <c:when test="${empty event}">
+    <%--<c:choose>
+        <c:when test="${event.eventID == 0}">
             <title>New Event</title>
         </c:when>
         <c:otherwise>
             <title>View Event</title>
         </c:otherwise>
-    </c:choose>
+    </c:choose>--%>
+    <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
     <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" media="screen"
@@ -40,22 +41,33 @@
 
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
 
-    <script type="text/javascript">
+<script type="text/javascript">
+function calcLatLng() {
+    var geocoder = new google.maps.Geocoder();
+    var address = $("#eventAddressLine1").val()+" "+ $("#eventAddressLine2").val()+" "+$("#eventCity").val()+" "+$("#eventStateCode").val()+" "+$("#eventPostalCode").val()
+    geocoder.geocode({'address': address}, function (results, status) {
 
-        var geocoder = new google.maps.Geocoder();
-        var address = "6314 SHADY BROOK LANE DALLAS TX 75206";
+        if (status == google.maps.GeocoderStatus.OK) {
+            var latitude = results[0].geometry.location.lat();
+            var longitude = results[0].geometry.location.lng();
 
-        geocoder.geocode( { 'address': address}, function(results, status) {
-
-            if (status == google.maps.GeocoderStatus.OK) {
-                var latitude = results[0].geometry.location.lat();
-                var longitude = results[0].geometry.location.lng();
-                alert(latitude);
-                alert(longitude);
+            $("#eventLatitude").val(latitude.toFixed(6));
+            $("#eventLongitude").val(longitude.toFixed(6));
             }
         });
-    </script>
+}
+            $(document).ready(function(){
+                $("input").change(function(){
+                    if( $("#eventAddressLine1").val() !== "" && $("#eventCity").val()  !== "" && $("#eventStateCode").val()  !== "" && $("#eventPostalCode").val() !== "")
+                        calcLatLng();
+                    else{
+                        $("#eventLatitude").val("");
+                        $("#eventLongitude").val("");
+                    }
+                });
+        });
 
+</script>
     <style>
         .header {
             background-color:darkorange;
@@ -90,6 +102,10 @@
             height: 40px;
             padding:5px;
         }
+        form.mainForm input, textarea {
+            width: 400px;
+            heigth: 50px;
+        }
     </style>
     </head>
 
@@ -105,50 +121,29 @@
 
             <table width="100%" style="margin: auto;">
                 <tr>
-                    <th><a href="/">Home</a></th>
-                    <th><a href="/product/list?searchString=">Products</a></th>
-                    <th>
-                        <security:authorize access="! isAuthenticated()">
-                            <a href="<c:url value="/signIn" />">Sign In</a>
-                        </security:authorize>
-                    </th>
                     <th><a href="/">About Us</a></th>
                     <th><a href="/">Contact Us</a></th>
                     <th>
                         <security:authorize access="isAuthenticated()">
-                            Hello ${sessionScope.customer.firstName}!
-                            <c:set var="userID">
-                                <security:authentication property="principal.userId" />
-                            </c:set>
-                            <a href="<c:url value="/customer/viewProfile?customerID=${userID}" />"><br>View Account</a>
+                            Hello<br>${sessionScope.userFirstName}!
                         </security:authorize>
                     </th>
                     <th>
                         <security:authorize access="isAuthenticated()">
-                            Not ${sessionScope.customer.firstName}?
+                            Not ${sessionScope.userFirstName}?
                             <a href="<c:url value="/signOut" />"><br>Sign Out</a>
                         </security:authorize>
                     </th>
-                    <c:if test="${sessionScope.order.orderLineCount>0}"><th><a href="/shoppingCart/viewCart?orderID=${sessionScope.order.orderID}">View Cart(${sessionScope.order.orderLineCount})</a></th></c:if>
                 </tr>
             </table>
 
         </div>
+
+
         <div class="section">
-            <form:form class="mainForm" method="post" action="/groupEventDetail/submit" modelAttribute="event">
+            <form:form class="mainForm" method="post" action="/admin/group/event/Details/submit" modelAttribute="event">
                 <form:hidden path="eventID" value="${event.eventID}"/>
                 <form:hidden path="groupID" value="${event.groupID}"/>
-
-                <form:hidden path="createUser" value="${event.createUser}"/>
-<%--
-                <form:hidden path="createDate" value="${event.createDate}"/>
---%>
-                <form:hidden path="updateUser" value="${event.updateUser}"/>
-<%--
-                <form:hidden path="updateDate" value="${event.updateDate}"/>
---%>
-
-                <legend>Event</legend>
                 <table class="mainTable" style="margin: auto;">
                     <tr>
                         <td>Event Name</td>
@@ -158,20 +153,21 @@
                     <tr>
                         <td>Event Description</td>
                         <td>:</td>
-                        <td><form:input path="eventDescription" value="${event.eventDescription}" required="true" maxlength="4" title="Maximum 4 characters"/></td>
+                        <td><form:textarea path="eventDescription" value="${event.eventDescription}" required="true" /></td>
                     </tr>
                     <tr>
-                        <td>Event Start</td>
+                        <td>Event Start Date</td>
                         <td>:</td>
                         <td>
+                            <fmt:formatDate value="${event.eventStartDatetime}" type="date" pattern="MM/dd/yyyy hh:mm a" var="FormattedStartDate" />
                             <div id="datetimepicker2" class="input-append date">
-                                <form:input path="eventStartDatetime" value="${event.eventStartDatetime}"  autocomplete="off"/>
-                          <span class="add-on">
+                                <form:input path="eventStartDatetime" autocomplete="off" value="${FormattedStartDate}"/>
+                            <span class="add-on">
                             <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
                           </span>
                                 <script type="text/javascript">
                                     $('#datetimepicker2').datetimepicker({
-                                        format: 'dd/MM/yyyy HH:mm PP',
+                                        format: 'MM/dd/yyyy HH:mm PP',
                                         language: 'en',
                                         pick12HourFormat: true
                                     });
@@ -179,18 +175,19 @@
                             </div>
                         </td>
                     </tr>
-                    <tr>
-                        <td>Event End</td>
+                   <tr>
+                        <td>Event End Date</td>
                         <td>:</td>
                         <td>
+                            <fmt:formatDate value="${event.eventEndDatetime}" type="date" pattern="MM/dd/yyyy hh:mm a" var="FormattedEndDate" />
                             <div id="datetimepicker3" class="input-append date">
-                                <form:input path="eventEndDatetime" value="${event.eventEndDatetime}"  autocomplete="off"/>
+                                <form:input path="eventEndDatetime" value="${FormattedEndDate}"  autocomplete="off"/>
                           <span class="add-on">
                             <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
                           </span>
                                 <script type="text/javascript">
                                     $('#datetimepicker3').datetimepicker({
-                                        format: 'dd/MM/yyyy HH:mm PP',
+                                        format: 'MM/dd/yyyy HH:mm PP',
                                         language: 'en',
                                         pick12HourFormat: true
                                     });
@@ -198,78 +195,61 @@
                             </div>
                         </td>
                     </tr>
-
-<%--
                     <tr>
-                        <td>EventModel Start</td>
+                        <td>Event Keywords</td>
                         <td>:</td>
-                        <td><form:input path="eventStartDatetime" value="${event.eventStartDatetime}"  autocomplete="off"/></td> &lt;%&ndash;required="true"&ndash;%&gt;
+                        <td><form:textarea path="eventKeywords" value="${event.eventKeywords}"/></td>
                     </tr>
-                    <tr>
-                        <td>EventModel End</td>
-                        <td>:</td>
-                        <td><form:input path="eventEndDatetime" value="${event.eventEndDatetime}"  autocomplete="off"/></td>
-                    </tr>
---%>
---%>
-<%--
-                    <tr>
-                        <td class="labelTextarea"><label >EventModel Keywords:</label></td>
-                        <td><textarea rows="4" cols="50" id="id" type="text" path="eventKeywords"></textarea></td>
-                    </tr>
---%>
                     <tr>
                         <td>Event Address Line 1</td>
                         <td>:</td>
-                        <td><form:input path="eventAddressLine1" value="${event.eventAddressLine1}" title="Maximum 200 characters"/></td>
+                        <td><form:input id="eventAddressLine1" path="eventAddressLine1" value="${event.eventAddressLine1}" title="Maximum 200 characters"/></td>
                     </tr>
                     <tr>
                         <td>Event Address Line 2</td>
                         <td>:</td>
-                        <td><form:input path="eventAddressLine2" value="${event.eventAddressLine2}" title="Maximum 200 characters"/></td>
+                        <td><form:input id="eventAddressLine2" path="eventAddressLine2" value="${event.eventAddressLine2}" title="Maximum 200 characters"/></td>
                     </tr>
                     <tr>
                         <td>Event City</td>
                         <td>:</td>
-                        <td><form:input path="eventCity" value="${event.eventCity}" title="Maximum 100 characters"/></td>
+                        <td><form:input id="eventCity" path="eventCity" value="${event.eventCity}" title="Maximum 100 characters"/></td>
                     </tr>
                     <tr>
                         <td>Event State Code</td>
                         <td>:</td>
                         <td>
-                            <form:select path="eventStateCode" >
+                            <form:select id="eventStateCode" path="eventStateCode" >
                                 <form:option value="${event.eventStateCode}" label="${event.eventStateCode}"/>
-                                <form:options items="${addressStateList}" itemValue="stateCode" itemLabel="stateCodeAndName"/>
+                                <form:options items="${refStateList}" itemValue="stateCode" itemLabel="stateCodeAndName"/>
                             </form:select>
                         </td>
                     </tr>
                     <tr>
                         <td>Event Postal Code</td>
                         <td>:</td>
-                        <td><form:input path="eventPostalCode" value="${event.eventPostalCode}" title="Maximum 100 characters"/></td>
+                        <td><form:input id="eventPostalCode" path="eventPostalCode" value="${event.eventPostalCode}" title="Maximum 100 characters"/></td>
                     </tr>
                     <tr>
                         <td>Event Latitude</td>
                         <td>:</td>
-                        <td><form:input path="eventLatitude" value="${event.eventLatitude}" autocomplete="off" maxlength="20"/></td>
+                        <td><form:input id="eventLatitude" path="eventLatitude" value="${event.eventLatitude}" autocomplete="off" maxlength="20"/></td>
                     </tr>
                     <tr>
                         <td>Event Longitude</td>
                         <td>:</td>
-                        <td><form:input path="eventLongitude" value="${event.eventLongitude}" autocomplete="off" maxlength="20"/></td>
+                        <td><form:input id="eventLongitude" path="eventLongitude" value="${event.eventLongitude}" autocomplete="off" maxlength="20"/></td>
                     </tr>
-<%--
                     <tr>
                         <td></td>
                         <td></td>
-                        <td><form:checkbox cssStyle="width: 50px;" path="privateEventInd" value="N"/>Private EventModel</td>
+                        <td><form:checkbox  cssStyle="width: 50px;" path="privateEventInd" value="Y"/>Private </td>
                     </tr>
---%>
                     <tr>
                         <td></td>
                     </tr>
                     <tr>
-                        <td><input type="button" value="Cancel" onclick="location.href='/customer/viewProfile?customerID=${customerPaymentCard.customerID}'" title="Cancel and go back to your profile"></td>
+                        <td><input type="button" value="Cancel" onclick="location.href='/admin/group/details?groupId=${event.groupID}'" title="Cancel and go back event list"></td>
                         <td></td>
                         <td><input type="submit" value="Save" title="event detail"/></td>
                     </tr>

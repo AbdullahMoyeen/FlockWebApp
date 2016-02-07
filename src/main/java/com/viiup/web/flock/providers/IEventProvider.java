@@ -1,8 +1,6 @@
 package com.viiup.web.flock.providers;
 
-import com.viiup.web.flock.models.EventModel;
-import com.viiup.web.flock.models.Order;
-import com.viiup.web.flock.models.ShippingSpeed;
+import com.viiup.web.flock.models.*;
 
 import java.util.List;
 
@@ -13,6 +11,8 @@ public interface IEventProvider {
     void insertEvent(EventModel event);
     void updateEvent(EventModel event);
     EventModel getEventByEventID(int eventID);
+
+    List<RefState> getRefStateList();
 
     int insertOrder(Order order);
     List<ShippingSpeed> getShippingSpeedList();

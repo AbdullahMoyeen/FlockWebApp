@@ -20,8 +20,8 @@ public class EventModel {
     private String eventStateCode;
     private String eventPostalCode;
     private String eventKeywords;
-    private int eventLatitude;
-    private int eventLongitude;
+    private float eventLatitude;
+    private float eventLongitude;
     private String privateEventInd;
     private String createUser;
     private Date createDate;
@@ -62,7 +62,7 @@ public class EventModel {
     public Date getEventEndDatetime() {
         return eventEndDatetime;
     }
-    public void seteventEndDatetime(Date eventEndDatetime) {
+    public void setEventEndDatetime(Date eventEndDatetime) {
         this.eventEndDatetime = eventEndDatetime;
     }
 
@@ -100,16 +100,16 @@ public class EventModel {
         this.eventPostalCode = eventPostalCode;
     }
 
-    public String getEventKeyword() { return eventKeywords;    }
+    public String getEventKeywords() { return eventKeywords;    }
     public void setEventKeywords(String eventKeywords) {
         this.eventKeywords = eventKeywords;
     }
 
-    public int getEventLatitude() { return eventLatitude; }
-    public void setEventLatitude(int eventLatitude) { this.eventLatitude = eventLatitude ; }
+    public float getEventLatitude() { return eventLatitude; }
+    public void setEventLatitude(float eventLatitude) { this.eventLatitude = eventLatitude ; }
 
-    public int getEventLongitude() { return eventLongitude; }
-    public void setEventLongitude(int eventLongitude) { this.eventLongitude = eventLongitude;}
+    public float getEventLongitude() { return eventLongitude; }
+    public void setEventLongitude(float eventLongitude) { this.eventLongitude = eventLongitude;}
 
     public String getPrivateEventInd() { return privateEventInd; }
     public void setPrivateEventInd(String privateEventInd) {
