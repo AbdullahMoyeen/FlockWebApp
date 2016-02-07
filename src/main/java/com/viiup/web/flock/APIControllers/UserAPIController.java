@@ -1,7 +1,7 @@
 package com.viiup.web.flock.APIControllers;
 
-import com.viiup.web.flock.models.Customer;
 import com.viiup.web.flock.models.UserModel;
+import com.viiup.web.flock.models.UserPasswordChangeModel;
 import com.viiup.web.flock.services.IBaseService;
 import com.viiup.web.flock.services.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,36 +23,30 @@ public class UserAPIController {
     IBaseService baseService;
 
     @RequestMapping(value = "/api/admin/user/profile", method = RequestMethod.PUT)
-    public ResponseEntity<Customer> userUpdateProfile(@RequestBody Customer customer) {
+    public ResponseEntity<UserModel> userUpdateProfile(@RequestBody UserModel user) {
         // Update user profile
-        userService.updateCustomerProfile(customer);
+//        userService.updateCustomerProfile(customer);
 
         // Get the updated user and return to caller
-        customer = userService.getCustomerByCustomerID(customer.getCustomerID());
+        user = userService.getUserByUserId(user.getUserId());
 
-        return new ResponseEntity<Customer>(customer, HttpStatus.OK);
+        return new ResponseEntity<UserModel>(user, HttpStatus.OK);
 
     }
 
     @RequestMapping(value = "/api/admin/user/password", method = RequestMethod.PUT)
-    public ResponseEntity<Void> userUpdatePassword(@RequestBody Customer customer) {
+    public ResponseEntity<Void> userUpdatePassword(@RequestBody UserPasswordChangeModel userPassword) throws Exception {
         // Update user password
-        userService.updateCustomerPassword(customer);
+        userService.changeUserPassword(userPassword);
 
         // Return response OK
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     @RequestMapping(value = "/api/admin/account", method = RequestMethod.POST)
-    public ResponseEntity<Customer> createAccount(@ModelAttribute Customer customer) {
+    public ResponseEntity<UserModel> createAccount(@ModelAttribute UserModel user) throws Exception {
 
-        // Check if an account already exists for this email
-        if(baseService.accountExistsForEmail(customer.getEmailAddress())) {
-            return new ResponseEntity<Customer>(HttpStatus.CONFLICT);
-        }
-        else {
-            baseService.signUpCustomer(customer);
-            return new ResponseEntity<Customer>(customer,HttpStatus.OK);
-        }
+            baseService.signUp(user);
+            return new ResponseEntity<UserModel>(user,HttpStatus.OK);
     }
 }
