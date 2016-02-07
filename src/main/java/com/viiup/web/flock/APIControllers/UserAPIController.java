@@ -1,6 +1,7 @@
 package com.viiup.web.flock.APIControllers;
 
 import com.viiup.web.flock.models.Customer;
+import com.viiup.web.flock.models.UserModel;
 import com.viiup.web.flock.services.IBaseService;
 import com.viiup.web.flock.services.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
