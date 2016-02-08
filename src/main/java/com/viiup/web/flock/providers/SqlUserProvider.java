@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import javax.sql.DataSource;
 
 /**
- * Created by amoyeen on 2/20/2015.
+ * Created by amoyeen on 1/25/2016.
  */
 @Service
 public class SqlUserProvider implements IUserProvider {

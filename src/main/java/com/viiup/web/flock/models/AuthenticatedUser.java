@@ -5,7 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 /**
- * Created by amoyeen on 2/23/2015.
+ * Created by amoyeen on 1/26/2016.
  */
 public class AuthenticatedUser implements UserDetails {
 

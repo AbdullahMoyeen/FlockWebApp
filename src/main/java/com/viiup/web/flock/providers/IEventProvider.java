@@ -5,7 +5,7 @@ import com.viiup.web.flock.models.*;
 import java.util.List;
 
 /**
- * Created by HP on 2/23/2015.
+ * Created by HP on 1/27/2016.
  */
 public interface IEventProvider {
 

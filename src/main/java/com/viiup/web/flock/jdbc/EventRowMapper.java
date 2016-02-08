@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Created by HP on 2/25/2015.
+ * Created by MP on 1/25/2016.
  */
 public class EventRowMapper implements RowMapper<EventModel> {
 
