@@ -145,7 +145,7 @@
 
         <div class="section">
 
-            <form:form class="mainForm" method="post" action="/admin/group/event/Details/submit" modelAttribute="event">
+            <form:form class="mainForm" method="post" action="/admin/group/event/details/submit" modelAttribute="event">
                 <form:hidden path="eventId" value="${event.eventId}"/>
                 <form:hidden path="groupId" value="${event.groupId}"/>
                 <table class="mainTable" style="margin: auto;">
