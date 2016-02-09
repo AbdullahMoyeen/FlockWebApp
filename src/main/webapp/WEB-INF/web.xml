@@ -18,7 +18,12 @@
 
     <error-page>
         <error-code>403</error-code>
-        <location>/?accessDenied=true</location>
+        <location>/displayMessage?accessDenied=true</location>
+    </error-page>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/displayMessage?pageNotFound=true</location>
     </error-page>
 
     <!-- Application Context -->

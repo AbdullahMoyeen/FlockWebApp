@@ -126,6 +126,18 @@
             </div>
         </c:if>
 
+        <c:if test="${param.accessDenied == 'true'}">
+            <div class="error" style="text-align: center">
+                <br>You are not an admin<br><br>Access to admin tools is denied!
+            </div>
+        </c:if>
+
+        <c:if test="${param.pageNotFound == 'true'}">
+            <div class="error" style="text-align: center">
+                <br>Sorry! Dead End...
+            </div>
+        </c:if>
+
         <c:if test="${param.messageCode == 'passwordChangeSuccess'}">
             <div class="info" style="text-align: center">
                 <br>Password change successful

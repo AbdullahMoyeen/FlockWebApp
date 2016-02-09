@@ -16,9 +16,6 @@ public class BaseService implements IBaseService {
     @Autowired
     IBaseBusinessLayer baseBusinessLayer;
 
-    @Autowired
-    IBaseProvider baseProvider;
-
     @Override
     public void signUp(UserModel user) throws Exception{
         baseBusinessLayer.signUp(user);

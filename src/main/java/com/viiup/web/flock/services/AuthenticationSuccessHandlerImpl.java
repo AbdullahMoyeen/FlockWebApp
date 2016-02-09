@@ -28,9 +28,6 @@ public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHa
     @Autowired
     IUserService userService;
 
-    @Autowired
-    IEventService eventService;
-
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest,
                                         HttpServletResponse httpServletResponse,

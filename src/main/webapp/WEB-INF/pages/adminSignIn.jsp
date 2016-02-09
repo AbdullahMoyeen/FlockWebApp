@@ -120,12 +120,6 @@
                 </div>
             </c:if>
 
-            <c:if test="${param.accessDenied == 'true'}">
-                <div class="error" style="text-align: center">
-                    <br>Access Denied!
-                </div>
-            </c:if>
-
             <c:if test="${param.passwordReset == 'true'}">
                 <div class="info" style="text-align: center">
                     <br>Password reset successful<br><br>Please sign in

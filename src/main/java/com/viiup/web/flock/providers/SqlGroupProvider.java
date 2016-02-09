@@ -85,10 +85,7 @@ public class SqlGroupProvider implements IGroupProvider {
 
             int groupAdminCount = jdbcTemplate.queryForObject(sql.toString(), new Object[] { groupId, userId }, Integer.class);
 
-            if(groupAdminCount > 0)
-                return true;
-            else
-                return false;
+        return groupAdminCount > 0;
     }
 
     @Override
