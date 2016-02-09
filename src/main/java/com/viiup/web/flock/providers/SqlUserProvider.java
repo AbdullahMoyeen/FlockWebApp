@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.viiup.web.flock.jdbc.*;
 import com.viiup.web.flock.models.*;
+import com.viiup.web.flock.providers.interfaces.IUserProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Service;
 import javax.sql.DataSource;
 
 /**
- * Created by amoyeen on 1/25/2016.
+ * Created by AbdullahMoyeen on 1/25/2016.
  */
 @Service
 public class SqlUserProvider implements IUserProvider {

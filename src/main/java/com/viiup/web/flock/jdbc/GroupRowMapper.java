@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Created by amoyeen on 1/25/2016.
+ * Created by AbdullahMoyeen on 1/25/2016.
  */
 public class GroupRowMapper implements RowMapper<GroupModel> {
     @Override

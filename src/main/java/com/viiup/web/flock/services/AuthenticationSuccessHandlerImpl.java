@@ -2,6 +2,8 @@ package com.viiup.web.flock.services;
 
 import com.viiup.web.flock.models.AuthenticatedUser;
 import com.viiup.web.flock.models.UserModel;
+import com.viiup.web.flock.services.interfaces.IEventService;
+import com.viiup.web.flock.services.interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,7 +18,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
- * Created by amoyeen on 3/22/15.
+ * Created by AbdullahMoyeen on 1/22/2016.
  */
 @Service
 public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHandler {

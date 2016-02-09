@@ -1,14 +1,14 @@
 package com.viiup.web.flock.services;
 
-import com.viiup.web.flock.businessLayer.IBaseBusinessLayer;
-import com.viiup.web.flock.providers.IBaseProvider;
+import com.viiup.web.flock.businessLayer.interfaces.IBaseBusinessLayer;
+import com.viiup.web.flock.providers.interfaces.IBaseProvider;
 import com.viiup.web.flock.models.*;
+import com.viiup.web.flock.services.interfaces.IBaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.List;
 
 /**
- * Created by amoyeen on 1/27/2016.
+ * Created by AbdullahMoyeen on 1/27/2016.
  */
 @Service
 public class BaseService implements IBaseService {

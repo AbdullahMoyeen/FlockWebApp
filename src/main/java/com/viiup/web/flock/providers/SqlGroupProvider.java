@@ -4,6 +4,7 @@ import com.viiup.web.flock.jdbc.*;
 import com.viiup.web.flock.models.EventModel;
 import com.viiup.web.flock.models.GroupModel;
 import com.viiup.web.flock.models.GroupUserModel;
+import com.viiup.web.flock.providers.interfaces.IGroupProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,7 +14,7 @@ import javax.sql.DataSource;
 import java.util.List;
 
 /**
- * Created by amoyeen on 3/1/15.
+ * Created by AbdullahMoyeen on 2/1/2016.
  */
 @Service
 public class SqlGroupProvider implements IGroupProvider {

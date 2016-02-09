@@ -1,7 +1,8 @@
 package com.viiup.web.flock.services;
 
 import com.viiup.web.flock.models.*;
-import com.viiup.web.flock.providers.IGroupProvider;
+import com.viiup.web.flock.providers.interfaces.IGroupProvider;
+import com.viiup.web.flock.services.interfaces.IGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Created by amoyeen on 3/1/15.
+ * Created by AbdullahMoyeen on 2/1/2016.
  */
 
 @Service("groupService")

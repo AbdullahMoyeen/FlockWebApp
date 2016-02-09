@@ -1,15 +1,12 @@
 package com.viiup.web.flock.services;
 
-import com.viiup.web.flock.models.*;
-import com.viiup.web.flock.providers.IBaseProvider;
-import com.viiup.web.flock.providers.IEmailProvider;
+import com.viiup.web.flock.providers.interfaces.IEmailProvider;
+import com.viiup.web.flock.services.interfaces.IEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 /**
- * Created by amoyeen on 1/27/2016.
+ * Created by AbdullahMoyeen on 1/27/2016.
  */
 @Service
 public class EmailService implements IEmailService {

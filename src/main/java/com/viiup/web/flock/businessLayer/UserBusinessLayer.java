@@ -1,9 +1,10 @@
 package com.viiup.web.flock.businessLayer;
 
+import com.viiup.web.flock.businessLayer.interfaces.IUserBusinessLayer;
 import com.viiup.web.flock.models.UserModel;
 import com.viiup.web.flock.models.UserPasswordChangeModel;
 import com.viiup.web.flock.models.UserRoleModel;
-import com.viiup.web.flock.providers.IUserProvider;
+import com.viiup.web.flock.providers.interfaces.IUserProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

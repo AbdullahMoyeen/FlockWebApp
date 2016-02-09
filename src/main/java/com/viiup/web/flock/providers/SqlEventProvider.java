@@ -2,6 +2,7 @@ package com.viiup.web.flock.providers;
 
 import com.viiup.web.flock.jdbc.*;
 import com.viiup.web.flock.models.*;
+import com.viiup.web.flock.providers.interfaces.IEventProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
