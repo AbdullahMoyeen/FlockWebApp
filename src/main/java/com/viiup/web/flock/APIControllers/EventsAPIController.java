@@ -1,7 +1,7 @@
 package com.viiup.web.flock.APIControllers;
 
 import com.viiup.web.flock.models.EventModel;
-import com.viiup.web.flock.services.IEventService;
+import com.viiup.web.flock.services.interfaces.IEventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

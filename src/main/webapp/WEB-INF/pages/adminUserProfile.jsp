@@ -1,7 +1,7 @@
 <%--
   Created by IntelliJ IDEA.
-  User: amoyeen
-  Date: 2/17/2015
+  User: AbdullahMoyeen
+  Date: 2/4/2016
   Time: 5:35 PM
   To change this template use File | Settings | File Templates.
 --%>
@@ -124,25 +124,17 @@
                     <tr>
                         <th>First Name</th>
                         <td>:</td>
-                        <td><form:input path="firstName" value="${user.firstName}"/></td>
+                        <td style="text-align: left;">${user.firstName}</td>
                     </tr>
                     <tr>
                         <th>Last Name</th>
                         <td>:</td>
-                        <td><form:input path="lastName" value="${user.lastName}"/></td>
+                        <td style="text-align: left;">${user.lastName}</td>
                     </tr>
                     <tr>
                         <th>Email Address</th>
                         <td>:</td>
                         <td style="text-align: left;">${user.emailAddress}</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td><input type="reset" value="Cancel Changes" title="Cancel changes to your profile"/></td>
-                        <td></td>
-                        <td><input type="submit" value="Save Changes" title="Save changes to your profile"/></td>
                     </tr>
                 </table>
             </form:form>

@@ -1,10 +1,9 @@
 package com.viiup.web.flock.services;
 
-import com.viiup.web.flock.businessLayer.IUserBusinessLayer;
+import com.viiup.web.flock.businessLayer.interfaces.IUserBusinessLayer;
 import com.viiup.web.flock.models.AuthenticatedUser;
 import com.viiup.web.flock.models.UserModel;
 import com.viiup.web.flock.models.UserRoleModel;
-import com.viiup.web.flock.providers.IUserProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by amoyeen on 2/23/2015.
+ * Created by AbdullahMoyeen on 1/26/2016.
  */
 @Service("userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {

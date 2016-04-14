@@ -1,7 +1,7 @@
 <%--
   Created by IntelliJ IDEA.
-  User: amoyeen
-  Date: 2/21/15
+  User: AbdullahMoyeen
+  Date: 2/1/16
   Time: 2:57 PM
   To change this template use File | Settings | File Templates.
 --%>
@@ -62,12 +62,6 @@
                 font-size: x-large;
                 color: red;
             }
-            .info {
-                font-weight: bold;
-                font-size: x-large;
-                color: green;
-                text-align: center;
-            }
         </style>
 
     </head>
@@ -114,7 +108,7 @@
         <div class="section">
 
             <c:if test="${param.loginAttempt == 'true'}">
-                <div class="info" style="text-align: center">
+                <div class="error" style="text-align: center">
                     <br>Password has expired<br><br>Please change now
                 </div>
             </c:if>

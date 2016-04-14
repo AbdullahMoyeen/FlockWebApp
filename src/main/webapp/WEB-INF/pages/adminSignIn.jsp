@@ -1,7 +1,7 @@
 <%--
   Created by IntelliJ IDEA.
-  User: amoyeen
-  Date: 2/21/15
+  User: AbdullahMoyeen
+  Date: 2/1/16
   Time: 2:57 PM
   To change this template use File | Settings | File Templates.
 --%>
@@ -117,12 +117,6 @@
             <c:if test="${param.loginError == 'true'}">
                 <div class="error" style="text-align: center">
                     <br>Login failed, please try again<br>or<br>Click "Forgot Password" to restore access
-                </div>
-            </c:if>
-
-            <c:if test="${param.accessDenied == 'true'}">
-                <div class="error" style="text-align: center">
-                    <br>Access Denied!
                 </div>
             </c:if>
 

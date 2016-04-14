@@ -1,11 +1,11 @@
-package com.viiup.web.flock.providers;
+package com.viiup.web.flock.providers.interfaces;
 
 import com.viiup.web.flock.models.*;
 
 import java.util.List;
 
 /**
- * Created by amoyeen on 2/26/2015.
+ * Created by AbdullahMoyeen on 1/27/2016.
  */
 public interface IEmailProvider {
 

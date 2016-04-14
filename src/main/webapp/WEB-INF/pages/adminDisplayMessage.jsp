@@ -1,7 +1,7 @@
 <%--
   Created by IntelliJ IDEA.
-  User: amoyeen
-  Date: 2/21/15
+  User: AbdullahMoyeen
+  Date: 2/5/16
   Time: 2:57 PM
   To change this template use File | Settings | File Templates.
 --%>
@@ -123,6 +123,18 @@
         <c:if test="${param.messageCode == 'tempChangeSuccess'}">
             <div class="info" style="text-align: center">
                 <br>Password change successful<br><br>Please sign in
+            </div>
+        </c:if>
+
+        <c:if test="${param.accessDenied == 'true'}">
+            <div class="error" style="text-align: center">
+                <br>You are not an admin<br><br>Access to admin tools is denied!
+            </div>
+        </c:if>
+
+        <c:if test="${param.pageNotFound == 'true'}">
+            <div class="error" style="text-align: center">
+                <br>Sorry! Dead End...
             </div>
         </c:if>
 

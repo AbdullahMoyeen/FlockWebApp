@@ -1,4 +1,4 @@
-package com.viiup.web.flock.businessLayer;
+package com.viiup.web.flock.businessLayer.interfaces;
 
 import com.viiup.web.flock.models.UserModel;
 import com.viiup.web.flock.models.UserPasswordChangeModel;

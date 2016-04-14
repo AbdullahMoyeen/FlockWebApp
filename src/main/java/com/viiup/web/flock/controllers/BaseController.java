@@ -1,26 +1,19 @@
 package com.viiup.web.flock.controllers;
 
 import com.viiup.web.flock.models.*;
-import com.viiup.web.flock.services.IBaseService;
-import com.viiup.web.flock.services.IEmailService;
-import com.viiup.web.flock.services.IUserService;
-import com.viiup.web.flock.services.IEventService;
+import com.viiup.web.flock.services.interfaces.IBaseService;
+import com.viiup.web.flock.services.interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 /**
- * Created by amoyeen on 2/20/2015.
+ * Created by AbdullahMoyeen on 1/27/2016.
  */
 @Controller
 public class BaseController {

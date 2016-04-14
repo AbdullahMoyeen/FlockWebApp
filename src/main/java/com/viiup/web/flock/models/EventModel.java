@@ -3,7 +3,7 @@ package com.viiup.web.flock.models;
 import java.util.Date;
 
 /**
- * Created by HP on 2/23/2015.
+ * Created by MP on 1/27/2016.
  */
 public class EventModel {
     private int eventId;

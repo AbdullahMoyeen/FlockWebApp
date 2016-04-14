@@ -1,31 +1,22 @@
 package com.viiup.web.flock.providers;
 
-import com.viiup.web.flock.jdbc.*;
-import com.viiup.web.flock.models.*;
+import com.viiup.web.flock.providers.interfaces.IBaseProvider;
+import com.viiup.web.flock.providers.interfaces.IUserProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailSender;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
 import java.security.SecureRandom;
-import java.util.List;
 
 /**
- * Created by amoyeen on 2/26/2015.
+ * Created by AbdullahMoyeen on 1/27/2016.
  */
 @Service
 public class SqlBaseProvider implements IBaseProvider {
 
     @Autowired
     DataSource dataSource;
-
-    @Autowired
-    IUserProvider userProvider;
 
     private static final char[] PASSWORD_VALID_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456879!@#$".toCharArray();
     private static final int PASSWORD_TEMP_LENGTH = 8;

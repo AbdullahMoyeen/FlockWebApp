@@ -1,12 +1,12 @@
 package com.viiup.web.flock.businessLayer;
 
+import com.viiup.web.flock.businessLayer.interfaces.IBaseBusinessLayer;
 import com.viiup.web.flock.models.UserModel;
 import com.viiup.web.flock.models.UserPasswordChangeModel;
 import com.viiup.web.flock.models.UserRoleModel;
-import com.viiup.web.flock.providers.IBaseProvider;
-import com.viiup.web.flock.providers.IEmailProvider;
-import com.viiup.web.flock.providers.IUserProvider;
-import com.viiup.web.flock.providers.SpringEmailProvider;
+import com.viiup.web.flock.providers.interfaces.IBaseProvider;
+import com.viiup.web.flock.providers.interfaces.IEmailProvider;
+import com.viiup.web.flock.providers.interfaces.IUserProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,13 +1,15 @@
-package com.viiup.web.flock.services;
+package com.viiup.web.flock.businessLayer.interfaces;
 
-import com.viiup.web.flock.models.*;
+import com.viiup.web.flock.models.EventModel;
+import com.viiup.web.flock.models.GroupModel;
+import com.viiup.web.flock.models.GroupUserModel;
 
 import java.util.List;
 
 /**
- * Created by amoyeen on 3/1/15.
+ * Created by AbdullahMoyeen on 2/5/16.
  */
-public interface IGroupService {
+public interface IGroupBusinessLayer {
 
     List<GroupModel> getAdminGroupsByUserId(int userId);
     boolean IsUserAdminOfGroup(int groupId, int userId);

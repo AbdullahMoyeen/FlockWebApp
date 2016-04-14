@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Created by amoyeen on 2/27/15.
+ * Created by AbdullahMoyeen on 1/27/2016.
  */
 public class RefStateExtractor implements ResultSetExtractor<RefStateModel> {
 

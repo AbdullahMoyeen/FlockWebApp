@@ -2,7 +2,7 @@ package com.viiup.web.flock.APIControllers;
 
 import com.viiup.web.flock.models.GroupModel;
 import com.viiup.web.flock.models.GroupUserModel;
-import com.viiup.web.flock.services.IGroupService;
+import com.viiup.web.flock.services.interfaces.IGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

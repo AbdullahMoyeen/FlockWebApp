@@ -1,7 +1,7 @@
 package com.viiup.web.flock.controllers;
 
 import com.viiup.web.flock.models.*;
-import com.viiup.web.flock.services.IGroupService;
+import com.viiup.web.flock.services.interfaces.IGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -12,7 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 /**
- * Created by amoyeen on 3/1/15.
+ * Created by AbdullahMoyeen on 2/1/2016.
  */
 @Controller
 public class GroupController {

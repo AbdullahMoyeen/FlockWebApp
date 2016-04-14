@@ -1,11 +1,11 @@
-package com.viiup.web.flock.services;
+package com.viiup.web.flock.services.interfaces;
 
 import com.viiup.web.flock.models.*;
 
 import java.util.List;
 
 /**
- * Created by amoyeen on 2/26/2015.
+ * Created by AbdullahMoyeen on 1/27/2016.
  */
 public interface IEmailService {
 

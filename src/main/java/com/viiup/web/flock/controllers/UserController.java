@@ -1,7 +1,7 @@
 package com.viiup.web.flock.controllers;
 
 import com.viiup.web.flock.models.*;
-import com.viiup.web.flock.services.IUserService;
+import com.viiup.web.flock.services.interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * Created by amoyeen on 2/24/15.
+ * Created by AbdullahMoyeen on 1/24/2016.
  */
 @Controller
 public class UserController {
