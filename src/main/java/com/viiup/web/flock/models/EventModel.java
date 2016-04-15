@@ -14,6 +14,7 @@ public class EventModel {
     private int groupId;
     private String eventName;
     private String eventDescription;
+    private String eventCategory;
     private Date eventStartDatetime;
     private Date eventEndDatetime;
     private String eventAddressLine1;
@@ -25,6 +26,7 @@ public class EventModel {
     private float eventLatitude;
     private float eventLongitude;
     private boolean privateEvent;
+    private int attendeeCount;
 
     public int getEventId() {
         return eventId;
@@ -88,6 +90,14 @@ public class EventModel {
 
     public void setEventDescription(String eventDescription) {
         this.eventDescription = eventDescription;
+    }
+
+    public String getEventCategory() {
+        return eventCategory;
+    }
+
+    public void setEventCategory(String eventCategory) {
+        this.eventCategory = eventCategory;
     }
 
     public Date getEventStartDatetime() {
@@ -176,5 +186,13 @@ public class EventModel {
 
     public void setPrivateEvent(boolean privateEvent) {
         this.privateEvent = privateEvent;
+    }
+
+    public int getAttendeeCount() {
+        return attendeeCount;
+    }
+
+    public void setAttendeeCount(int attendeeCount) {
+        this.attendeeCount = attendeeCount;
     }
 }
