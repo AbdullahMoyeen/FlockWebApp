@@ -29,8 +29,10 @@ public class EventController {
             event= eventService.getEventByEventId(eventId);
         }
         ModelAndView modelAndView = new ModelAndView("adminGroupEventDetails");
+        List<RefEventCategoryModel> refEventCategoryList = eventService.getRefEventCategoryList();
         List<RefStateModel> refStateList = eventService.getRefStateList();
         modelAndView.addObject("event", event);
+        modelAndView.addObject("refEventCategoryList", refEventCategoryList);
         modelAndView.addObject("refStateList", refStateList);
 
         return modelAndView;
