@@ -9,7 +9,7 @@ public class UserEventModel {
     private boolean isAttending;
     public EventModel event;
 
-    public int getUserId() {
+     public int getUserId() {
         return userId;
     }
 

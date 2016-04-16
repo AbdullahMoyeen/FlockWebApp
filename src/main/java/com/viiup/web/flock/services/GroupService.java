@@ -48,6 +48,11 @@ public class GroupService implements IGroupService {
     }
 
     @Override
+    public List<GroupModel> getGroupsByUserId(int userId){
+        return groupBusinessLayer.getGroupsByUserId(userId);
+    }
+
+    @Override
     public List<GroupUserModel> getGroupUsersByGroupId(int groupId) {
         return groupBusinessLayer.getGroupUsersByGroupId(groupId);
     }
@@ -60,5 +65,10 @@ public class GroupService implements IGroupService {
     @Override
     public void denyGroupMembership(int groupId, int userId) {
         groupBusinessLayer.denyGroupMembership(groupId, userId);
+    }
+
+    @Override
+    public void setGroupMembership(int groupId, int userId, boolean isMember){
+        groupBusinessLayer.setGroupMembership(groupId, userId, isMember );
     }
 }

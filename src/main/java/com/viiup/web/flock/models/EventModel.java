@@ -28,6 +28,7 @@ public class EventModel {
     private boolean privateEvent;
     private int attendeeCount;
 
+
     public int getEventId() {
         return eventId;
     }

@@ -25,6 +25,10 @@ public class GroupBusinessLayer implements IGroupBusinessLayer {
     }
 
     @Override
+    public List<GroupModel> getGroupsByUserId(int userId){ return groupProvider.getGroupsByUserId(userId);
+    }
+
+    @Override
     public boolean IsUserAdminOfGroup(int groupId, int userId) {
         return groupProvider.IsUserAdminOfGroup(groupId, userId);
     }
@@ -57,5 +61,21 @@ public class GroupBusinessLayer implements IGroupBusinessLayer {
     @Override
     public void denyGroupMembership(int groupId, int userId) {
         groupProvider.denyGroupMembership(groupId, userId);
+    }
+
+    @Override
+    public void setGroupMembership( int groupId,int userId, boolean isMember){
+        if (isMember == true){
+            GroupUserModel groupUser = new GroupUserModel();
+
+            groupUser.setUserId(userId);
+            groupUser.setGroupId(groupId);
+            groupUser.setGroupMembershipStatus("P");
+
+            groupProvider.insertGroupUser(groupUser);
+
+        } else
+
+            groupProvider.deleteGroupUser(userId, groupId);
     }
 }

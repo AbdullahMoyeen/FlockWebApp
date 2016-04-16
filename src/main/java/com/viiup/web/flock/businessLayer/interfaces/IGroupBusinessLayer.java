@@ -12,6 +12,9 @@ import java.util.List;
 public interface IGroupBusinessLayer {
 
     List<GroupModel> getAdminGroupsByUserId(int userId);
+
+    List<GroupModel> getGroupsByUserId(int userId);
+
     boolean IsUserAdminOfGroup(int groupId, int userId);
     GroupModel getGroupByGroupId(int groupId);
     GroupModel updateGroup(GroupModel group);
@@ -19,4 +22,6 @@ public interface IGroupBusinessLayer {
     List<GroupUserModel> getGroupUsersByGroupId(int groupId);
     void approveGroupMembership(int groupId, int userId);
     void denyGroupMembership(int groupId, int userId);
+
+    void setGroupMembership(int userId, int groupId, boolean isMember);
 }

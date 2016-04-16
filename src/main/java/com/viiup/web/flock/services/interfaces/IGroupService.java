@@ -14,7 +14,12 @@ public interface IGroupService {
     GroupModel getGroupByGroupId(int groupId);
     GroupModel updateGroup(GroupModel group);
     List<EventModel> getGroupEventsByGroupId(int groupId);
+
+    List<GroupModel> getGroupsByUserId(int userId);
+
     List<GroupUserModel> getGroupUsersByGroupId(int groupId);
     void approveGroupMembership(int groupId, int userId);
     void denyGroupMembership(int groupId, int userId);
+
+    void setGroupMembership(int groupId, int userId, boolean isMember);
 }

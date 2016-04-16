@@ -8,9 +8,15 @@ import com.viiup.web.flock.providers.interfaces.IGroupProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -61,6 +67,52 @@ public class SqlGroupProvider implements IGroupProvider {
         sql.append("                    GROUP BY g.group_id) gec ON g.group_id = gec.group_id\n");
         sql.append(" WHERE gu.group_admin_flag = 'Y'\n");
         sql.append("   AND gu.group_membership_status = 'A'\n");
+        sql.append("   AND gu.user_id = ?");
+
+        List groupList = jdbcTemplate.query(sql.toString(), new Object[]{userId}, new GroupRowMapper());
+
+        return groupList;
+    }
+
+    @Override
+    public List<GroupModel> getGroupsByUserId(int userId){
+
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+        StringBuilder sql =  new StringBuilder();
+
+        sql.append("SELECT g.group_id\n");
+        sql.append("      ,g.create_user\n");
+        sql.append("      ,g.create_date\n");
+        sql.append("      ,g.update_user\n");
+        sql.append("      ,g.update_date\n");
+        sql.append("      ,g.group_name\n");
+        sql.append("      ,g.group_description\n");
+        sql.append("      ,IFNULL(guc.active_user_count, 0) AS active_user_count\n");
+        sql.append("      ,IFNULL(guc.pending_user_count, 0) AS pending_user_count\n");
+        sql.append("      ,IFNULL(gec.upcoming_event_count, 0) AS upcoming_event_count\n");
+        sql.append("  FROM t_group g\n");
+        sql.append("  JOIN t_group_user gu ON g.group_id = gu.group_id\n");
+        sql.append("  LEFT OUTER JOIN (SELECT g.group_id\n");
+        sql.append("                         ,SUM(CASE gu.group_membership_status\n");
+        sql.append("                                WHEN 'A' THEN 1\n");
+        sql.append("                                ELSE 0\n");
+        sql.append("                              END) AS active_user_count\n");
+        sql.append("                         ,SUM(CASE gu.group_membership_status\n");
+        sql.append("                                WHEN 'P' THEN 1\n");
+        sql.append("                                ELSE 0\n");
+        sql.append("                              END) AS pending_user_count\n");
+        sql.append("                     FROM t_group g\n");
+        sql.append("                     LEFT OUTER JOIN t_group_user gu ON g.group_id = gu.group_id\n");
+        sql.append("                    GROUP BY g.group_id) guc ON g.group_id = guc.group_id\n");
+        sql.append("  LEFT OUTER JOIN (SELECT g.group_id\n");
+        sql.append("                         ,count(e.event_id) AS upcoming_event_count\n");
+        sql.append("                     FROM t_group g\n");
+        sql.append("                     LEFT OUTER JOIN t_event e ON g.group_id = e.group_id\n");
+        sql.append("                    WHERE e.event_start_datetime > current_timestamp\n");
+        sql.append("                    GROUP BY g.group_id) gec ON g.group_id = gec.group_id\n");
+        sql.append("    WHERE \n");
+        sql.append("    gu.group_membership_status = 'A'\n");
         sql.append("   AND gu.user_id = ?");
 
         List groupList = jdbcTemplate.query(sql.toString(), new Object[]{userId}, new GroupRowMapper());
@@ -209,6 +261,8 @@ public class SqlGroupProvider implements IGroupProvider {
         sql.append("      ,create_date\n");
         sql.append("      ,update_user\n");
         sql.append("      ,update_date\n");
+        sql.append("      ,event_category\n");
+        sql.append("      ,0 AttendeeCount\n");
         sql.append("  FROM t_event\n");
         sql.append(" WHERE group_id = ?\n");
         sql.append("   AND event_start_datetime > current_timestamp\n");
@@ -252,5 +306,60 @@ public class SqlGroupProvider implements IGroupProvider {
         sql.append("   AND user_id = ?");
 
         jdbcTemplate.update(sql.toString(), new Object[]{"FLOCK_DEV_USER", groupId, userId});
+    }
+
+    @Override
+    public void insertGroupUser(GroupUserModel groupUser){
+
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        StringBuilder sql = new StringBuilder();
+
+        sql.append("	INSERT INTO t_group_user\n");
+        sql.append("	(group_id\n");
+        sql.append("	,user_id\n");
+        sql.append("	,group_membership_status\n");
+        sql.append("	)\n");
+        sql.append("	VALUES\n");
+        sql.append("	( \n");
+        sql.append("    ?\n");
+        sql.append("    ,?\n");
+        sql.append("    ,?\n");
+        sql.append("    )");
+
+        final String finalSql = sql.toString();
+        final GroupUserModel finalGroupUser = groupUser;
+        jdbcTemplate.update(
+                new PreparedStatementCreator() {
+                    @Override
+                    public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+                        PreparedStatement ps = connection.prepareStatement(finalSql, new String[]{"group_user_id"});
+
+                        ps.setInt(1, finalGroupUser.getGroupId());
+                        ps.setInt(2, finalGroupUser.getUserId());
+                        ps.setString(3, finalGroupUser.getGroupMembershipStatus());
+                        return ps;
+                    }
+                },
+                keyHolder
+        );
+
+        groupUser.setGroupUserId(keyHolder.getKey().intValue());
+    }
+
+    @Override
+    public void deleteGroupUser(int userId, int groupId) {
+
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        String sql = "DELETE FROM t_group_user " +
+                "WHERE " +
+                "user_id = ? " +
+                "AND group_id = ? " ;
+        jdbcTemplate.update(sql.toString(), new Object[]{userId, groupId});
     }
 }

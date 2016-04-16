@@ -36,6 +36,19 @@ public class SqlEventProvider implements IEventProvider {
     }
 
     @Override
+    public List<RefEventCategoryModel> getRefEventCategoryList(){
+
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+        String sql = "SELECT event_category " +
+                "  FROM t_ref_event_category " +
+                " ORDER BY event_category";
+        List refEventCategoryList = jdbcTemplate.query(sql, new RefEventCategoryRowMapper());
+
+        return refEventCategoryList;
+    }
+
+    @Override
     public EventModel getEventByEventId(int eventId) {
 
         try{
@@ -59,7 +72,9 @@ public class SqlEventProvider implements IEventProvider {
                     "create_user, " +
                     "create_date, " +
                     "update_user, " +
-                    "update_date " +
+                    "update_date, " +
+                    "event_category, " +
+                    "0 As attendeeCount " +
                     "FROM t_event " +
                     "WHERE event_id = ?";
 
@@ -71,6 +86,166 @@ public class SqlEventProvider implements IEventProvider {
             return null;
         }
     }
+
+    @Override
+    public List<UserEventModel> getEventsByUserId(int userId) {
+
+        try{
+            JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+            StringBuilder sql = new StringBuilder();
+
+            sql.append("	SELECT eu.event_id \n");
+            sql.append("	,eu.group_id \n");
+            sql.append("	,eu.event_name \n");
+            sql.append("	,eu.event_description \n");
+            sql.append("	,eu.event_start_datetime \n");
+            sql.append("	,eu.event_end_datetime \n");
+            sql.append("	,eu.event_address_line1	\n");
+            sql.append("	,eu.event_address_line2	\n");
+            sql.append("	,eu.event_city \n");
+            sql.append("	,eu.event_state_code \n");
+            sql.append("	,eu.event_postal_code \n");
+            sql.append("	,eu.event_keywords \n");
+            sql.append("	,eu.event_latitude \n");
+            sql.append("	,eu.event_longitude	\n");
+            sql.append("	,eu.isPrivateEvent \n");
+            sql.append("	,eu.create_user	\n");
+            sql.append("	,eu.create_date	\n");
+            sql.append("	,eu.update_user	\n");
+            sql.append("	,eu.update_date	\n");
+            sql.append("	,eu.event_category \n");
+            sql.append("	,eu.attendeeCount \n");
+            sql.append("	,eu.user_id	\n");
+            sql.append("	,eu.isAttending FROM (SELECT e.event_id \n");
+            sql.append("	,e.group_id \n");
+            sql.append("	,e.event_name \n");
+            sql.append("	,e.event_description \n");
+            sql.append("	,e.event_start_datetime	\n");
+            sql.append("	,e.event_end_datetime \n");
+            sql.append("	,e.event_address_line1	\n");
+            sql.append("	,e.event_address_line2	\n");
+            sql.append("	,e.event_city \n");
+            sql.append("	,e.event_state_code	\n");
+            sql.append("	,e.event_postal_code \n");
+            sql.append("	,e.event_keywords \n");
+            sql.append("	,e.event_latitude \n");
+            sql.append("	,e.event_longitude	\n");
+            sql.append("	,IFNULL(e.private_event_ind, 'N') As isPrivateEvent	\n");
+            sql.append("	,e.create_user \n");
+            sql.append("	,e.create_date \n");
+            sql.append("	,e.update_user \n");
+            sql.append("	,e.update_date \n");
+            sql.append("	,e.event_category \n");
+            sql.append("	,IFNULL(eac.attendeeCount, 0) As attendeeCount \n");
+            sql.append("	,gu.user_id user_id	\n");
+            sql.append("	,IF(STRCMP(IFNULL(eur.rsvp_type_code,'N'),'Y'),'false','true') As isAttending \n");
+            sql.append("	FROM t_event e	\n");
+            sql.append("	INNER JOIN t_group_user gu ON gu.group_id = e.group_id	\n");
+            sql.append("	LEFT OUTER JOIN (SELECT eurc.event_id, SUM(CASE eurc.rsvp_type_code \n");
+            sql.append("	WHEN 'Y' THEN 1 \n");
+            sql.append("	ELSE 0 	\n");
+            sql.append("	END) AS attendeeCount \n");
+            sql.append("	FROM t_event_user_rsvp eurc ) eac ON e.event_id = eac.event_id 	\n");
+            sql.append("	LEFT OUTER JOIN t_event_user_rsvp eur ON eur.event_id = e.event_id AND gu.user_id = eur.user_id	\n");
+            sql.append("	WHERE group_membership_status = 'A'	\n");
+            sql.append("	AND e.private_event_ind = 'Y'	\n");
+            sql.append("	AND gu.user_id = ?	\n");
+            sql.append("	UNION ALL \n");
+            sql.append("	SELECT e.event_id \n");
+            sql.append("	,e.group_id	\n");
+            sql.append("	,e.event_name \n");
+            sql.append("	,e.event_description \n");
+            sql.append("	,e.event_start_datetime	\n");
+            sql.append("	,e.event_end_datetime	\n");
+            sql.append("	,e.event_address_line1	\n");
+            sql.append("	,e.event_address_line2	\n");
+            sql.append("	,e.event_city \n");
+            sql.append("	,e.event_state_code	\n");
+            sql.append("	,e.event_postal_code \n");
+            sql.append("	,e.event_keywords \n");
+            sql.append("	,e.event_latitude \n");
+            sql.append("	,e.event_longitude \n");
+            sql.append("	,IFNULL(e.private_event_ind, 'N') As isPrivateEvent \n");
+            sql.append("	,e.create_user	\n");
+            sql.append("	,e.create_date	\n");
+            sql.append("	,e.update_user	\n");
+            sql.append("	,e.update_date	\n");
+            sql.append("	,e.event_category \n");
+            sql.append("	,IFNULL(eac.attendeeCount, 0) As attendeeCount	\n");
+            sql.append("	,u.user_id	\n");
+            sql.append("	,IF(STRCMP(IFNULL(eur.rsvp_type_code,'N'),'Y'),'false','true') As isAttending	\n");
+            sql.append("	FROM t_event e 	\n");
+            sql.append("	INNER JOIN t_user u ON u.user_id = ? \n");
+            sql.append("	LEFT OUTER JOIN (SELECT eurc.event_id, SUM(CASE eurc.rsvp_type_code \n");
+            sql.append("	WHEN 'Y' THEN 1 \n");
+            sql.append("	ELSE 0 	\n");
+            sql.append("	END) AS attendeeCount \n");
+            sql.append("	FROM t_event_user_rsvp eurc ) eac ON e.event_id = eac.event_id 	\n");
+            sql.append("	LEFT OUTER JOIN t_event_user_rsvp eur ON eur.event_id = e.event_id AND u.user_id = eur.user_id	\n");
+            sql.append("	WHERE IFNULL(e.private_event_ind, 'N') = 'N') eu \n");
+            sql.append("	WHERE \n");
+            sql.append("	 eu.event_end_datetime >  current_timestamp	\n");
+            sql.append("	ORDER BY eu.event_start_datetime, eu.event_name	\n");
+
+            List UserEventList = jdbcTemplate.query(sql.toString(), new Object[]{userId, userId}, new UserEventRowMapper());
+
+            return UserEventList;
+
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public void insertEventUserRsvp(EventUserRsvpModel eventUserRsvp) {
+
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        String sql = "INSERT INTO t_event_user_rsvp " +
+                "(event_id " +
+                ",user_id " +
+                ",rsvp_type_code) " +
+                "VALUES (?, ?, ?) ";
+
+        jdbcTemplate.update(sql.toString(), new Object[]{eventUserRsvp.getEventId(), eventUserRsvp.getUserId(), eventUserRsvp.getRsvpTypeCode()});
+    }
+
+    @Override
+    public void deleteEventUserRsvp(int userId, int eventId) {
+
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        String sql = "DELETE FROM t_event_user_rsvp " +
+                "WHERE " +
+                "user_id = ? " +
+                "AND event_id = ? " ;
+        jdbcTemplate.update(sql.toString(), new Object[]{userId, eventId});
+    }
+
+    @Override
+    public Boolean isEventUserRsvpExist(int userId, int eventId) {
+
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        String sql = "SELECT COUNT(*) FROM t_event_user_rsvp " +
+                "WHERE " +
+                "user_id = ? " +
+                "AND event_id = ? " ;
+        int x = jdbcTemplate.queryForObject(sql.toString(), new Object[]{userId, eventId}, Integer.class);
+
+        if (x > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     @Override
     public void insertEvent(EventModel event) {
@@ -93,10 +268,12 @@ public class SqlEventProvider implements IEventProvider {
                 ",event_state_code " +
                 ",event_postal_code " +
                 ",event_latitude " +
-                ",event_longitude) " +
-                "VALUES (?, UPPER(?), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
+                ",event_longitude" +
+                ",event_category) " +
+                "VALUES (?, UPPER(?), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
 
-        jdbcTemplate.update(sql, new Object[]{event.getGroupId(), event.isPrivateEvent() ? "Y" : null, event.getEventName(),event.getEventDescription(),event.getEventKeywords(), event.getEventStartDatetime(), event.getEventEndDatetime(), event.getEventAddressLine1(), event.getEventAddressLine2(), event.getEventCity(), event.getEventStateCode(), event.getEventPostalCode(), event.getEventLatitude(), event.getEventLongitude()});
+        jdbcTemplate.update(sql, new Object[]{event.getGroupId(), event.isPrivateEvent() ? "Y" : null, event.getEventName(),event.getEventDescription(),event.getEventKeywords(), event.getEventStartDatetime(), event.getEventEndDatetime(), event.getEventAddressLine1(), event.getEventAddressLine2(), event.getEventCity(), event.getEventStateCode(), event.getEventPostalCode(), event.getEventLatitude(), event.getEventLongitude(),event.getEventCategory()});
+
     }
 
     @Override
@@ -121,10 +298,11 @@ public class SqlEventProvider implements IEventProvider {
         sql.append("    ,event_postal_code = UPPER(?)\n");
         sql.append("    ,event_latitude = ?\n");
         sql.append("    ,event_longitude = ?\n");
+        sql.append("    ,event_category = ?\n");
         sql.append("    WHERE event_id = ?\n");
 
         jdbcTemplate.update(sql.toString(), new Object[]{event.getGroupId(),"FLOCK_DEV_USER", event.isPrivateEvent() ? "Y" : null, event.getEventName(), event.getEventDescription(),
         event.getEventKeywords(), event.getEventStartDatetime(), event.getEventEndDatetime(), event.getEventAddressLine1(), event.getEventAddressLine2(),
-                event.getEventCity(), event.getEventStateCode(),event.getEventPostalCode(), event.getEventLatitude(),event.getEventLongitude(), event.getEventId()});
+                event.getEventCity(), event.getEventStateCode(),event.getEventPostalCode(), event.getEventLatitude(),event.getEventLongitude(), event.getEventCategory(),event.getEventId()});
     }
 }

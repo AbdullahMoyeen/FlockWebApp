@@ -161,6 +161,16 @@
                         <td><form:textarea path="eventDescription" value="${event.eventDescription}" required="true"/></td>
                     </tr>
                     <tr>
+                        <td style="text-align: left">Event Category</td>
+                        <td>:</td>
+                        <td>
+                            <form:select id="eventCategory" path="eventCategory">
+                                <form:option value="${event.eventCategory}" label="${event.eventCategory}"/>
+                                <form:options items="${refEventCategoryList}" itemValue="eventCategory" itemLabel="eventCategory"/>
+                            </form:select>
+                        </td>
+                    </tr>
+                    <tr>
                         <td style="text-align: left">Event Start Date</td>
                         <td>:</td>
                         <td>
