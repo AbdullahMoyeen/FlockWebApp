@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,24 +63,24 @@ public class UserAPIController {
     }
 
     @RequestMapping(value = "/api/user/groups", method = RequestMethod.GET)
-    public ResponseEntity<List<GroupModel>> getUserGroupsByUserId(@RequestParam int userId) {
+    public ResponseEntity<List<UserGroupModel>> getUserGroupsByUserId(@RequestParam int userId) {
 
         // List for holding groups
-        List<GroupModel> groupsForUser = new ArrayList<GroupModel>();
+        List<UserGroupModel> groupsForUser = new ArrayList<UserGroupModel>();
 
         // Get the user groups for this user Id
         try {
             groupsForUser = groupService.getGroupsByUserId(userId);
-        }catch (Exception e) {
+        } catch (Exception e) {
             // Return error response
-            return new ResponseEntity<List<GroupModel>>(groupsForUser,HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<List<UserGroupModel>>(groupsForUser, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         // If not found then return no content
-        if (groupsForUser.size() <= 0) return new ResponseEntity<List<GroupModel>>(HttpStatus.NO_CONTENT);
+        if (groupsForUser.size() <= 0) return new ResponseEntity<List<UserGroupModel>>(HttpStatus.NO_CONTENT);
 
         // Return the list to the caller
-        return new ResponseEntity<List<GroupModel>>(groupsForUser, HttpStatus.OK);
+        return new ResponseEntity<List<UserGroupModel>>(groupsForUser, HttpStatus.OK);
     }
 
     @RequestMapping(value = "api/user/events", method = RequestMethod.GET)
@@ -100,5 +102,36 @@ public class UserAPIController {
 
         // Send back the response
         return new ResponseEntity<List<UserEventModel>>(eventsForUser, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "api/user/events/rsvp", method = RequestMethod.PUT)
+    public ResponseEntity<Void> setEventRSVPStatusByUserId(@RequestParam int userId, @RequestParam int eventId,
+                                                           @RequestParam boolean isAttending) {
+
+        // call the event service method to update RSVP status
+        try {
+            eventService.setEventRsvpStatus(userId, eventId, isAttending);
+        } catch (Exception e) {
+            // return internal server error
+            new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        // If the API call is successful return the HTTP OK status
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "api/user/groups/membership", method = RequestMethod.PUT)
+    public ResponseEntity<Void> setGroupMembershipByUserId(@RequestParam int userId, @RequestParam int groupId,
+                                                           @RequestParam boolean isMember) {
+        // Call the API to set the group membership
+        try {
+            groupService.setGroupMembership(groupId, userId, isMember);
+        } catch (Exception e) {
+            // return internal server error
+            new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        // If we are here, the API call is successful
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 }
