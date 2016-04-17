@@ -43,6 +43,7 @@ public class SqlGroupProvider implements IGroupProvider {
         sql.append("      ,g.update_date\n");
         sql.append("      ,g.group_name\n");
         sql.append("      ,g.group_description\n");
+        sql.append("      ,g.group_category\n");
         sql.append("      ,IFNULL(guc.active_user_count, 0) AS active_user_count\n");
         sql.append("      ,IFNULL(guc.pending_user_count, 0) AS pending_user_count\n");
         sql.append("      ,IFNULL(gec.upcoming_event_count, 0) AS upcoming_event_count\n");
@@ -89,6 +90,7 @@ public class SqlGroupProvider implements IGroupProvider {
         sql.append("      ,g.update_date\n");
         sql.append("      ,g.group_name\n");
         sql.append("      ,g.group_description\n");
+        sql.append("      ,g.group_category\n");
         sql.append("      ,IFNULL(guc.active_user_count, 0) AS active_user_count\n");
         sql.append("      ,IFNULL(guc.pending_user_count, 0) AS pending_user_count\n");
         sql.append("      ,IFNULL(gec.upcoming_event_count, 0) AS upcoming_event_count\n");
@@ -156,6 +158,7 @@ public class SqlGroupProvider implements IGroupProvider {
             sql.append("      ,g.update_date\n");
             sql.append("      ,g.group_name\n");
             sql.append("      ,g.group_description\n");
+            sql.append("      ,g.group_category\n");
             sql.append("      ,IFNULL(guc.active_user_count, 0) AS active_user_count\n");
             sql.append("      ,IFNULL(guc.pending_user_count, 0) AS pending_user_count\n");
             sql.append("      ,IFNULL(gec.upcoming_event_count, 0) AS upcoming_event_count\n");
@@ -198,11 +201,12 @@ public class SqlGroupProvider implements IGroupProvider {
         sql.append("UPDATE t_group\n");
         sql.append("   SET group_name = ?\n");
         sql.append("      ,group_description = ?\n");
+//        sql.append("      ,group_category = ?\n");
         sql.append("      ,update_user = ?\n");
         sql.append("      ,update_date = current_timestamp\n");
         sql.append(" WHERE group_id = ?");
 
-        jdbcTemplate.update(sql.toString(), new Object[]{group.getGroupName(), group.getGroupDescription(), "FLOCK_DEV_USER", group.getGroupId()});
+        jdbcTemplate.update(sql.toString(), new Object[]{group.getGroupName(), group.getGroupDescription(), /*group.getGroupCategory(),*/ "FLOCK_DEV_USER", group.getGroupId()});
 
         return group;
     }

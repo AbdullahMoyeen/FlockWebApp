@@ -24,9 +24,10 @@ public class GroupExtractor implements ResultSetExtractor<GroupModel>{
         group.setUpdateDate(resultSet.getDate(5));
         group.setGroupName(resultSet.getString(6));
         group.setGroupDescription(resultSet.getString(7));
-        group.setActiveMemberCount(resultSet.getInt(8));
-        group.setPendingMemberCount(resultSet.getInt(9));
-        group.setUpcomingEventCount(resultSet.getInt(10));
+        group.setGroupCategory(resultSet.getString(8));
+        group.setActiveMemberCount(resultSet.getInt(9));
+        group.setPendingMemberCount(resultSet.getInt(10));
+        group.setUpcomingEventCount(resultSet.getInt(11));
 
         return group;
     }

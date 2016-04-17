@@ -27,12 +27,12 @@ public class UserGroupExtractor implements ResultSetExtractor<UserGroupModel> {
         userGroup.group.setUpdateDate(resultSet.getTimestamp(5));
         userGroup.group.setGroupName(resultSet.getString(6));
         userGroup.group.setGroupDescription(resultSet.getString(7));
-        userGroup.group.setActiveMemberCount(resultSet.getInt(8));
-        userGroup.group.setPendingMemberCount(resultSet.getInt(9));
-        userGroup.group.setUpcomingEventCount(resultSet.getInt(10));
-        userGroup.setMember(resultSet.getBoolean(11));
-        userGroup.setUserId(resultSet.getInt(12));
-
+        userGroup.group.setGroupCategory(resultSet.getString(8));
+        userGroup.group.setActiveMemberCount(resultSet.getInt(9));
+        userGroup.group.setPendingMemberCount(resultSet.getInt(10));
+        userGroup.group.setUpcomingEventCount(resultSet.getInt(11));
+        userGroup.setMember(resultSet.getBoolean(12));
+        userGroup.setUserId(resultSet.getInt(13));
 
         return userGroup;
     }
