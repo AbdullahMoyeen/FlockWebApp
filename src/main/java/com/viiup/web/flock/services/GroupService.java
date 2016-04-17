@@ -4,6 +4,7 @@ import com.viiup.web.flock.businessLayer.interfaces.IGroupBusinessLayer;
 import com.viiup.web.flock.models.EventModel;
 import com.viiup.web.flock.models.GroupModel;
 import com.viiup.web.flock.models.GroupUserModel;
+import com.viiup.web.flock.models.UserGroupModel;
 import com.viiup.web.flock.services.interfaces.IGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,7 +49,7 @@ public class GroupService implements IGroupService {
     }
 
     @Override
-    public List<GroupModel> getGroupsByUserId(int userId){
+    public List<UserGroupModel> getGroupsByUserId(int userId){
         return groupBusinessLayer.getGroupsByUserId(userId);
     }
 

@@ -15,7 +15,7 @@ public interface IGroupService {
     GroupModel updateGroup(GroupModel group);
     List<EventModel> getGroupEventsByGroupId(int groupId);
 
-    List<GroupModel> getGroupsByUserId(int userId);
+    List<UserGroupModel> getGroupsByUserId(int userId);
 
     List<GroupUserModel> getGroupUsersByGroupId(int groupId);
     void approveGroupMembership(int groupId, int userId);

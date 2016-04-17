@@ -4,6 +4,7 @@ import com.viiup.web.flock.jdbc.*;
 import com.viiup.web.flock.models.EventModel;
 import com.viiup.web.flock.models.GroupModel;
 import com.viiup.web.flock.models.GroupUserModel;
+import com.viiup.web.flock.models.UserGroupModel;
 import com.viiup.web.flock.providers.interfaces.IGroupProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -75,7 +76,7 @@ public class SqlGroupProvider implements IGroupProvider {
     }
 
     @Override
-    public List<GroupModel> getGroupsByUserId(int userId){
+    public List<UserGroupModel> getGroupsByUserId(int userId){
 
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
@@ -91,8 +92,11 @@ public class SqlGroupProvider implements IGroupProvider {
         sql.append("      ,IFNULL(guc.active_user_count, 0) AS active_user_count\n");
         sql.append("      ,IFNULL(guc.pending_user_count, 0) AS pending_user_count\n");
         sql.append("      ,IFNULL(gec.upcoming_event_count, 0) AS upcoming_event_count\n");
+        sql.append("      ,IF(STRCMP(gu.group_membership_status,'A'),'false','true') As isMember\n");
+        sql.append("      ,u.user_id\n");
         sql.append("  FROM t_group g\n");
-        sql.append("  JOIN t_group_user gu ON g.group_id = gu.group_id\n");
+        sql.append("  JOIN t_user u ON u.user_id = ?\n");
+        sql.append("  LEFT OUTER JOIN t_group_user gu ON g.group_id = gu.group_id AND u.user_id = gu.user_id\n");
         sql.append("  LEFT OUTER JOIN (SELECT g.group_id\n");
         sql.append("                         ,SUM(CASE gu.group_membership_status\n");
         sql.append("                                WHEN 'A' THEN 1\n");
@@ -111,13 +115,10 @@ public class SqlGroupProvider implements IGroupProvider {
         sql.append("                     LEFT OUTER JOIN t_event e ON g.group_id = e.group_id\n");
         sql.append("                    WHERE e.event_start_datetime > current_timestamp\n");
         sql.append("                    GROUP BY g.group_id) gec ON g.group_id = gec.group_id\n");
-        sql.append("    WHERE \n");
-        sql.append("    gu.group_membership_status = 'A'\n");
-        sql.append("   AND gu.user_id = ?");
 
-        List groupList = jdbcTemplate.query(sql.toString(), new Object[]{userId}, new GroupRowMapper());
+        List userGroupList = jdbcTemplate.query(sql.toString(), new Object[]{userId}, new UserGroupRowMapper());
 
-        return groupList;
+        return userGroupList;
     }
 
     @Override

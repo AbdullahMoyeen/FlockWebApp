@@ -3,6 +3,7 @@ package com.viiup.web.flock.providers.interfaces;
 import com.viiup.web.flock.models.EventModel;
 import com.viiup.web.flock.models.GroupModel;
 import com.viiup.web.flock.models.GroupUserModel;
+import com.viiup.web.flock.models.UserGroupModel;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public interface IGroupProvider {
 
     List<GroupModel> getAdminGroupsByUserId(int userId);
 
-    List<GroupModel> getGroupsByUserId(int userId);
+    List<UserGroupModel> getGroupsByUserId(int userId);
 
     boolean IsUserAdminOfGroup(int groupId, int userId);
     GroupModel getGroupByGroupId(int groupId);
