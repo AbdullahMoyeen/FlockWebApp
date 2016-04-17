@@ -17,7 +17,17 @@ public class UserGroupModel {
         this.userId = userId;
     }
 
+<<<<<<< HEAD
     public boolean isMember() {  return isMember ; }
 
     public void setIsMember(boolean isMember) {  this.isMember = isMember; }
+=======
+    public boolean isMember() {
+        return isMember;
+    }
+
+    public void setMember(boolean member) {
+        isMember = member;
+    }
+>>>>>>> origin/master
 }

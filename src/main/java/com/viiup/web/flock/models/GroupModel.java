@@ -14,6 +14,7 @@ public class GroupModel {
     private Date updateDate;
     private String groupName;
     private String groupDescription;
+    private String groupCategory;
     private int activeMemberCount;
     private int pendingMemberCount;
     private int upcomingEventCount;
@@ -72,6 +73,14 @@ public class GroupModel {
 
     public void setGroupDescription(String groupDescription) {
         this.groupDescription = groupDescription;
+    }
+
+    public String getGroupCategory() {
+        return groupCategory;
+    }
+
+    public void setGroupCategory(String groupCategory) {
+        this.groupCategory = groupCategory;
     }
 
     public int getActiveMemberCount() {
