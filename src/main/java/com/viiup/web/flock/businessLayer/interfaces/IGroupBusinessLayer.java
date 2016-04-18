@@ -1,9 +1,6 @@
 package com.viiup.web.flock.businessLayer.interfaces;
 
-import com.viiup.web.flock.models.EventModel;
-import com.viiup.web.flock.models.GroupModel;
-import com.viiup.web.flock.models.GroupUserModel;
-import com.viiup.web.flock.models.UserGroupModel;
+import com.viiup.web.flock.models.*;
 
 import java.util.List;
 
@@ -25,4 +22,6 @@ public interface IGroupBusinessLayer {
     void denyGroupMembership(int groupId, int userId);
 
     void setGroupMembership(int userId, int groupId, boolean isMember);
+
+    List<RefGroupCategoryModel> getRefGroupCategoryList();
 }

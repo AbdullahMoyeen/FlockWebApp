@@ -121,6 +121,7 @@
                 <tr>
                     <th>Group Name</th>
                     <th>Description</th>
+                    <th>Category</th>
                     <th>Active Members</th>
                     <th>Pending Members</th>
                     <th>Upcoming Events</th>
@@ -130,6 +131,7 @@
                     <tr>
                         <td><a style="text-decoration: none" href="<c:url value="/admin/group/details?groupId=${adminGroup.groupId}"/>">${adminGroup.groupName}</a></td>
                         <td><a style="text-decoration: none" href="<c:url value="/admin/group/details?groupId=${adminGroup.groupId}"/>">${adminGroup.groupDescription}</a></td>
+                        <td><a style="text-decoration: none" href="<c:url value="/admin/group/details?groupId=${adminGroup.groupId}"/>">${adminGroup.groupCategory}</a></td>
                         <td style="text-align: center"><a style="text-decoration: none" href="<c:url value="/admin/group/details?groupId=${adminGroup.groupId}"/>">${adminGroup.activeMemberCount}</a></td>
                         <td style="text-align: center"><a style="text-decoration: none" href="<c:url value="/admin/group/details?groupId=${adminGroup.groupId}"/>">${adminGroup.pendingMemberCount}</a></td>
                         <td style="text-align: center"><a style="text-decoration: none" href="<c:url value="/admin/group/details?groupId=${adminGroup.groupId}"/>">${adminGroup.upcomingEventCount}</a></td>

@@ -1,9 +1,6 @@
 package com.viiup.web.flock.providers.interfaces;
 
-import com.viiup.web.flock.models.EventModel;
-import com.viiup.web.flock.models.GroupModel;
-import com.viiup.web.flock.models.GroupUserModel;
-import com.viiup.web.flock.models.UserGroupModel;
+import com.viiup.web.flock.models.*;
 
 import java.util.List;
 
@@ -27,4 +24,6 @@ public interface IGroupProvider {
     void insertGroupUser(GroupUserModel groupUser);
 
     void deleteGroupUser(int userId, int groupId);
+
+    List<RefGroupCategoryModel> getRefGroupCategoryList();
 }

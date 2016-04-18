@@ -22,4 +22,6 @@ public interface IGroupService {
     void denyGroupMembership(int groupId, int userId);
 
     void setGroupMembership(int groupId, int userId, boolean isMember);
+
+    List<RefGroupCategoryModel> getRefGroupCategoryList();
 }

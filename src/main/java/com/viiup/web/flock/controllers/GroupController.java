@@ -37,12 +37,14 @@ public class GroupController {
         GroupModel adminGroupDetails = groupService.getGroupByGroupId(groupId);
         List<EventModel> adminGroupEvents = groupService.getGroupEventsByGroupId(groupId);
         List<GroupUserModel> adminGroupUsers = groupService.getGroupUsersByGroupId(groupId);
+        List<RefGroupCategoryModel> refGroupCategoryList = groupService.getRefGroupCategoryList();
 
         ModelAndView modelAndView = new ModelAndView("adminGroupDetails");
 
         modelAndView.addObject("adminGroupDetails", adminGroupDetails);
         modelAndView.addObject("adminGroupEvents", adminGroupEvents);
         modelAndView.addObject("adminGroupUsers", adminGroupUsers);
+        modelAndView.addObject("refGroupCategoryList", refGroupCategoryList);
 
         return modelAndView;
     }

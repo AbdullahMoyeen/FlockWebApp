@@ -1,10 +1,7 @@
 package com.viiup.web.flock.providers;
 
 import com.viiup.web.flock.jdbc.*;
-import com.viiup.web.flock.models.EventModel;
-import com.viiup.web.flock.models.GroupModel;
-import com.viiup.web.flock.models.GroupUserModel;
-import com.viiup.web.flock.models.UserGroupModel;
+import com.viiup.web.flock.models.*;
 import com.viiup.web.flock.providers.interfaces.IGroupProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -201,12 +198,12 @@ public class SqlGroupProvider implements IGroupProvider {
         sql.append("UPDATE t_group\n");
         sql.append("   SET group_name = ?\n");
         sql.append("      ,group_description = ?\n");
-//        sql.append("      ,group_category = ?\n");
+        sql.append("      ,group_category = ?\n");
         sql.append("      ,update_user = ?\n");
         sql.append("      ,update_date = current_timestamp\n");
         sql.append(" WHERE group_id = ?");
 
-        jdbcTemplate.update(sql.toString(), new Object[]{group.getGroupName(), group.getGroupDescription(), /*group.getGroupCategory(),*/ "FLOCK_DEV_USER", group.getGroupId()});
+        jdbcTemplate.update(sql.toString(), new Object[]{group.getGroupName(), group.getGroupDescription(), group.getGroupCategory(), "FLOCK_DEV_USER", group.getGroupId()});
 
         return group;
     }
@@ -366,5 +363,17 @@ public class SqlGroupProvider implements IGroupProvider {
                 "user_id = ? " +
                 "AND group_id = ? " ;
         jdbcTemplate.update(sql.toString(), new Object[]{userId, groupId});
+    }
+    @Override
+    public List<RefGroupCategoryModel> getRefGroupCategoryList(){
+
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+        String sql = "SELECT group_category " +
+                "  FROM t_ref_group_category " +
+                " ORDER BY group_category";
+        List refGroupCategoryList = jdbcTemplate.query(sql, new RefGroupCategoryRowMapper());
+
+        return refGroupCategoryList;
     }
 }
