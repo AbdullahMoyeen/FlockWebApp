@@ -31,7 +31,7 @@ public class UserGroupExtractor implements ResultSetExtractor<UserGroupModel> {
         userGroup.group.setActiveMemberCount(resultSet.getInt(9));
         userGroup.group.setPendingMemberCount(resultSet.getInt(10));
         userGroup.group.setUpcomingEventCount(resultSet.getInt(11));
-        userGroup.setMember(resultSet.getBoolean(12));
+        userGroup.setGroupMembershipStatus(resultSet.getString(12));
         userGroup.setUserId(resultSet.getInt(13));
 
         return userGroup;

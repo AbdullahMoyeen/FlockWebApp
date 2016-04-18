@@ -12,6 +12,7 @@ public class EventModel {
     private String updateUser;
     private Date updateDate;
     private int groupId;
+    private String groupName;
     private String eventName;
     private String eventDescription;
     private String eventCategory;
@@ -75,6 +76,14 @@ public class EventModel {
 
     public void setGroupId(int groupId) {
         this.groupId = groupId;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
     public String getEventName() {

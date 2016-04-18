@@ -94,11 +94,11 @@ public class SqlGroupProvider implements IGroupProvider {
         sql.append("      ,IFNULL(guc.active_user_count, 0) AS active_user_count\n");
         sql.append("      ,IFNULL(guc.pending_user_count, 0) AS pending_user_count\n");
         sql.append("      ,IFNULL(gec.upcoming_event_count, 0) AS upcoming_event_count\n");
-        sql.append("      ,IF(STRCMP(gu.group_membership_status,'A'),'false','true') As isMember\n");
+        sql.append("      ,IFNULL(gu.group_membership_status,'I') AS group_membership_status\n");
         sql.append("      ,u.user_id\n");
         sql.append("  FROM t_group g\n");
         sql.append("  JOIN t_user u ON u.user_id = ?\n");
-        sql.append("  LEFT OUTER JOIN t_group_user gu ON g.group_id = gu.group_id AND u.user_id = gu.user_id\n");
+        sql.append("  LEFT OUTER JOIN t_group_user gu ON g.group_id = gu.group_id AND gu.user_id = u.user_id\n");
         sql.append("  LEFT OUTER JOIN (SELECT g.group_id\n");
         sql.append("                         ,SUM(CASE gu.group_membership_status\n");
         sql.append("                                WHEN 'A' THEN 1\n");
