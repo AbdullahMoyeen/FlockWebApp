@@ -139,6 +139,16 @@
                         <td><form:textarea path="groupDescription" value="${adminGroupDetails.groupDescription}"/></td>
                     </tr>
                     <tr>
+                        <th>Group Category</th>
+                        <td>:</td>
+                        <td>
+                            <form:select id="groupCategory" path="groupCategory">
+                                <form:option value="${adminGroupDetails.groupCategory}" label="${adminGroupDetails.groupCategory}"/>
+                                <form:options items="${refGroupCategoryList}" itemValue="groupCategory" itemLabel="groupCategory"/>
+                            </form:select>
+                        </td>
+                    </tr>
+                    <tr>
                         <td></td>
                     </tr>
                     <tr>
@@ -163,6 +173,7 @@
                 <tr>
                     <th>Event Name</th>
                     <th>Event Description</th>
+                    <th>Event Category</th>
                     <th>Event Address</th>
                     <th>Event Start Date</th>
                     <th>Event End Date</th>
@@ -173,6 +184,7 @@
                 <tr>
                     <td><a style="text-decoration: none" href="<c:url value="/admin/group/event/details?eventId=${adminGroupEvent.eventId}&groupId=${adminGroupEvent.groupId}"/>">${adminGroupEvent.eventName}</a></td>
                     <td><a style="text-decoration: none" href="<c:url value="/admin/group/event/details?eventId=${adminGroupEvent.eventId}&groupId=${adminGroupEvent.groupId}"/>">${adminGroupEvent.eventDescription}</a></td>
+                    <td><a style="text-decoration: none" href="<c:url value="/admin/group/event/details?eventId=${adminGroupEvent.eventId}&groupId=${adminGroupEvent.groupId}"/>">${adminGroupEvent.eventCategory}</a></td>
                     <td><a style="text-decoration: none" href="<c:url value="/admin/group/event/details?eventId=${adminGroupEvent.eventId}&groupId=${adminGroupEvent.groupId}"/>">${adminGroupEvent.eventAddressLine1} ${adminGroupEvent.eventAddressLine2}, ${adminGroupEvent.eventCity}, ${adminGroupEvent.eventStateCode} ${adminGroupEvent.eventPostalCode}</a></td>
                     <td><a style="text-decoration: none" href="<c:url value="/admin/group/event/details?eventId=${adminGroupEvent.eventId}&groupId=${adminGroupEvent.groupId}"/>"><fmt:formatDate type="date" pattern="MM/dd/yyyy hh:mm a" value="${adminGroupEvent.eventStartDatetime}"/></a></td>
                     <td><a style="text-decoration: none" href="<c:url value="/admin/group/event/details?eventId=${adminGroupEvent.eventId}&groupId=${adminGroupEvent.groupId}"/>"><fmt:formatDate type="date" pattern="MM/dd/yyyy hh:mm a" value="${adminGroupEvent.eventEndDatetime}"/></a></td>
