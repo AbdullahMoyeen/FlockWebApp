@@ -32,7 +32,7 @@ public class UserEventExtractor implements ResultSetExtractor<UserEventModel> {
         userEvent.event.setEventKeywords(resultSet.getString(12));
         userEvent.event.setEventLatitude(resultSet.getFloat(13));
         userEvent.event.setEventLongitude(resultSet.getFloat(14));
-        userEvent.event.setPrivateEvent(resultSet.getString(15).equals("Y"));
+        userEvent.event.setIsPrivateEvent(resultSet.getString(15).equals("Y"));
         userEvent.event.setCreateUser(resultSet.getString(16));
         userEvent.event.setCreateDate(resultSet.getTimestamp(17));
         userEvent.event.setUpdateUser(resultSet.getString(18));
@@ -40,7 +40,7 @@ public class UserEventExtractor implements ResultSetExtractor<UserEventModel> {
         userEvent.event.setEventCategory(resultSet.getString(20));
         userEvent.event.setAttendeeCount(resultSet.getInt(21));
         userEvent.setUserId(resultSet.getInt(22));
-        userEvent.setIsAttending(resultSet.getBoolean(23));
+        userEvent.setIsAttending(resultSet.getString(23).equals("Y"));
 
         return userEvent;
     }

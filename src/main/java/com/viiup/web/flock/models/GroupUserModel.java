@@ -15,7 +15,7 @@ public class GroupUserModel {
     private int groupId;
     private int userId;
     private String groupMembershipStatus;
-    private boolean groupAdmin;
+    private boolean isGroupAdmin;
     private String firstName;
     private String lastName;
     private String emailAddress;
@@ -84,12 +84,12 @@ public class GroupUserModel {
         this.groupMembershipStatus = groupMembershipStatus;
     }
 
-    public boolean isGroupAdmin() {
-        return groupAdmin;
+    public boolean getIsGroupAdmin() {
+        return isGroupAdmin;
     }
 
-    public void setGroupAdmin(boolean groupAdmin) {
-        this.groupAdmin = groupAdmin;
+    public void setIsGroupAdmin(boolean isGroupAdmin) {
+        this.isGroupAdmin = isGroupAdmin;
     }
 
     public String getFirstName() {

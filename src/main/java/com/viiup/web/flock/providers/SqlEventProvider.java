@@ -138,7 +138,7 @@ public class SqlEventProvider implements IEventProvider {
             sql.append("	,e.event_category \n");
             sql.append("	,IFNULL(eac.attendeeCount, 0) As attendeeCount \n");
             sql.append("	,gu.user_id user_id	\n");
-            sql.append("	,IF(STRCMP(IFNULL(eur.rsvp_type_code,'N'),'Y'),'false','true') As isAttending \n");
+            sql.append("	,IFNULL(eur.rsvp_type_code,'N') As isAttending \n");
             sql.append("	FROM t_event e	\n");
             sql.append("	INNER JOIN t_group_user gu ON gu.group_id = e.group_id	\n");
             sql.append("	LEFT OUTER JOIN (SELECT eurc.event_id, SUM(CASE eurc.rsvp_type_code \n");
@@ -173,7 +173,7 @@ public class SqlEventProvider implements IEventProvider {
             sql.append("	,e.event_category \n");
             sql.append("	,IFNULL(eac.attendeeCount, 0) As attendeeCount	\n");
             sql.append("	,u.user_id	\n");
-            sql.append("	,IF(STRCMP(IFNULL(eur.rsvp_type_code,'N'),'Y'),'false','true') As isAttending	\n");
+            sql.append("	,IFNULL(eur.rsvp_type_code,'N') As isAttending	\n");
             sql.append("	FROM t_event e 	\n");
             sql.append("	INNER JOIN t_user u ON u.user_id = ? \n");
             sql.append("	LEFT OUTER JOIN (SELECT eurc.event_id, SUM(CASE eurc.rsvp_type_code \n");
@@ -272,7 +272,7 @@ public class SqlEventProvider implements IEventProvider {
                 ",event_category) " +
                 "VALUES (?, UPPER(?), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
 
-        jdbcTemplate.update(sql, new Object[]{event.getGroupId(), event.isPrivateEvent() ? "Y" : null, event.getEventName(),event.getEventDescription(),event.getEventKeywords(), event.getEventStartDatetime(), event.getEventEndDatetime(), event.getEventAddressLine1(), event.getEventAddressLine2(), event.getEventCity(), event.getEventStateCode(), event.getEventPostalCode(), event.getEventLatitude(), event.getEventLongitude(),event.getEventCategory()});
+        jdbcTemplate.update(sql, new Object[]{event.getGroupId(), event.getIsPrivateEvent() ? "Y" : null, event.getEventName(),event.getEventDescription(),event.getEventKeywords(), event.getEventStartDatetime(), event.getEventEndDatetime(), event.getEventAddressLine1(), event.getEventAddressLine2(), event.getEventCity(), event.getEventStateCode(), event.getEventPostalCode(), event.getEventLatitude(), event.getEventLongitude(),event.getEventCategory()});
 
     }
 
@@ -301,7 +301,7 @@ public class SqlEventProvider implements IEventProvider {
         sql.append("    ,event_category = ?\n");
         sql.append("    WHERE event_id = ?\n");
 
-        jdbcTemplate.update(sql.toString(), new Object[]{event.getGroupId(),"FLOCK_DEV_USER", event.isPrivateEvent() ? "Y" : null, event.getEventName(), event.getEventDescription(),
+        jdbcTemplate.update(sql.toString(), new Object[]{event.getGroupId(),"FLOCK_DEV_USER", event.getIsPrivateEvent() ? "Y" : null, event.getEventName(), event.getEventDescription(),
         event.getEventKeywords(), event.getEventStartDatetime(), event.getEventEndDatetime(), event.getEventAddressLine1(), event.getEventAddressLine2(),
                 event.getEventCity(), event.getEventStateCode(),event.getEventPostalCode(), event.getEventLatitude(),event.getEventLongitude(), event.getEventCategory(),event.getEventId()});
     }

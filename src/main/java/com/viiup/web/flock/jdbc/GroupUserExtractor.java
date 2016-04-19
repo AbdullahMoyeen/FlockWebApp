@@ -25,7 +25,7 @@ public class GroupUserExtractor implements ResultSetExtractor<GroupUserModel>{
         groupUser.setGroupId(resultSet.getInt(6));
         groupUser.setUserId(resultSet.getInt(7));
         groupUser.setGroupMembershipStatus(resultSet.getString(8));
-        groupUser.setGroupAdmin(resultSet.getString(9) == "Y");
+        groupUser.setIsGroupAdmin(resultSet.getString(9) == "Y");
         groupUser.setFirstName(resultSet.getString(10));
         groupUser.setLastName(resultSet.getString(11));
         groupUser.setEmailAddress(resultSet.getString(12));
