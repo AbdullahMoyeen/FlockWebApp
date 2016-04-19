@@ -39,8 +39,9 @@ public class UserEventExtractor implements ResultSetExtractor<UserEventModel> {
         userEvent.event.setUpdateDate(resultSet.getTimestamp(19));
         userEvent.event.setEventCategory(resultSet.getString(20));
         userEvent.event.setAttendeeCount(resultSet.getInt(21));
-        userEvent.setUserId(resultSet.getInt(22));
-        userEvent.setIsAttending(resultSet.getString(23).equals("Y"));
+        userEvent.event.setGroupName(resultSet.getString(22));
+        userEvent.setUserId(resultSet.getInt(23));
+        userEvent.setIsAttending(resultSet.getString(24).equals("Y"));
 
         return userEvent;
     }
