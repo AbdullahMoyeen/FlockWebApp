@@ -71,7 +71,7 @@ public class SqlUserProvider implements IUserProvider {
                         ps.setString(4, finalUser.getPassword());
                         ps.setString(5, finalUser.getSalt());
                         ps.setString(6, finalUser.getAccountStatus());
-                        ps.setString(7, finalUser.isPasswordExpired() ? "Y" : null);
+                        ps.setString(7, finalUser.getIsPasswordExpired() ? "Y" : null);
                         return ps;
                     }
                 },

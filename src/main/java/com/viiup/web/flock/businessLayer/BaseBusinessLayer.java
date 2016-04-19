@@ -36,7 +36,7 @@ public class BaseBusinessLayer implements IBaseBusinessLayer {
 
             user.setPassword(tempPassword);
             user.setSalt("");
-            user.setPasswordExpired(true);
+            user.setIsPasswordExpired(true);
             user.setAccountStatus("A");
 
             user = userProvider.insertUser(user);

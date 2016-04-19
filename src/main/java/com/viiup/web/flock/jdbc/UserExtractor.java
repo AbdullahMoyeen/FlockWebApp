@@ -29,7 +29,7 @@ public class UserExtractor implements ResultSetExtractor<UserModel>{
         user.setSalt(resultSet.getString(10));
         user.setFailedLoginCount(resultSet.getInt(11));
         user.setAccountStatus(resultSet.getString(12));
-        user.setPasswordExpired(resultSet.getString(13).equals("Y"));
+        user.setIsPasswordExpired(resultSet.getString(13).equals("Y"));
 
         return user;
     }

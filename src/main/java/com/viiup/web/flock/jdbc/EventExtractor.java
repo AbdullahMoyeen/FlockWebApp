@@ -30,7 +30,7 @@ public class EventExtractor implements ResultSetExtractor<EventModel> {
         event.setEventKeywords(resultSet.getString(12));
         event.setEventLatitude(resultSet.getFloat(13));
         event.setEventLongitude(resultSet.getFloat(14));
-        event.setPrivateEvent(resultSet.getString(15).equals("Y"));
+        event.setIsPrivateEvent(resultSet.getString(15).equals("Y"));
         event.setCreateUser(resultSet.getString(16));
         event.setCreateDate(resultSet.getTimestamp(17));
         event.setUpdateUser(resultSet.getString(18));
