@@ -178,6 +178,8 @@
                     <th>Event Start Date</th>
                     <th>Event End Date</th>
                     <th>Private</th>
+                    <th>Event Attendee</th>
+
                     <th></th>
                 </tr>
                 <c:forEach var="adminGroupEvent" items="${adminGroupEvents}">
@@ -189,6 +191,7 @@
                     <td><a style="text-decoration: none" href="<c:url value="/admin/group/event/details?eventId=${adminGroupEvent.eventId}&groupId=${adminGroupEvent.groupId}"/>"><fmt:formatDate type="date" pattern="MM/dd/yyyy hh:mm a" value="${adminGroupEvent.eventStartDatetime}"/></a></td>
                     <td><a style="text-decoration: none" href="<c:url value="/admin/group/event/details?eventId=${adminGroupEvent.eventId}&groupId=${adminGroupEvent.groupId}"/>"><fmt:formatDate type="date" pattern="MM/dd/yyyy hh:mm a" value="${adminGroupEvent.eventEndDatetime}"/></a></td>
                     <td><a style="text-decoration: none" href="<c:url value="/admin/group/event/details?eventId=${adminGroupEvent.eventId}&groupId=${adminGroupEvent.groupId}"/>"><c:if test="${adminGroupEvent.privateEvent}">Y</c:if></a></td>
+                    <td><a style="text-decoration: none" href="<c:url value="/admin/group/event/details?eventId=${adminGroupEvent.eventId}&groupId=${adminGroupEvent.groupId}"/>">${adminGroupEvent.attendeeCount}</a></td>
                     <td style="text-align: center"><input type="button" value="Event Details" style="width: 150px; height: 40px; font-size: large" onClick="location.href='<c:url value="/admin/group/event/details?eventId=${adminGroupEvent.eventId}&groupId=${adminGroupEvent.groupId}"/>'" title="go to event details"></td>
                 </tr>
                 </c:forEach>

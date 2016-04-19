@@ -54,29 +54,36 @@ public class SqlEventProvider implements IEventProvider {
         try{
             JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
-            String sql = "SELECT event_id, " +
-                    "group_id, " +
-                    "event_name, " +
-                    "event_description, " +
-                    "event_start_datetime, " +
-                    "event_end_datetime, " +
-                    "event_address_line1, " +
-                    "event_address_line2, " +
-                    "event_city, " +
-                    "event_state_code, " +
-                    "event_postal_code, " +
-                    "event_keywords, " +
-                    "event_latitude, " +
-                    "event_longitude, " +
-                    "IFNULL(private_event_ind, 'N'), " +
-                    "create_user, " +
-                    "create_date, " +
-                    "update_user, " +
-                    "update_date, " +
-                    "event_category, " +
-                    "0 As attendeeCount " +
-                    "FROM t_event " +
-                    "WHERE event_id = ?";
+            String sql = "SELECT e.event_id, " +
+                    "e.group_id, " +
+                    "e.event_name, " +
+                    "e.event_description, " +
+                    "e.event_start_datetime, " +
+                    "e.event_end_datetime, " +
+                    "e.event_address_line1, " +
+                    "e.event_address_line2, " +
+                    "e.event_city, " +
+                    "e.event_state_code, " +
+                    "e.event_postal_code, " +
+                    "e.event_keywords, " +
+                    "e.event_latitude, " +
+                    "e.event_longitude, " +
+                    "IFNULL(e.private_event_ind, 'N'), " +
+                    "e.create_user, " +
+                    "e.create_date, " +
+                    "e.update_user, " +
+                    "e.update_date, " +
+                    "e.event_category, " +
+                    "IFNULL(eac.attendeeCount, 0) As attendeeCount " +
+                    "g.group_name" +
+                    "FROM t_event e " +
+                    "JOIN t_group g ON  e.group_id = g.group_id" +
+                    "LEFT OUTER JOIN (SELECT eurc.event_id, SUM(CASE eurc.rsvp_type_code " +
+                    "WHEN 'Y' THEN 1 " +
+                    "ELSE 0 " +
+                    "END) AS attendeeCount " +
+                    "FROM t_event_user_rsvp eurc ) eac ON e.event_id = eac.event_id " +
+                    "WHERE event_id = ? ";
 
             EventModel event = jdbcTemplate.queryForObject(sql, new Object[] {eventId}, new EventRowMapper());
 
@@ -115,8 +122,10 @@ public class SqlEventProvider implements IEventProvider {
             sql.append("	,eu.update_date	\n");
             sql.append("	,eu.event_category \n");
             sql.append("	,eu.attendeeCount \n");
+            sql.append("    ,eu.group_name\n");
             sql.append("	,eu.user_id	\n");
-            sql.append("	,eu.isAttending FROM (SELECT e.event_id \n");
+            sql.append("	,eu.isAttending \n");
+            sql.append("     FROM (SELECT e.event_id \n");
             sql.append("	,e.group_id \n");
             sql.append("	,e.event_name \n");
             sql.append("	,e.event_description \n");
@@ -137,9 +146,11 @@ public class SqlEventProvider implements IEventProvider {
             sql.append("	,e.update_date \n");
             sql.append("	,e.event_category \n");
             sql.append("	,IFNULL(eac.attendeeCount, 0) As attendeeCount \n");
+            sql.append("    ,g.group_name\n");
             sql.append("	,gu.user_id user_id	\n");
             sql.append("	,IF(STRCMP(IFNULL(eur.rsvp_type_code,'N'),'Y'),'false','true') As isAttending \n");
             sql.append("	FROM t_event e	\n");
+            sql.append("	INNER JOIN t_group g ON e.group_id = g.group_id	\n");
             sql.append("	INNER JOIN t_group_user gu ON gu.group_id = e.group_id	\n");
             sql.append("	LEFT OUTER JOIN (SELECT eurc.event_id, SUM(CASE eurc.rsvp_type_code \n");
             sql.append("	WHEN 'Y' THEN 1 \n");
@@ -172,9 +183,11 @@ public class SqlEventProvider implements IEventProvider {
             sql.append("	,e.update_date	\n");
             sql.append("	,e.event_category \n");
             sql.append("	,IFNULL(eac.attendeeCount, 0) As attendeeCount	\n");
+            sql.append("    ,g.group_Name\n");
             sql.append("	,u.user_id	\n");
             sql.append("	,IF(STRCMP(IFNULL(eur.rsvp_type_code,'N'),'Y'),'false','true') As isAttending	\n");
             sql.append("	FROM t_event e 	\n");
+            sql.append("	INNER JOIN t_group g ON e.group_id = g.group_id	\n");
             sql.append("	INNER JOIN t_user u ON u.user_id = ? \n");
             sql.append("	LEFT OUTER JOIN (SELECT eurc.event_id, SUM(CASE eurc.rsvp_type_code \n");
             sql.append("	WHEN 'Y' THEN 1 \n");
