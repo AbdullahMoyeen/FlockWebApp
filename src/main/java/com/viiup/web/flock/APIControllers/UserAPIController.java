@@ -83,7 +83,7 @@ public class UserAPIController {
         return new ResponseEntity<List<UserGroupModel>>(groupsForUser, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "api/user/events", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/user/events", method = RequestMethod.GET)
     public ResponseEntity<List<UserEventModel>> getUserEventsByUserId(@RequestParam int userId) {
 
         // List for holding the events for this user and public events from other groups
@@ -104,7 +104,7 @@ public class UserAPIController {
         return new ResponseEntity<List<UserEventModel>>(eventsForUser, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "api/user/events/rsvp", method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/user/events/rsvp", method = RequestMethod.PUT)
     public ResponseEntity<Void> setEventRSVPStatusByUserId(@RequestParam int userId, @RequestParam int eventId,
                                                            @RequestParam boolean isAttending) {
 
@@ -120,7 +120,7 @@ public class UserAPIController {
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "api/user/groups/membership", method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/user/groups/membership", method = RequestMethod.PUT)
     public ResponseEntity<Void> setGroupMembershipByUserId(@RequestParam int userId, @RequestParam int groupId,
                                                            @RequestParam boolean isMember) {
         // Call the API to set the group membership
