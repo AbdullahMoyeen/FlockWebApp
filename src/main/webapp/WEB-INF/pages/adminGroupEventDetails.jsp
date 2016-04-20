@@ -259,7 +259,7 @@
                     <tr>
                         <td></td>
                         <td></td>
-                        <td><form:checkbox cssStyle="width: 50px;" path="privateEvent" value="Y"/>Private</td>
+                        <td><form:checkbox cssStyle="width: 50px;" path="isPrivateEvent" value="Y"/>Private</td>
                     </tr>
                     <tr>
                         <td></td>

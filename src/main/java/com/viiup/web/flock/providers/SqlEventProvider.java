@@ -74,16 +74,16 @@ public class SqlEventProvider implements IEventProvider {
                     "e.update_user, " +
                     "e.update_date, " +
                     "e.event_category, " +
-                    "IFNULL(eac.attendeeCount, 0) As attendeeCount " +
-                    "g.group_name" +
+                    "IFNULL(eac.attendeeCount, 0) As attendeeCount, " +
+                    "g.group_name " +
                     "FROM t_event e " +
-                    "JOIN t_group g ON  e.group_id = g.group_id" +
+                    "JOIN t_group g ON  e.group_id = g.group_id " +
                     "LEFT OUTER JOIN (SELECT eurc.event_id, SUM(CASE eurc.rsvp_type_code " +
                     "WHEN 'Y' THEN 1 " +
                     "ELSE 0 " +
                     "END) AS attendeeCount " +
                     "FROM t_event_user_rsvp eurc ) eac ON e.event_id = eac.event_id " +
-                    "WHERE event_id = ? ";
+                    "WHERE e.event_id = ? ";
 
             EventModel event = jdbcTemplate.queryForObject(sql, new Object[] {eventId}, new EventRowMapper());
 
