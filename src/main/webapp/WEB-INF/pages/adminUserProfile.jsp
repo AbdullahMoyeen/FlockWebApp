@@ -18,7 +18,7 @@
 
         <style>
             .header {
-                background-color:darkorange;
+                background-color:#263238;
                 color:white;
                 width:100%;
                 height:80px;
@@ -26,11 +26,14 @@
                 text-align:center;
             }
             .nav {
-                background-color:gold;
+                background-color:#0f9d58;
                 width:100%;
                 height:40px;
                 padding:10px;
                 float:top;
+            }
+            .navLink {
+                color:#FFFFFF;
             }
             .section {
                 width:100%;
@@ -87,8 +90,8 @@
 
             <table width="100%" style="margin: auto;">
                 <tr>
-                    <th><security:authorize access="isAuthenticated()"><a href="/aboutUs">About Us</a></security:authorize></th>
-                    <th><security:authorize access="isAuthenticated()"><a href="/contactUs">Contact Us</a></security:authorize></th>
+                    <th><security:authorize access="isAuthenticated()"><a class="navLink" href="/aboutUs">About Us</a></security:authorize></th>
+                    <th><security:authorize access="isAuthenticated()"><a class="navLink" href="/contactUs">Contact Us</a></security:authorize></th>
                     <th>
                         <security:authorize access="isAuthenticated()">
                             Hello ${sessionScope.userFirstName}!
@@ -100,13 +103,13 @@
                     </th>
                     <th>
                         <security:authorize access="isAuthenticated()">
-                            <a href="<c:url value="/admin/groups?userId=${sessionScope.userId}" />">View Groups</a>
+                            <a class="navLink" href="<c:url value="/admin/groups?userId=${sessionScope.userId}" />">View Groups</a>
                         </security:authorize>
                     </th>
                     <th>
                         <security:authorize access="isAuthenticated()">
                             Not ${sessionScope.userFirstName}?
-                            <a href="<c:url value="/signOut" />"><br>Sign Out</a>
+                            <a class="navLink" href="<c:url value="/signOut" />"><br>Sign Out</a>
                         </security:authorize>
                     </th>
                 </tr>
