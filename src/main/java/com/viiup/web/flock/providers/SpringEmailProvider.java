@@ -43,10 +43,10 @@ public class SpringEmailProvider implements IEmailProvider {
 
         htmlMessage.append("<html>\n");
         htmlMessage.append("    <body>\n");
-        htmlMessage.append("        <div style=\"background-color:darkorange; color:white; width:100%; height:80px; padding:5px; text-align:center; font-size: large;\">\n");
+        htmlMessage.append("        <div style=\"background-color:#263238; color:white; width:100%; height:80px; padding:5px; text-align:center; font-size: large;\">\n");
         htmlMessage.append("            <h1>Flock</h1>\n");
         htmlMessage.append("        </div>\n");
-        htmlMessage.append("        <div style=\"background-color:gold; width:100%; height:20px; padding:5px; float:top;\">\n");
+        htmlMessage.append("        <div style=\"background-color:#0f9d58; width:100%; height:20px; padding:5px; float:top;\">\n");
         htmlMessage.append("          \n");
         htmlMessage.append("        </div>\n");
         htmlMessage.append("        <div style=\"width:100%; height: 100px; padding:5px; float:top;\">\n");
