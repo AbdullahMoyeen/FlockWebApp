@@ -14,7 +14,6 @@ public interface IUserProvider {
     UserModel getUserByEmailAddress(String emailAddress);
     List<UserRoleModel> getUserRolesByUserId(int userId);
     UserModel getUserByUserId(int userId);
-    boolean isCurrentPasswordValid(UserPasswordChangeModel userPassword);
     void updateUserPassword(UserPasswordChangeModel userPassword);
     void updateUserPassword(UserPasswordChangeModel userPassword, boolean expirePassword);
 }

@@ -20,9 +20,6 @@
         <intercept-url pattern="/admin.*" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/api/admin.*" access="hasRole('ROLE_ADMIN')"/>
         <security:http-basic/>
-        <!--<intercept-url pattern="/customer.*" access="hasRole('CUSTOMER')"/>-->
-        <!--<intercept-url pattern="/order.*" access="hasRole('CUSTOMER')"/>-->
-        <!--<intercept-url pattern="/auth.*" access="hasRole('CUSTOMER')"/>-->
     </http>
 
     <beans:bean id="daoAuthenticationProvider"
@@ -48,26 +45,26 @@
         <beans:property name="allowSessionCreation" value="true"/>
         <beans:property name="exceptionMappings">
             <beans:props>
-                <beans:prop key="org.springframework.security.authentication.BadCredentialsException">/?loginError=true</beans:prop>
-                <beans:prop key="org.springframework.security.authentication.CredentialsExpiredException">/tempPasswordChange?loginAttempt=true</beans:prop>
-                <beans:prop key="org.springframework.security.authentication.LockedException">/?loginError=true</beans:prop>
+                <beans:prop key="org.springframework.security.authentication.BadCredentialsException">
+                    /?loginError=true
+                </beans:prop>
+                <beans:prop key="org.springframework.security.authentication.CredentialsExpiredException">
+                    /tempPasswordChange?loginAttempt=true
+                </beans:prop>
+                <beans:prop key="org.springframework.security.authentication.LockedException">/?loginError=true
+                </beans:prop>
             </beans:props>
         </beans:property>
     </beans:bean>
 
-    <!--<beans:bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">-->
-        <!--<beans:constructor-arg name="strength" value="256"/>-->
-    <!--</beans:bean>-->
-
-    <!--<beans:bean id="saltSource" class="org.springframework.security.authentication.providers.ReflectionSaltSource">-->
-        <!--<beans:property name="userPropertyToUse" value="salt"/>-->
-    <!--</beans:bean>-->
+    <beans:bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+        <beans:constructor-arg name="strength" value="10"/>
+    </beans:bean>
 
     <authentication-manager>
         <authentication-provider user-service-ref="userDetailsService">
-            <!--<password-encoder ref="passwordEncoder">-->
-                <!--<salt-source ref="saltSource"/>-->
-            <!--</password-encoder>-->
+            <password-encoder ref="passwordEncoder">
+            </password-encoder>
         </authentication-provider>
     </authentication-manager>
 

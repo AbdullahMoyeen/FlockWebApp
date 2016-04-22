@@ -129,11 +129,6 @@
                 <table class="mainTable" style="margin: auto;">
                     <caption style="font-size: x-large;font-weight: bold;text-decoration: underline;padding: 20px;">Change Password</caption>
                     <tr>
-                        <th>Current Password</th>
-                        <td>:</td>
-                        <td><form:input id="currentPassword" type="password" path="password" required="true" title="enter current password"/></td>
-                    </tr>
-                    <tr>
                         <th>New Password</th>
                         <td>:</td>
                         <td><form:input id="newPassword" type="password" path="newPassword" required="true" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}" title="Must be between 8 and 16 characters and contain at least one number, one uppercase and one lowercase letters"/></td>

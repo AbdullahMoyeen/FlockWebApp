@@ -212,27 +212,6 @@ public class SqlUserProvider implements IUserProvider {
     }
 
     @Override
-    public boolean isCurrentPasswordValid(UserPasswordChangeModel userPassword) {
-
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-
-        StringBuilder sql = new StringBuilder();
-
-        sql.append("SELECT count(*)\n");
-        sql.append("  FROM t_user\n");
-        sql.append(" WHERE email_address = LOWER(?)\n");
-        sql.append("   AND password = ?");
-
-        int x = jdbcTemplate.queryForObject(sql.toString(), new Object[]{userPassword.getEmailAddress(), userPassword.getPassword()}, Integer.class);
-
-        if (x > 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    @Override
     public void updateUserPassword(UserPasswordChangeModel userPassword) {
         updateUserPassword(userPassword, false);
     }

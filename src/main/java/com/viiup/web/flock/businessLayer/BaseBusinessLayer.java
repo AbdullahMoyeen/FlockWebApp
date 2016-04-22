@@ -8,6 +8,7 @@ import com.viiup.web.flock.providers.interfaces.IBaseProvider;
 import com.viiup.web.flock.providers.interfaces.IEmailProvider;
 import com.viiup.web.flock.providers.interfaces.IUserProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.ExecutorService;
@@ -33,8 +34,10 @@ public class BaseBusinessLayer implements IBaseBusinessLayer {
         if (!baseProvider.emailAddressExists(user.getEmailAddress())) {
 
             String tempPassword = baseProvider.generateTempPassword();
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String hashedTempPassword = passwordEncoder.encode(tempPassword);
 
-            user.setPassword(tempPassword);
+            user.setPassword(hashedTempPassword);
             user.setSalt("");
             user.setIsPasswordExpired(true);
             user.setAccountStatus("A");
@@ -72,9 +75,11 @@ public class BaseBusinessLayer implements IBaseBusinessLayer {
             UserPasswordChangeModel userPassword = new UserPasswordChangeModel();
 
             String tempPassword = baseProvider.generateTempPassword();
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String hashedTempPassword = passwordEncoder.encode(tempPassword);
 
             userPassword.setEmailAddress(emailAddress);
-            userPassword.setNewPassword(tempPassword);
+            userPassword.setNewPassword(hashedTempPassword);
 
             userProvider.updateUserPassword(userPassword, true);
 

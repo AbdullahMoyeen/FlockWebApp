@@ -6,6 +6,7 @@ import com.viiup.web.flock.models.UserPasswordChangeModel;
 import com.viiup.web.flock.models.UserRoleModel;
 import com.viiup.web.flock.providers.interfaces.IUserProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class UserBusinessLayer implements IUserBusinessLayer {
     private IUserProvider userProvider;
 
     @Override
-    public UserModel getUserByEmailAddress(String emailAddress){
+    public UserModel getUserByEmailAddress(String emailAddress) {
 
         UserModel user = userProvider.getUserByEmailAddress(emailAddress);
 
@@ -28,7 +29,7 @@ public class UserBusinessLayer implements IUserBusinessLayer {
     }
 
     @Override
-    public List<UserRoleModel> getUserRolesByUserId(int userId){
+    public List<UserRoleModel> getUserRolesByUserId(int userId) {
 
         List<UserRoleModel> userRoles = userProvider.getUserRolesByUserId(userId);
 
@@ -36,7 +37,7 @@ public class UserBusinessLayer implements IUserBusinessLayer {
     }
 
     @Override
-    public UserModel getUserByUserId(int userId){
+    public UserModel getUserByUserId(int userId) {
 
         UserModel user = userProvider.getUserByUserId(userId);
 
@@ -48,9 +49,10 @@ public class UserBusinessLayer implements IUserBusinessLayer {
 
     @Override
     public void changeUserPassword(UserPasswordChangeModel userPassword) throws Exception {
-        if (userProvider.isCurrentPasswordValid(userPassword))
-            userProvider.updateUserPassword(userPassword);
-        else
-            throw new Exception("CurrentPasswordInvalid");
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        userPassword.setNewPassword(passwordEncoder.encode(userPassword.getNewPassword()));
+
+        userProvider.updateUserPassword(userPassword);
     }
 }
