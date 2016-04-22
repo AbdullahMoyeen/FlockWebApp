@@ -266,6 +266,7 @@ public class SqlGroupProvider implements IGroupProvider {
         sql.append("      ,e.event_category\n");
         sql.append("      ,0 AttendeeCount\n");
         sql.append("      ,g.group_name\n");
+        sql.append("      ,g.group_category\n");
         sql.append("        FROM t_event e\n");
         sql.append(        "JOIN t_group g ON  e.group_id = g.group_id\n");
         sql.append(         "LEFT OUTER JOIN (SELECT eurc.event_id, SUM(CASE eurc.rsvp_type_code \n");

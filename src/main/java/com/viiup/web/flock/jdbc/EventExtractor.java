@@ -38,6 +38,7 @@ public class EventExtractor implements ResultSetExtractor<EventModel> {
         event.setEventCategory(resultSet.getString(20));
         event.setAttendeeCount(resultSet.getInt(21));
         event.setGroupName(resultSet.getString(22));
+        event.setGroupCategory(resultSet.getString(23));
 
         return event;
     }

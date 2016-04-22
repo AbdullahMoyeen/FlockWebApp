@@ -75,7 +75,8 @@ public class SqlEventProvider implements IEventProvider {
                     "e.update_date, " +
                     "e.event_category, " +
                     "IFNULL(eac.attendeeCount, 0) As attendeeCount, " +
-                    "g.group_name " +
+                    "g.group_name, " +
+                    "g.group_category " +
                     "FROM t_event e " +
                     "JOIN t_group g ON  e.group_id = g.group_id " +
                     "LEFT OUTER JOIN (SELECT eurc.event_id, SUM(CASE eurc.rsvp_type_code " +
@@ -123,6 +124,7 @@ public class SqlEventProvider implements IEventProvider {
             sql.append("        ,eu.event_category\n");
             sql.append("        ,eu.attendee_count\n");
             sql.append("        ,eu.group_name\n");
+            sql.append("        ,eu.group_category\n");
             sql.append("        ,eu.user_id\n");
             sql.append("        ,eu.rsvp_type_code\n");
             sql.append("    FROM (SELECT e.event_id\n");
@@ -147,6 +149,7 @@ public class SqlEventProvider implements IEventProvider {
             sql.append("                ,e.event_category\n");
             sql.append("                ,IFNULL(eac.attendee_count, 0) AS attendee_count\n");
             sql.append("                ,g.group_name\n");
+            sql.append("                ,g.group_category\n");
             sql.append("                ,gu.user_id user_id\n");
             sql.append("                ,IFNULL(eur.rsvp_type_code,'N') AS rsvp_type_code\n");
             sql.append("            FROM t_event e\n");
@@ -186,6 +189,7 @@ public class SqlEventProvider implements IEventProvider {
             sql.append("                ,e.event_category\n");
             sql.append("                ,IFNULL(eac.attendee_count, 0) AS attendee_count\n");
             sql.append("                ,g.group_name\n");
+            sql.append("                ,g.group_category\n");
             sql.append("                ,u.user_id\n");
             sql.append("                ,IFNULL(eur.rsvp_type_code,'N') As rsvp_type_code\n");
             sql.append("            FROM t_event e \n");

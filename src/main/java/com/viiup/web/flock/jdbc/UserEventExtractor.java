@@ -40,8 +40,9 @@ public class UserEventExtractor implements ResultSetExtractor<UserEventModel> {
         userEvent.event.setEventCategory(resultSet.getString(20));
         userEvent.event.setAttendeeCount(resultSet.getInt(21));
         userEvent.event.setGroupName(resultSet.getString(22));
-        userEvent.setUserId(resultSet.getInt(23));
-        userEvent.setIsAttending(resultSet.getString(24).equals("Y"));
+        userEvent.event.setGroupCategory(resultSet.getString(23));
+        userEvent.setUserId(resultSet.getInt(24));
+        userEvent.setIsAttending(resultSet.getString(25).equals("Y"));
 
         return userEvent;
     }
