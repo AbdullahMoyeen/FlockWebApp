@@ -134,4 +134,19 @@ public class UserAPIController {
         // If we are here, the API call is successful
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/api/user/signup", method = RequestMethod.POST)
+    public ResponseEntity<UserModel> signUpUser(@RequestBody UserModel user) {
+        // sign up this user
+        try {
+            baseService.signUp(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            new ResponseEntity<UserModel>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        // Return the user model after sign up
+        return new ResponseEntity<UserModel>(user, HttpStatus.OK);
+
+    }
 }
