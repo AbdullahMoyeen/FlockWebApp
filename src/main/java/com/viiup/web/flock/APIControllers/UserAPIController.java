@@ -142,11 +142,24 @@ public class UserAPIController {
             baseService.signUp(user);
         } catch (Exception e) {
             e.printStackTrace();
-            new ResponseEntity<UserModel>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<UserModel>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         // Return the user model after sign up
         return new ResponseEntity<UserModel>(user, HttpStatus.OK);
+    }
 
+    @RequestMapping(value = "/api/users/changepassword", method = RequestMethod.PUT)
+    public ResponseEntity<Void> changeUserPassword(@RequestBody UserPasswordChangeModel userPassword) {
+        // Change user password
+        try {
+            userService.changeUserPassword(userPassword);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        // Return user response
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 }
