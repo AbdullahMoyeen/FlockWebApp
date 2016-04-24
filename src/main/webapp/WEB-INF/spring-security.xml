@@ -19,6 +19,7 @@
                 invalidate-session="true"/>
         <intercept-url pattern="/admin.*" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/api/admin.*" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/api/user.*" access="hasRole('ROLE_USER')"/>
         <security:http-basic/>
     </http>
 
