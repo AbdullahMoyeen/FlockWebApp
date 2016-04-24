@@ -372,6 +372,7 @@ public class SqlGroupProvider implements IGroupProvider {
                 "AND group_id = ? " ;
         jdbcTemplate.update(sql.toString(), new Object[]{userId, groupId});
     }
+
     @Override
     public List<RefGroupCategoryModel> getRefGroupCategoryList(){
 

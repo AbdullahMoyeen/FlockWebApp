@@ -10,5 +10,6 @@ import java.util.List;
 public interface IBaseService {
 
     void signUp(UserModel user) throws Exception;
+    UserModel signIn(UserModel user) throws Exception;
     void resetPassword(String emailAddress) throws Exception;
 }

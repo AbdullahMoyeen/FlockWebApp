@@ -22,6 +22,11 @@ public class BaseService implements IBaseService {
     }
 
     @Override
+    public UserModel signIn(UserModel user) throws Exception{
+        return baseBusinessLayer.signIn(user);
+    }
+
+    @Override
     public void resetPassword(String emailAddress) throws Exception{
 
         baseBusinessLayer.resetPassword(emailAddress);

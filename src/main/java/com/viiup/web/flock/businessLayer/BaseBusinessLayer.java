@@ -1,6 +1,7 @@
 package com.viiup.web.flock.businessLayer;
 
 import com.viiup.web.flock.businessLayer.interfaces.IBaseBusinessLayer;
+import com.viiup.web.flock.models.AuthenticatedUser;
 import com.viiup.web.flock.models.UserModel;
 import com.viiup.web.flock.models.UserPasswordChangeModel;
 import com.viiup.web.flock.models.UserRoleModel;
@@ -8,6 +9,7 @@ import com.viiup.web.flock.providers.interfaces.IBaseProvider;
 import com.viiup.web.flock.providers.interfaces.IEmailProvider;
 import com.viiup.web.flock.providers.interfaces.IUserProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +31,7 @@ public class BaseBusinessLayer implements IBaseBusinessLayer {
     @Autowired
     IEmailProvider emailProvider;
 
+    @Override
     public void signUp(UserModel user) throws Exception {
 
         if (!baseProvider.emailAddressExists(user.getEmailAddress())) {
@@ -65,6 +68,25 @@ public class BaseBusinessLayer implements IBaseBusinessLayer {
         } else {
             throw new Exception("UserAlreadyExists");
         }
+    }
+
+    @Override
+    public UserModel signIn(UserModel user) throws Exception {
+
+        try {
+            AuthenticatedUser authenticatedUser = (AuthenticatedUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (authenticatedUser != null) {
+                user = userProvider.getUserByUserId(authenticatedUser.getUserId());
+                user.setPassword("");
+                user.setSalt("");
+            } else {
+                throw new Exception();
+            }
+        } catch (Exception e) {
+            throw new Exception("InvalidLogin");
+        }
+
+        return user;
     }
 
     @Override

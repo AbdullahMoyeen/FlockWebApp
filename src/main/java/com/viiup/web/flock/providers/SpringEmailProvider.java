@@ -20,6 +20,7 @@ public class SpringEmailProvider implements IEmailProvider {
 
     private static final String DEFAULT_FROM_ADDRESS = "Flock <viiup.utd.emse@gmail.com>";
 
+    @Override
     public void sendEmail(String[] toAddresses, String subject, String messageText) {
 
         try {

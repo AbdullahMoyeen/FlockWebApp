@@ -267,7 +267,6 @@ public class SqlEventProvider implements IEventProvider {
         }
     }
 
-
     @Override
     public void insertEvent(EventModel event) {
 
