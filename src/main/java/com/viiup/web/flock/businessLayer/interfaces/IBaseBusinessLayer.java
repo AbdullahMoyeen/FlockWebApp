@@ -8,6 +8,6 @@ import com.viiup.web.flock.models.UserModel;
 public interface IBaseBusinessLayer {
 
     void signUp(UserModel user) throws Exception;
-    UserModel signIn(UserModel user) throws Exception;
+    UserModel signIn(String emailAddress, String password) throws Exception;
     void resetPassword(String emailAddress) throws Exception;
 }

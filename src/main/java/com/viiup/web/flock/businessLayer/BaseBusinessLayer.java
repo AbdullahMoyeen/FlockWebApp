@@ -71,22 +71,15 @@ public class BaseBusinessLayer implements IBaseBusinessLayer {
     }
 
     @Override
-    public UserModel signIn(UserModel user) throws Exception {
+    public UserModel signIn(String emailAddress, String password) throws Exception {
 
-        try {
-            AuthenticatedUser authenticatedUser = (AuthenticatedUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            if (authenticatedUser != null) {
-                user = userProvider.getUserByUserId(authenticatedUser.getUserId());
-                user.setPassword("");
-                user.setSalt("");
-            } else {
-                throw new Exception();
-            }
-        } catch (Exception e) {
+        UserModel authenticatedUser = userProvider.getAuthenticatedUser(emailAddress, password);
+
+        if (authenticatedUser != null) {
+            return authenticatedUser;
+        } else {
             throw new Exception("InvalidLogin");
         }
-
-        return user;
     }
 
     @Override

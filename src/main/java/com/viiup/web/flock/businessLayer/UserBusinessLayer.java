@@ -50,9 +50,15 @@ public class UserBusinessLayer implements IUserBusinessLayer {
     @Override
     public void changeUserPassword(UserPasswordChangeModel userPassword) throws Exception {
 
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        userPassword.setNewPassword(passwordEncoder.encode(userPassword.getNewPassword()));
+        if (userProvider.getAuthenticatedUser(userPassword.getEmailAddress(), userPassword.getPassword()) != null) {
 
-        userProvider.updateUserPassword(userPassword);
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            userPassword.setNewPassword(passwordEncoder.encode(userPassword.getNewPassword()));
+
+            userProvider.updateUserPassword(userPassword);
+        }
+        else {
+            throw new Exception ("CurrentPasswordInvalid");
+        }
     }
 }

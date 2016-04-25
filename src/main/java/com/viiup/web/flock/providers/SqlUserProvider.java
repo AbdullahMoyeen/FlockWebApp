@@ -14,6 +14,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
@@ -209,6 +210,19 @@ public class SqlUserProvider implements IUserProvider {
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
+    }
+
+    @Override
+    public UserModel getAuthenticatedUser(String emailAddress, String password) {
+
+        UserModel user = getUserByEmailAddress(emailAddress);
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+        if (passwordEncoder.matches(password, user.getPassword()))
+            return user;
+
+        return null;
     }
 
     @Override
