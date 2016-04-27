@@ -154,6 +154,8 @@ public class UserAPIController {
             baseService.signIn(user.getEmailAddress(), user.getPassword());
         } catch (Exception e) {
             e.printStackTrace();
+            if (e.getMessage().equals("InvalidLogin"))
+                return new ResponseEntity<UserModel>(HttpStatus.BAD_REQUEST);
             return new ResponseEntity<UserModel>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
