@@ -150,8 +150,10 @@ public class UserAPIController {
     @RequestMapping(value = "/api/user/signin", method = RequestMethod.POST)
     public ResponseEntity<UserModel> signInUser(@RequestBody UserModel user) {
         // sign in this user
+        UserModel authenticatedUser;
+
         try {
-            baseService.signIn(user.getEmailAddress(), user.getPassword());
+            authenticatedUser = baseService.signIn(user.getEmailAddress(), user.getPassword());
         } catch (Exception e) {
             e.printStackTrace();
             if (e.getMessage().equals("InvalidLogin"))
@@ -159,8 +161,8 @@ public class UserAPIController {
             return new ResponseEntity<UserModel>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        // Return the user model after sign up
-        return new ResponseEntity<UserModel>(user, HttpStatus.OK);
+        // Return the user model after signin
+        return new ResponseEntity<UserModel>(authenticatedUser, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/api/users/changepassword", method = RequestMethod.PUT)
