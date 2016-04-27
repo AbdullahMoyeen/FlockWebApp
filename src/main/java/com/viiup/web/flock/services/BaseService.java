@@ -23,7 +23,7 @@ public class BaseService implements IBaseService {
 
     @Override
     public UserModel signIn(UserModel user) throws Exception{
-        return baseBusinessLayer.signIn(user);
+        return baseBusinessLayer.signIn(user.getEmailAddress(), user.getPassword());
     }
 
     @Override

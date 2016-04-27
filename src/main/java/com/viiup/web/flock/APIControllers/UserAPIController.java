@@ -151,7 +151,7 @@ public class UserAPIController {
 
     @RequestMapping(value = "/api/user/signin", method = RequestMethod.POST)
     public ResponseEntity<UserModel> signInUser(@RequestBody UserModel user) {
-        // sign up this user
+        // sign in this user
         try {
             baseService.signIn(user);
         } catch (Exception e) {
