@@ -22,8 +22,8 @@ public class BaseService implements IBaseService {
     }
 
     @Override
-    public UserModel signIn(UserModel user) throws Exception{
-        return baseBusinessLayer.signIn(user.getEmailAddress(), user.getPassword());
+    public UserModel signIn(String emailAddress, String password) throws Exception{
+        return baseBusinessLayer.signIn(emailAddress, password);
     }
 
     @Override

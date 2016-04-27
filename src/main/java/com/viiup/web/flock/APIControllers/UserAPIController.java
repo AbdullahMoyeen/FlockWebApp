@@ -105,8 +105,7 @@ public class UserAPIController {
     }
 
     @RequestMapping(value = "/api/user/events/rsvp", method = RequestMethod.PUT)
-    public ResponseEntity<Void> setEventRSVPStatusByUserId(@RequestParam int userId, @RequestParam int eventId,
-                                                           @RequestParam boolean isAttending) {
+    public ResponseEntity<Void> setEventRSVPStatusByUserId(@RequestParam int userId, @RequestParam int eventId, @RequestParam boolean isAttending) {
 
         // call the event service method to update RSVP status
         try {
@@ -121,8 +120,7 @@ public class UserAPIController {
     }
 
     @RequestMapping(value = "/api/user/groups/membership", method = RequestMethod.PUT)
-    public ResponseEntity<Void> setGroupMembershipByUserId(@RequestParam int userId, @RequestParam int groupId,
-                                                           @RequestParam boolean isMember) {
+    public ResponseEntity<Void> setGroupMembershipByUserId(@RequestParam int userId, @RequestParam int groupId, @RequestParam boolean isMember) {
         // Call the API to set the group membership
         try {
             groupService.setGroupMembership(groupId, userId, isMember);
@@ -153,7 +151,7 @@ public class UserAPIController {
     public ResponseEntity<UserModel> signInUser(@RequestBody UserModel user) {
         // sign in this user
         try {
-            baseService.signIn(user);
+            baseService.signIn(user.getEmailAddress(), user.getPassword());
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<UserModel>(HttpStatus.INTERNAL_SERVER_ERROR);
