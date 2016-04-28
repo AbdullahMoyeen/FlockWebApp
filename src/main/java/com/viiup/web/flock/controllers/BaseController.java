@@ -53,6 +53,8 @@ public class BaseController {
         } catch (Exception e) {
             if (e.getMessage().equals("UserAlreadyExists"))
                 return "redirect:/signUp?userAlreadyExists=true";
+            else if (e.getMessage().equals("InvalidEmail"))
+                return "redirect:/signUp?InvalidEmail=true";
             else
                 return "redirect:/signUp?unknownError=true";
         }

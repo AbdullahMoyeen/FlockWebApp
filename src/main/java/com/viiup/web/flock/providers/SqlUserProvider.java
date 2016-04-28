@@ -51,7 +51,7 @@ public class SqlUserProvider implements IUserProvider {
         sql.append("(\n");
         sql.append(" ?\n");
         sql.append(",?\n");
-        sql.append(",?\n");
+        sql.append(",LOWER(?)\n");
         sql.append(",?\n");
         sql.append(",?\n");
         sql.append(",?\n");

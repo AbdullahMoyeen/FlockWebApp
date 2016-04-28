@@ -116,6 +116,12 @@
                 </div>
             </c:if>
 
+            <c:if test="${param.InvalidEmail == 'true'}">
+                <div class="error" style="text-align: center">
+                    <br>Please provide a valid school email
+                </div>
+            </c:if>
+
             <c:if test="${param.unknownError == 'true'}">
                 <div class="error" style="text-align: center">
                     <br>Account could not be created<br><br>Please try again
