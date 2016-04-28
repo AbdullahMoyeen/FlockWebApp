@@ -165,7 +165,7 @@ public class UserAPIController {
         return new ResponseEntity<UserModel>(authenticatedUser, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/api/users/changepassword", method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/user/changepassword", method = RequestMethod.POST)
     public ResponseEntity<Void> changeUserPassword(@RequestBody UserPasswordChangeModel userPassword) {
         // Change user password
         try {
@@ -176,6 +176,20 @@ public class UserAPIController {
         }
 
         // Return user response
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/api/user/resetpassword", method = RequestMethod.PUT)
+    public ResponseEntity<Void> resetUserPassword(@RequestParam String emailAddress) {
+        // Reset password
+        try {
+            baseService.resetPassword(emailAddress);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        // Return OK response to user
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 }
