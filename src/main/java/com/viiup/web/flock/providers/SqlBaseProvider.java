@@ -18,7 +18,7 @@ public class SqlBaseProvider implements IBaseProvider {
     @Autowired
     DataSource dataSource;
 
-    private static final char[] PASSWORD_VALID_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456879!@#$".toCharArray();
+    private static final char[] PASSWORD_VALID_CHARACTERS = "ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz0123456879!@#$".toCharArray();
     private static final int PASSWORD_TEMP_LENGTH = 8;
 
     @Override
