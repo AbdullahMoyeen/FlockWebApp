@@ -14,5 +14,5 @@ public interface IUserBusinessLayer {
     UserModel getUserByEmailAddress(String emailAddress);
     List<UserRoleModel> getUserRolesByUserId(int userId);
     UserModel getUserByUserId(int userId);
-    void changeUserPassword(UserPasswordChangeModel userPassword) throws Exception;
+    UserModel changeUserPassword(UserPasswordChangeModel userPassword) throws Exception;
 }

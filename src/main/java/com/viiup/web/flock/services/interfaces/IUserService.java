@@ -10,5 +10,5 @@ import java.util.List;
 public interface IUserService {
 
     UserModel getUserByUserId(int userId);
-    void changeUserPassword(UserPasswordChangeModel userPassword) throws Exception;
+    UserModel changeUserPassword(UserPasswordChangeModel userPassword) throws Exception;
 }

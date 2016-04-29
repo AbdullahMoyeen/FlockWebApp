@@ -140,6 +140,8 @@ public class UserAPIController {
             baseService.signUp(user);
         } catch (Exception e) {
             e.printStackTrace();
+            if (e.getMessage().equals("UserAlreadyExists"))
+                return new ResponseEntity<UserModel>(HttpStatus.BAD_REQUEST);
             return new ResponseEntity<UserModel>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -166,17 +168,21 @@ public class UserAPIController {
     }
 
     @RequestMapping(value = "/api/user/changepassword", method = RequestMethod.POST)
-    public ResponseEntity<Void> changeUserPassword(@RequestBody UserPasswordChangeModel userPassword) {
+    public ResponseEntity<UserModel> changeUserPassword(@RequestBody UserPasswordChangeModel userPassword) {
+
+        UserModel authenticatedUser;
         // Change user password
         try {
-            userService.changeUserPassword(userPassword);
+            authenticatedUser = userService.changeUserPassword(userPassword);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+            if (e.getMessage().equals("CurrentPasswordInvalid"))
+                return new ResponseEntity<UserModel>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<UserModel>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         // Return user response
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        return new ResponseEntity<UserModel>(authenticatedUser, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/api/user/resetpassword", method = RequestMethod.PUT)
@@ -186,6 +192,8 @@ public class UserAPIController {
             baseService.resetPassword(emailAddress);
         } catch (Exception e) {
             e.printStackTrace();
+            if (e.getMessage().equals("UserNotFound"))
+                return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
             return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 

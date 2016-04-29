@@ -25,7 +25,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void changeUserPassword(UserPasswordChangeModel userPassword) throws Exception {
-        userBusinessLayer.changeUserPassword(userPassword);
+    public UserModel changeUserPassword(UserPasswordChangeModel userPassword) throws Exception {
+        return userBusinessLayer.changeUserPassword(userPassword);
     }
 }
